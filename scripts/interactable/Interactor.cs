@@ -25,10 +25,8 @@ public partial class Interactor : Area3D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		Transform3D controllerXform = Controller.Transform;
-
 		// follow controller transform 
-		GlobalTransform = controllerXform;
+		GlobalTransform = Controller.GlobalTransform;
 	}
 
 

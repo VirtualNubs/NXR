@@ -92,7 +92,6 @@ public partial class Firearm : NXR.Interactable
 
     }
 
-
     private void RecoilReturn()
     {
         float positionLength = Mathf.Abs(_initPositionOffset.Length() - PositionOffset.Length()); 

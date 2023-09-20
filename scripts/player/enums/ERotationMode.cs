@@ -1,5 +1,5 @@
 
-namespace NXR; 
+namespace NXRPlayer; 
 
 public enum RotationMode { 
     Snap, 

@@ -67,7 +67,7 @@ public partial class Interactable : RigidBody3D
 			Transform3D primaryXform = PrimaryInteractor.GlobalTransform;
 			Vector3 rotOffset = RotationOffset * (Vector3.One * (Mathf.Pi / 180));
 
-			xform.Origin = GlobalTransform.Origin.Lerp(primaryXform.Origin, PositionSmoothing);
+			xform.Origin = GlobalTransform.Origin.Lerp(primaryXform.Origin, 1.0f);
 			xform.Basis = primaryXform.Basis * Basis.FromEuler(rotOffset);
 
 			GlobalTransform = xform;
