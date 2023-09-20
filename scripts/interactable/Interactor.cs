@@ -3,6 +3,7 @@ using Godot.Collections;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+
 namespace NXR;
 
 [GlobalClass]

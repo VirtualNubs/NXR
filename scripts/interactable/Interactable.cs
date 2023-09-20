@@ -68,9 +68,10 @@ public partial class Interactable : RigidBody3D
 			Vector3 rotOffset = RotationOffset * (Vector3.One * (Mathf.Pi / 180));
 
 			xform.Origin = GlobalTransform.Origin.Lerp(primaryXform.Origin, PositionSmoothing);
-			xform.Basis = GlobalTransform.Basis.Slerp(primaryXform.Basis, RotationSmoothing) * Basis.FromEuler(rotOffset);
+			xform.Basis = primaryXform.Basis * Basis.FromEuler(rotOffset);
 
-			GlobalTransform = xform.TranslatedLocal(PositionOffset);
+			GlobalTransform = xform;
+			CallDeferred("SetOffsets", xform.TranslatedLocal(PositionOffset)); 
 		}
 
 		if (IsInstanceValid(SecondaryInteractor) && !IsInstanceValid(PrimaryInteractor))
@@ -121,6 +122,11 @@ public partial class Interactable : RigidBody3D
 		}
 
 		EmitSignal("OnDropped", interactor);
+	}
+
+	private void SetOffsets(Transform3D xform)
+	{
+		GlobalTransform = xform; 
 	}
 
 	public bool IsGrabbed()

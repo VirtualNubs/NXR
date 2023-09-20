@@ -18,7 +18,6 @@ public partial class Hand : Node3D
 
 
     private Transform3D _initTransform;
-
     private AnimationTree _currentAnimTree;
 
 

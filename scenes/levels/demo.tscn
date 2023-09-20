@@ -1,0 +1,130 @@
+[gd_scene load_steps=15 format=3 uid="uid://cjspnu10ldpvx"]
+
+[ext_resource type="Script" path="res://scripts/NXR/scripts/core/Origin.cs" id="1_5t3jx"]
+[ext_resource type="Script" path="res://scripts/NXR/scripts/core/Controller.cs" id="2_jgsa0"]
+[ext_resource type="Script" path="res://scripts/NXR/scripts/interactable/Interactor.cs" id="3_ks2pj"]
+[ext_resource type="Script" path="res://scripts/NXR/scripts/interactable/Interactable.cs" id="4_h6gny"]
+[ext_resource type="Script" path="res://scripts/NXR/scripts/firearm/Firearm.cs" id="5_ikwv2"]
+[ext_resource type="Script" path="res://scripts/NXR/scripts/interactable/components/SecondaryLook.cs" id="6_qhogs"]
+[ext_resource type="Script" path="res://scripts/NXR/scripts/firearm/components/FirearmRay.cs" id="7_d4ebf"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xdaga"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_jl453"]
+sky_material = SubResource("ProceduralSkyMaterial_xdaga")
+
+[sub_resource type="Environment" id="Environment_3y5vl"]
+background_mode = 2
+sky = SubResource("Sky_jl453")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_oscbt"]
+radius = 0.213451
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aoj3i"]
+transparency = 1
+albedo_color = Color(0, 1, 1, 0.152941)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_2sft7"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c5qrw"]
+size = Vector3(0.092469, 0.0591053, 0.561005)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_3y5vl")
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+script = ExtResource("1_5t3jx")
+
+[node name="LeftController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"left_hand"
+script = ExtResource("2_jgsa0")
+
+[node name="RightController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"right_hand"
+script = ExtResource("2_jgsa0")
+
+[node name="LeftInteractor" type="Area3D" parent="XROrigin3D" node_paths=PackedStringArray("Controller")]
+script = ExtResource("3_ks2pj")
+Controller = NodePath("../LeftController")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/LeftInteractor"]
+shape = SubResource("SphereShape3D_oscbt")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="XROrigin3D/LeftInteractor"]
+material_override = SubResource("StandardMaterial3D_aoj3i")
+radius = 0.0644331
+
+[node name="RightInteractor" type="Area3D" parent="XROrigin3D" node_paths=PackedStringArray("Controller")]
+script = ExtResource("3_ks2pj")
+Controller = NodePath("../RightController")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/RightInteractor"]
+shape = SubResource("SphereShape3D_oscbt")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="XROrigin3D/RightInteractor"]
+material_override = SubResource("StandardMaterial3D_aoj3i")
+radius = 0.0644331
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+
+[node name="Left" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.397745, 0.86989, 0.0957322)
+freeze = true
+script = ExtResource("4_h6gny")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Left"]
+transform = Transform3D(0.122556, 0, 0, 0, 0.122556, 0, 0, 0, 0.122556, 0, 0, 0)
+shape = SubResource("SphereShape3D_2sft7")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="Left"]
+transform = Transform3D(0.122556, 0, 0, 0, 0.122556, 0, 0, 0, 0.122556, 0, 0, 0)
+
+[node name="Right" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.387762, 0.860586, 0.279949)
+freeze = true
+script = ExtResource("4_h6gny")
+HoldMode = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Right"]
+transform = Transform3D(0.122556, 0, 0, 0, 0.122556, 0, 0, 0, 0.122556, 0, 0, 0)
+shape = SubResource("SphereShape3D_2sft7")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="Right"]
+transform = Transform3D(0.122556, 0, 0, 0, 0.122556, 0, 0, 0, 0.122556, 0, 0, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+size = Vector3(10, 1, 10)
+
+[node name="Firearm" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.304209, 0.840244, 0)
+freeze = true
+script = ExtResource("5_ikwv2")
+_recoilKick = Vector3(0, 0, 0.02)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Firearm"]
+transform = Transform3D(0.529976, 0, 0, 0, 0.529976, 0, 0, 0, 0.529976, 0, 0.0476857, -0.145072)
+size = Vector3(0.0463702, 0.106663, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Firearm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0476857, -0.145072)
+shape = SubResource("BoxShape3D_c5qrw")
+
+[node name="SecondaryLook" type="Node" parent="Firearm"]
+script = ExtResource("6_qhogs")
+_lookUpVector = 2
+
+[node name="FirearmRay" type="RayCast3D" parent="Firearm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0559098, -0.418292)
+target_position = Vector3(0, 0, -9)
+script = ExtResource("7_d4ebf")
