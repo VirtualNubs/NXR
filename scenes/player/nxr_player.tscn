@@ -1,0 +1,68 @@
+[gd_scene load_steps=9 format=3 uid="uid://ctrtq0t2fqwtr"]
+
+[ext_resource type="Script" path="res://scripts/NXR/scripts/player/Player.cs" id="1_ck01k"]
+[ext_resource type="Script" path="res://scripts/NXR/scripts/core/Origin.cs" id="2_7dbym"]
+[ext_resource type="Script" path="res://scripts/NXR/scripts/core/Controller.cs" id="3_fhgnu"]
+[ext_resource type="Script" path="res://scripts/NXR/scripts/interactable/Interactor.cs" id="4_x41mc"]
+[ext_resource type="PackedScene" uid="uid://b5s345q0wunft" path="res://scripts/NXR/scenes/hands/nxr_player_hand.tscn" id="5_cg2bp"]
+[ext_resource type="Script" path="res://scripts/NXR/scripts/player/components/PlayerTurn.cs" id="6_ndsx8"]
+[ext_resource type="Script" path="res://scripts/NXR/scripts/player/components/PlayerWalk.cs" id="7_38i7c"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_oscbt"]
+radius = 0.213451
+
+[node name="NXRPlayer" type="CharacterBody3D" node_paths=PackedStringArray("_leftController", "_rightController")]
+floor_stop_on_slope = false
+floor_snap_length = 0.0
+script = ExtResource("1_ck01k")
+_dominantHand = 1
+_leftController = NodePath("XROrigin3D/LeftController")
+_rightController = NodePath("XROrigin3D/RightController")
+_gravityMultiplier = 0.2
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+current = true
+script = ExtResource("2_7dbym")
+
+[node name="LeftController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"left_hand"
+script = ExtResource("3_fhgnu")
+
+[node name="RightController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"right_hand"
+script = ExtResource("3_fhgnu")
+
+[node name="LeftInteractor" type="Area3D" parent="XROrigin3D" node_paths=PackedStringArray("Controller")]
+collision_mask = 9
+script = ExtResource("4_x41mc")
+Controller = NodePath("../LeftController")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/LeftInteractor"]
+shape = SubResource("SphereShape3D_oscbt")
+
+[node name="hand" parent="XROrigin3D/LeftInteractor" node_paths=PackedStringArray("Controller") instance=ExtResource("5_cg2bp")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0228407, 0.135899)
+Controller = NodePath("../../LeftController")
+
+[node name="RightInteractor" type="Area3D" parent="XROrigin3D" node_paths=PackedStringArray("Controller")]
+collision_mask = 9
+script = ExtResource("4_x41mc")
+Controller = NodePath("../RightController")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/RightInteractor"]
+shape = SubResource("SphereShape3D_oscbt")
+
+[node name="hand" parent="XROrigin3D/RightInteractor" node_paths=PackedStringArray("Controller") instance=ExtResource("5_cg2bp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0228407, 0.135899)
+Controller = NodePath("../../RightController")
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+current = true
+
+[node name="PlayerTurn" type="Node" parent="."]
+script = ExtResource("6_ndsx8")
+_rotationMode = 1
+_smoothTurnSpeed = 180.0
+
+[node name="PlayerWalk" type="Node" parent="."]
+script = ExtResource("7_38i7c")

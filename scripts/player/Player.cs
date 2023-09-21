@@ -15,14 +15,19 @@ public partial class Player : CharacterBody3D
     private Controller _rightController;
 
     [Export]
-    private bool _gravityEnabled = true; 
+    private bool _gravityEnabled = true;
 
+    [Export]
+    private float _stepHeight = 0.4f;
 
     private Camera3D _camera;
     private RayCast3D _groundRay = new(); 
 
     private SphereShape3D _headSphereShape = new(); 
     private CollisionShape3D _headCollisionShape = new();
+
+    private CylinderShape3D _bodyShape = new();
+    private CollisionShape3D _bodyCollisionShape = new();
 
     [Export]
     private float _gravityMultiplier = 1.0f; 
@@ -35,7 +40,7 @@ public partial class Player : CharacterBody3D
         }
 
         AddChild(_groundRay);
-        ConfigureHeadShape(); 
+        ConfigureCollisionShapes(); 
     }
 
 
@@ -43,6 +48,17 @@ public partial class Player : CharacterBody3D
     {
         _headCollisionShape.GlobalTransform = _camera.GlobalTransform;
         _groundRay.GlobalPosition = _camera.GlobalPosition;
+
+        float flatDistance = new Vector3(GetCamera().GlobalPosition.X, 0f, GetCamera().GlobalPosition.Z).DistanceTo(new Vector3(_bodyCollisionShape.GlobalPosition.X, 0, _bodyCollisionShape.GlobalPosition.Z));
+        float y = Mathf.Abs(GlobalPosition.Y - _camera.GlobalPosition.Y);
+        y = Mathf.Clamp(y, 0.1f, 10f); 
+
+        _bodyShape.Height = y - _stepHeight; 
+        Vector3 bodyPos = new Vector3(GetCamera().GlobalPosition.X, GetCamera().GlobalPosition.Y - (_bodyShape.Height / 2), GetCamera().GlobalPosition.Z);
+
+        
+        _bodyCollisionShape.GlobalPosition = bodyPos; 
+        
     }
 
     public override void _PhysicsProcess(double delta)
@@ -60,6 +76,8 @@ public partial class Player : CharacterBody3D
 
         MoveAndSlide(); 
     }
+
+
 
     public void ApplyDampening(Vector3 velocity, float amount)
     {
@@ -94,6 +112,11 @@ public partial class Player : CharacterBody3D
         return GetSecondaryController().GetVector2("primary");
     }
 
+    public Vector3 GetGroundNormal()
+    {
+        return _groundRay.GetCollisionNormal(); 
+    }
+
     public bool IsOnGround()
     {
         return _groundRay.IsColliding(); 
@@ -123,18 +146,26 @@ public partial class Player : CharacterBody3D
         GlobalPosition = GlobalPosition.Lerp(
             newPos,
             0.3f
-        ); 
+        );
 
     }
 
-    private void ConfigureHeadShape()
+    private void ConfigureCollisionShapes()
     {
         if (_headCollisionShape.GetParent() == null)
         {
-            AddChild(_headCollisionShape); 
+            AddChild(_headCollisionShape);
+        }
+        if (_bodyCollisionShape.GetParent() == null)
+        {
+            AddChild(_bodyCollisionShape);
         }
 
         _headSphereShape.Radius = 0.15f;
-        _headCollisionShape.Shape = _headSphereShape; 
+        _headCollisionShape.Shape = _headSphereShape;
+
+        _bodyCollisionShape.Shape = _bodyShape; 
+        _bodyShape.Height = 0.8f;
+        _bodyShape.Radius = 0.15f; 
     }
 }

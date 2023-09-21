@@ -15,9 +15,15 @@ public partial class Interactor : Area3D
 
 	private Interactable _grabbedInteractable;
 
+	public RigidBody3D PhysicsGrabBody = new(); 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		AddChild(PhysicsGrabBody);
+		PhysicsGrabBody.FreezeMode = RigidBody3D.FreezeModeEnum.Kinematic;
+		PhysicsGrabBody.Freeze = true;
+		PhysicsGrabBody.Position = Vector3.Zero; 
+
 		Controller.ButtonPressed += Interact;
 		Controller.ButtonReleased += InteractDrop;
 	}
@@ -100,5 +106,4 @@ public partial class Interactor : Area3D
 		_grabbedInteractable = null;
 
 	}
-
 }

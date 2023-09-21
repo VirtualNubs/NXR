@@ -5,6 +5,8 @@ namespace NXR;
 [GlobalClass]
 public partial class Interactable : RigidBody3D
 {
+	[Export]
+	public InteratableType Type = InteratableType.Kinamatic; 
 
 	[Export]
 	public HoldMode HoldMode = NXR.HoldMode.Hold;
@@ -52,6 +54,12 @@ public partial class Interactable : RigidBody3D
 	private Transform3D _secondaryRelativeTransorm = new Transform3D();
 
 
+	public Generic6DofJoint3D PrimaryGrabJoint; 
+	public Generic6DofJoint3D SecondaryGrabJoint;
+
+	private bool _initFreezeState = false; 
+
+
 	[Signal]
 	public delegate void OnGrabbedEventHandler(Interactor interactor);
 
@@ -59,8 +67,18 @@ public partial class Interactable : RigidBody3D
 	public delegate void OnDroppedEventHandler(Interactor interactor);
 
 
-	public override void _PhysicsProcess(double delta)
+    public override void _Ready()
+    {
+		_initFreezeState = Freeze; 
+    }
+
+    public override void _PhysicsProcess(double delta)
 	{
+		if (Type == InteratableType.Physics)
+		{
+			return; 
+		}
+
 		if (IsInstanceValid(PrimaryInteractor))
 		{
 			Transform3D xform = GlobalTransform;
@@ -86,19 +104,23 @@ public partial class Interactable : RigidBody3D
 		{
 			PrimaryInteractor = interactor;
 		}
+
 		else
 		{
 			SecondaryInteractor = interactor;
 		}
 
-		EmitSignal("OnGrabbed", interactor);
+        EmitSignal("OnGrabbed", interactor);
+
 	}
 
 	public void Drop(Interactor interactor)
 	{
 
+		// emit before so we can access any set interactor before setting null 
+        EmitSignal("OnDropped", interactor);
 
-		if (interactor == PrimaryInteractor)
+        if (interactor == PrimaryInteractor)
 		{
 			PrimaryInteractor = null;
 		}
@@ -114,14 +136,15 @@ public partial class Interactable : RigidBody3D
 
 
 			// switch primary grab if secondary grabber found 
-			if (_switchOnDrop)
+			if (_switchOnDrop && interactor != SecondaryInteractor)
 			{
-				SecondaryInteractor.Grab(this);
-				SecondaryInteractor = null;
+				Interactor newPrimary = SecondaryInteractor;
+				SecondaryInteractor.Drop();
+                newPrimary.Grab(this);
 			}
 		}
 
-		EmitSignal("OnDropped", interactor);
+
 	}
 
 	private void SetOffsets(Transform3D xform)

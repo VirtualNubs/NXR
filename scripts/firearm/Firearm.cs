@@ -1,9 +1,10 @@
 using Godot;
+using NXR; 
 
 namespace NXRFirearm;
 
 [GlobalClass]
-public partial class Firearm : NXR.Interactable
+public partial class Firearm : Interactable
 {
     [Export]
     private FireMode _fireMode = FireMode.Single; 
@@ -66,9 +67,9 @@ public partial class Firearm : NXR.Interactable
         switch (_fireMode)
         {
             case FireMode.Single:
-                return PrimaryInteractor.Controller.IsButtonPressed("trigger_click");
+                return PrimaryInteractor.Controller.ButtonOneShot("trigger_click");
             case FireMode.Burst:
-                return PrimaryInteractor.Controller.IsButtonPressed("trigger_click");
+                return PrimaryInteractor.Controller.ButtonOneShot("trigger_click");
             case FireMode.Auto:
                 return PrimaryInteractor.Controller.GetFloat("trigger_click") > 0.5;
         }
@@ -90,6 +91,16 @@ public partial class Firearm : NXR.Interactable
         riseTween.TweenProperty(this, "RotationOffset", RotationOffset + _recoilRise * recoilMultiplier, 0.1);
         PositionOffset += _recoilKick * recoilMultiplier; 
 
+
+    }
+
+    public async void BurstFire()
+    {
+        Fire(); 
+        await ToSignal(GetTree().CreateTimer(0.2), "timeout"); 
+        Fire();
+        await ToSignal(GetTree().CreateTimer(0.2), "timeout");
+        Fire();
     }
 
     private void RecoilReturn()

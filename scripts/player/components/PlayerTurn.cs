@@ -37,7 +37,7 @@ public partial class PlayerTurn : PlayerBehaviour
         if (_rotationMode == RotationMode.Smooth)
 
         {
-            Rotate((float)_smoothTurnSpeed);
+            Rotate( Mathf.DegToRad((float)_smoothTurnSpeed) * (float)delta);
         }
 
         if (!_snapQueued && (Mathf.Abs(_player.GetDominantJoyAxis().X) < _threshold))
@@ -59,15 +59,9 @@ public partial class PlayerTurn : PlayerBehaviour
         t2.Origin = -_player.GetCamera().Transform.Origin;
         rot.Basis = Basis.Identity;
 
-        if (_rotationMode == RotationMode.Snap)
-        {
-            rot = rot.Rotated(-Vector3.Up, _player.GetDominantJoyAxis().X);
-        }
-        else
-        {
-            rot = rot.Rotated(new Vector3(0, -1, 0), _player.GetDominantJoyAxis().X / 100.0f);
-        }
-
+      
+        rot = rot.Rotated(-Vector3.Up, _player.GetDominantJoyAxis().X * speed);
+   
         if (Mathf.Abs(_player.GetDominantJoyAxis().X) > _threshold)
         {
             _player.Transform = (_player.Transform * t1 * rot * t2).Orthonormalized();

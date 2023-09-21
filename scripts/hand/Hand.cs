@@ -2,8 +2,13 @@ using System;
 using Godot;
 
 namespace NXR;
+
+[GlobalClass]
 public partial class Hand : Node3D
 {
+    [Export]
+    private string _idleAnimation = ""; 
+
     [Export]
     public Controller Controller;
 
@@ -37,7 +42,10 @@ public partial class Hand : Node3D
         }
     }
 
-    public void SetHandPose(String pose) { 
+    public void SetHandPose(String pose) {
+
+        _currentAnimTree.Active = false; 
+
         if (!IsInstanceValid(_animPlayer)) { 
             GD.PushWarning("No animation player found!"); 
             return; 
@@ -60,6 +68,12 @@ public partial class Hand : Node3D
     public void ResetHand(bool resetTransform=true) { 
         if (resetTransform) { 
             Transform = _initTransform; 
+        }
+
+
+        if (_idleAnimation != "")
+        {
+            _animPlayer.Play(_idleAnimation); 
         }
 
         if (IsInstanceValid(_animTree)) { 

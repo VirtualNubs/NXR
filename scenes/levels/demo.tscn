@@ -1,35 +1,37 @@
-[gd_scene load_steps=18 format=3 uid="uid://cjspnu10ldpvx"]
+[gd_scene load_steps=15 format=3 uid="uid://de5mtyewlytyu"]
 
-[ext_resource type="Script" path="res://scripts/NXR/scripts/core/Origin.cs" id="1_5t3jx"]
-[ext_resource type="Script" path="res://scripts/NXR/scripts/player/Player.cs" id="1_iwv4w"]
-[ext_resource type="Script" path="res://scripts/NXR/scripts/core/Controller.cs" id="2_jgsa0"]
-[ext_resource type="Script" path="res://scripts/NXR/scripts/interactable/Interactor.cs" id="3_ks2pj"]
+[ext_resource type="PackedScene" uid="uid://ctrtq0t2fqwtr" path="res://scripts/NXR/scenes/player/nxr_player.tscn" id="1_6eo2v"]
 [ext_resource type="Script" path="res://scripts/NXR/scripts/firearm/Firearm.cs" id="5_ikwv2"]
-[ext_resource type="Script" path="res://scripts/NXR/scripts/player/components/PlayerTurn.cs" id="5_xblol"]
-[ext_resource type="Script" path="res://scripts/NXR/scripts/player/components/PlayerWalk.cs" id="6_nro16"]
-[ext_resource type="Script" path="res://scripts/NXR/scripts/interactable/components/SecondaryLook.cs" id="6_qhogs"]
+[ext_resource type="Script" path="res://scripts/NXR/scripts/hand/HandPose.cs" id="6_c7v5t"]
+[ext_resource type="Script" path="res://scripts/NXR/scripts/interactable/components/InteractableSecondaryLook.cs" id="7_25df8"]
 [ext_resource type="Script" path="res://scripts/NXR/scripts/firearm/components/FirearmRay.cs" id="7_d4ebf"]
+[ext_resource type="Texture2D" uid="uid://blji1mxlwcbg3" path="res://scripts/NXR/assets/textures/kloofendal_48d_partly_cloudy_puresky_1k.exr" id="7_ncv0a"]
 [ext_resource type="Texture2D" uid="uid://crkprx4cy1tha" path="res://scripts/NXR/assets/textures/grid.svg" id="8_j3uob"]
+[ext_resource type="Script" path="res://scripts/NXR/scripts/firearm/components/FirearmInputRotator.cs" id="10_umxv6"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_oscbt"]
-radius = 0.213451
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aoj3i"]
-transparency = 1
-albedo_color = Color(0, 1, 1, 0.152941)
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xdaga"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_0tnvr"]
+panorama = ExtResource("7_ncv0a")
 
 [sub_resource type="Sky" id="Sky_jl453"]
-sky_material = SubResource("ProceduralSkyMaterial_xdaga")
+sky_material = SubResource("PanoramaSkyMaterial_0tnvr")
 
 [sub_resource type="Environment" id="Environment_3y5vl"]
 background_mode = 2
 sky = SubResource("Sky_jl453")
-tonemap_mode = 2
+ambient_light_color = Color(0.231373, 0.219608, 0.184314, 1)
+ambient_light_sky_contribution = 0.25
+tonemap_mode = 3
+ssao_enabled = true
+ssao_radius = 1.5
+ssao_intensity = 3.34
 glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r832g"]
+albedo_color = Color(0.996078, 0.678431, 0.407843, 1)
+albedo_texture = ExtResource("8_j3uob")
+uv1_scale = Vector3(2.665, 2.665, 2.665)
+uv1_triplanar = true
+uv1_world_triplanar = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_424j4"]
 albedo_color = Color(0.192157, 0.647059, 1, 1)
@@ -43,132 +45,250 @@ size = Vector3(0.092469, 0.0591053, 0.561005)
 
 [node name="Node3D" type="Node3D"]
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="." node_paths=PackedStringArray("_leftController", "_rightController")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.27468, 0)
-script = ExtResource("1_iwv4w")
-_dominantHand = 1
-_leftController = NodePath("XROrigin3D/LeftController")
-_rightController = NodePath("XROrigin3D/RightController")
-_gravityMultiplier = 0.2
+[node name="Enviroment" type="Node3D" parent="."]
 
-[node name="XROrigin3D" type="XROrigin3D" parent="CharacterBody3D"]
-current = true
-script = ExtResource("1_5t3jx")
-
-[node name="LeftController" type="XRController3D" parent="CharacterBody3D/XROrigin3D"]
-tracker = &"left_hand"
-script = ExtResource("2_jgsa0")
-
-[node name="RightController" type="XRController3D" parent="CharacterBody3D/XROrigin3D"]
-tracker = &"right_hand"
-script = ExtResource("2_jgsa0")
-
-[node name="CSGSphere3D" type="CSGSphere3D" parent="CharacterBody3D/XROrigin3D/RightController"]
-radius = 0.0596451
-
-[node name="LeftInteractor" type="Area3D" parent="CharacterBody3D/XROrigin3D" node_paths=PackedStringArray("Controller")]
-collision_mask = 9
-script = ExtResource("3_ks2pj")
-Controller = NodePath("../LeftController")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/XROrigin3D/LeftInteractor"]
-shape = SubResource("SphereShape3D_oscbt")
-
-[node name="CSGSphere3D" type="CSGSphere3D" parent="CharacterBody3D/XROrigin3D/LeftInteractor"]
-material_override = SubResource("StandardMaterial3D_aoj3i")
-radius = 0.0644331
-
-[node name="RightInteractor" type="Area3D" parent="CharacterBody3D/XROrigin3D" node_paths=PackedStringArray("Controller")]
-collision_mask = 9
-script = ExtResource("3_ks2pj")
-Controller = NodePath("../RightController")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/XROrigin3D/RightInteractor"]
-shape = SubResource("SphereShape3D_oscbt")
-
-[node name="CSGSphere3D" type="CSGSphere3D" parent="CharacterBody3D/XROrigin3D/RightInteractor"]
-material_override = SubResource("StandardMaterial3D_aoj3i")
-radius = 0.0644331
-
-[node name="XRCamera3D" type="XRCamera3D" parent="CharacterBody3D/XROrigin3D"]
-current = true
-
-[node name="PlayerTurn" type="Node" parent="CharacterBody3D"]
-script = ExtResource("5_xblol")
-
-[node name="PlayerWalk" type="Node" parent="CharacterBody3D"]
-script = ExtResource("6_nro16")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Enviroment"]
+transform = Transform3D(-0.866024, -0.433016, 0.250001, 0, 0.499998, 0.866026, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+light_color = Color(0.74902, 0.74902, 0.74902, 1)
+light_energy = 0.393
 shadow_enabled = true
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Enviroment"]
 environment = SubResource("Environment_3y5vl")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+[node name="Geometry" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6197, 0, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.407495, 0, 0)
+material_override = SubResource("StandardMaterial3D_r832g")
+use_collision = true
+size = Vector3(1, 1, 4.5822)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6197, -1, 0)
 material_override = SubResource("StandardMaterial3D_424j4")
 use_collision = true
 size = Vector3(30, 1, 30)
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="."]
-transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 15, 7, 0)
-material_override = SubResource("StandardMaterial3D_424j4")
+[node name="Window" type="CSGCombiner3D" parent="Geometry"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 1.38028, 2.60052, 0)
+material_override = SubResource("StandardMaterial3D_r832g")
+operation = 2
+use_collision = true
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Geometry/Window"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.39948, 0, 0)
+material_override = SubResource("StandardMaterial3D_r832g")
 use_collision = true
 size = Vector3(15, 1, 30)
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="."]
-transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -15, 7, 0)
-material_override = SubResource("StandardMaterial3D_424j4")
+[node name="CSGBox3D21" type="CSGBox3D" parent="Geometry/Window"]
+material_override = SubResource("StandardMaterial3D_r832g")
+operation = 2
+use_collision = true
+size = Vector3(3.75092, 2.28438, 6.95118)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -28.6197, 7, 0)
+material_override = SubResource("StandardMaterial3D_r832g")
 use_collision = true
 size = Vector3(15, 1, 30)
 
-[node name="CSGBox3D4" type="CSGBox3D" parent="."]
-transform = Transform3D(1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, 0, 7, -15)
-material_override = SubResource("StandardMaterial3D_424j4")
+[node name="CSGBox3D5" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, -13.6197, 7, -15)
+material_override = SubResource("StandardMaterial3D_r832g")
 use_collision = true
 size = Vector3(15, 1, 30)
 
-[node name="CSGBox3D5" type="CSGBox3D" parent="."]
-transform = Transform3D(1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, 0, 7, 15)
-material_override = SubResource("StandardMaterial3D_424j4")
+[node name="CSGBox3D6" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, -13.6197, 7, 15)
+material_override = SubResource("StandardMaterial3D_r832g")
 use_collision = true
 size = Vector3(15, 1, 30)
 
-[node name="CSGBox3D6" type="CSGBox3D" parent="."]
-transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, 0, 2, 13.083)
+[node name="CSGBox3D7" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -13.6197, 0.48779, 13.083)
 material_override = SubResource("StandardMaterial3D_424j4")
 use_collision = true
-size = Vector3(9.97388, 1, 30)
+size = Vector3(9.97388, 11.0733, 30)
 
-[node name="CSGBox3D7" type="CSGBox3D" parent="."]
-transform = Transform3D(8.23473e-16, -1.30217e-08, -0.297902, -0.210968, -0.259771, 1.13549e-08, -0.375817, 0.145824, -6.37417e-09, 1.35863e-15, 0.47972, 8.92324)
+[node name="CSGBox3D9" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -8.89659, 0.48779, 13.083)
+material_override = SubResource("StandardMaterial3D_424j4")
+use_collision = true
+size = Vector3(9.97388, 10.0093, 1.56876)
+
+[node name="CSGBox3D10" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -8.45308, 0.261996, 13.083)
+material_override = SubResource("StandardMaterial3D_424j4")
+use_collision = true
+size = Vector3(9.97388, 10.0093, 1.56876)
+
+[node name="CSGBox3D11" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -7.9832, 0.0532077, 13.083)
+material_override = SubResource("StandardMaterial3D_424j4")
+use_collision = true
+size = Vector3(9.97388, 10.0093, 1.56876)
+
+[node name="CSGBox3D12" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -7.5397, -0.172586, 13.083)
+material_override = SubResource("StandardMaterial3D_424j4")
+use_collision = true
+size = Vector3(9.97388, 10.0093, 1.56876)
+
+[node name="CSGBox3D13" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -7.08249, -0.403683, 13.083)
+material_override = SubResource("StandardMaterial3D_424j4")
+use_collision = true
+size = Vector3(9.97388, 10.0093, 1.56876)
+
+[node name="CSGBox3D14" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -6.63899, -0.629477, 13.083)
+material_override = SubResource("StandardMaterial3D_424j4")
+use_collision = true
+size = Vector3(9.97388, 10.0093, 1.56876)
+
+[node name="CSGBox3D15" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -6.14855, -0.774145, 13.083)
+material_override = SubResource("StandardMaterial3D_424j4")
+use_collision = true
+size = Vector3(9.97388, 10.0093, 1.56876)
+
+[node name="CSGBox3D16" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -5.70505, -0.999938, 13.083)
+material_override = SubResource("StandardMaterial3D_424j4")
+use_collision = true
+size = Vector3(9.97388, 10.0093, 1.56876)
+
+[node name="CSGBox3D17" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -5.2246, -1.15095, 13.083)
+material_override = SubResource("StandardMaterial3D_424j4")
+use_collision = true
+size = Vector3(9.97388, 10.0093, 1.56876)
+
+[node name="CSGBox3D18" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -4.78109, -1.37674, 13.083)
+material_override = SubResource("StandardMaterial3D_424j4")
+use_collision = true
+size = Vector3(9.97388, 10.0093, 1.56876)
+
+[node name="CSGBox3D19" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -4.31042, -1.53317, 13.083)
+material_override = SubResource("StandardMaterial3D_424j4")
+use_collision = true
+size = Vector3(9.97388, 10.0093, 1.56876)
+
+[node name="CSGBox3D20" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -3.86691, -1.75897, 13.083)
+material_override = SubResource("StandardMaterial3D_424j4")
+use_collision = true
+size = Vector3(9.97388, 10.0093, 1.56876)
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(8.23473e-16, -1.30217e-08, -0.297902, -0.210968, -0.259771, 1.13549e-08, -0.375817, 0.145824, -6.37417e-09, -13.6197, 0.47972, 8.92324)
 material_override = SubResource("StandardMaterial3D_424j4")
 use_collision = true
 size = Vector3(14.7021, 1, 30)
 
-[node name="Firearm" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.97522, 0.518633, 0)
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, -12.9321, -0.279058)
+radius = 7.90791
+height = 26.7544
+
+[node name="Interactables" type="Node3D" parent="."]
+
+[node name="Firearm" type="RigidBody3D" parent="Interactables"]
+transform = Transform3D(0.0174523, 0, -0.999848, 0, 1, 0, 0.999848, 0, 0.0174523, 13.5188, 0.565503, -0.748364)
+collision_layer = 8
+freeze = true
+script = ExtResource("5_ikwv2")
+_fireMode = 2
+_recoilKick = Vector3(0, 0, 0.02)
+_switchOnDrop = true
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Interactables/Firearm"]
+transform = Transform3D(0.529976, 0, 0, 0, 0.529976, 0, 0, 0, 0.529976, 0, 0.0476857, -0.145072)
+size = Vector3(0.0463702, 0.106663, 1)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Interactables/Firearm"]
+transform = Transform3D(0.529952, 0.00482256, 0.00135653, -0.00482256, 0.452236, 0.276286, 0.00135653, -0.276286, 0.45226, -0.00308609, 0.00626916, 0.0317622)
+size = Vector3(0.0258024, 0.216981, 0.100244)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Interactables/Firearm"]
+transform = Transform3D(0.529976, 0.000381513, 7.86409e-06, -0.000381512, 0.529525, 0.021857, 7.86968e-06, -0.0218571, 0.529526, 0.000909805, 0.00626916, -0.197297)
+size = Vector3(0.0258024, 0.216981, 0.100244)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/Firearm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0476857, -0.145072)
+shape = SubResource("BoxShape3D_c5qrw")
+
+[node name="FirearmRay" type="RayCast3D" parent="Interactables/Firearm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0559098, -0.418292)
+target_position = Vector3(0, 0, -9)
+script = ExtResource("7_d4ebf")
+
+[node name="FirearmInputRotator" type="Node3D" parent="Interactables/Firearm"]
+transform = Transform3D(1, 0, 0, 0, 0.902758, 0.430149, 0, -0.430149, 0.902758, 0, 0, 0)
+script = ExtResource("10_umxv6")
+_end = Vector3(-0.444658, 0, 0)
+
+[node name="HandPose" type="RemoteTransform3D" parent="Interactables/Firearm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000430107, -0.0134324, 0.0246271)
+script = ExtResource("6_c7v5t")
+_pose = "poses/trigger"
+
+[node name="HandPose2" type="RemoteTransform3D" parent="Interactables/Firearm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00519657, 0.0192265, -0.297721)
+script = ExtResource("6_c7v5t")
+_pose = "poses/idle"
+_grabPose = 1
+
+[node name="InteractableSecondaryLook" type="Node" parent="Interactables/Firearm"]
+script = ExtResource("7_25df8")
+
+[node name="Firearm2" type="RigidBody3D" parent="Interactables"]
+transform = Transform3D(0.0174523, 0, -0.999848, 0, 1, 0, 0.999848, 0, 0.0174523, 13.5188, 0.565503, -0.571707)
 collision_layer = 8
 freeze = true
 script = ExtResource("5_ikwv2")
 _recoilKick = Vector3(0, 0, 0.02)
 _switchOnDrop = true
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="Firearm"]
-transform = Transform3D(0.529976, 0, 0, 0, 0.529976, 0, 0, 0, 0.529976, 0, 0.0476857, -0.145072)
-size = Vector3(0.0463702, 0.106663, 1)
+[node name="CSGBox3D2" type="CSGBox3D" parent="Interactables/Firearm2"]
+transform = Transform3D(0.529976, 0, 0, 0, 0.529976, 0, 0, 0, 0.529976, -0.00104189, 0.0476857, -0.0853844)
+size = Vector3(0.0463702, 0.0614775, 0.231013)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Firearm"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0476857, -0.145072)
+[node name="CSGBox3D3" type="CSGBox3D" parent="Interactables/Firearm2"]
+transform = Transform3D(0.529964, 0.00340535, 0.000649592, -0.00340535, 0.492749, 0.195093, 0.000649592, -0.195094, 0.492761, -0.00208583, 0.00626916, -0.0255508)
+size = Vector3(0.0258024, 0.18047, 0.071508)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/Firearm2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00104189, 0.0476857, -0.0853844)
 shape = SubResource("BoxShape3D_c5qrw")
 
-[node name="SecondaryLook" type="Node" parent="Firearm"]
-script = ExtResource("6_qhogs")
-_lookUpVector = 2
-
-[node name="FirearmRay" type="RayCast3D" parent="Firearm"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0559098, -0.418292)
+[node name="FirearmRay" type="RayCast3D" parent="Interactables/Firearm2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00463974, 0.0559098, -0.152467)
 target_position = Vector3(0, 0, -9)
 script = ExtResource("7_d4ebf")
+
+[node name="FirearmInputRotator" type="Node3D" parent="Interactables/Firearm2"]
+transform = Transform3D(1, 0, -5.58794e-09, 0, 0.902758, 0.430149, 0, -0.430149, 0.902758, -0.00104183, 0, 0.0596905)
+script = ExtResource("10_umxv6")
+_end = Vector3(-0.444658, 0, 0)
+
+[node name="HandPose" type="RemoteTransform3D" parent="Interactables/Firearm2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000236809, -0.0134324, -0.0135727)
+script = ExtResource("6_c7v5t")
+_pose = "poses/trigger"
+
+[node name="HandPose2" type="RemoteTransform3D" parent="Interactables/Firearm2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.52942e-05, 0.0192265, 0.00488663)
+script = ExtResource("6_c7v5t")
+_pose = "poses/idle"
+_grabPose = 1
+
+[node name="InteractableSecondaryLook" type="Node" parent="Interactables/Firearm2"]
+script = ExtResource("7_25df8")
+
+[node name="NXRPlayer" parent="." instance=ExtResource("1_6eo2v")]
