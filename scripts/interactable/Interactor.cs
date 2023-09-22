@@ -33,6 +33,10 @@ public partial class Interactor : Area3D
 	{
 		// follow controller transform 
 		GlobalTransform = Controller.GlobalTransform;
+
+		if (_grabbedInteractable != null && _grabbedInteractable.GlobalPosition.DistanceTo(GlobalPosition) > _grabbedInteractable.MaxGrabDistance) {
+			Drop(); 
+		}
 	}
 
 

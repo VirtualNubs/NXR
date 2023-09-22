@@ -9,10 +9,10 @@ public partial class PlayerTurn : PlayerBehaviour
     [Export]
     private RotationMode _rotationMode = RotationMode.Snap;
 
-    [Export]
+    [Export(PropertyHint.Range, "1, 360")]
     private float _smoothTurnSpeed = 200;
 
-    [Export]
+    [Export(PropertyHint.Range, "1, 360")]
     private int _snapTurnDegrees = 15; 
 
     [Export]

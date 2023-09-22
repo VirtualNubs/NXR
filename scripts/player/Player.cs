@@ -17,7 +17,6 @@ public partial class Player : CharacterBody3D
     [Export]
     private bool _gravityEnabled = true;
 
-    [Export]
     private float _stepHeight = 0.4f;
 
     private Camera3D _camera;
@@ -50,10 +49,10 @@ public partial class Player : CharacterBody3D
         _groundRay.GlobalPosition = _camera.GlobalPosition;
 
         float flatDistance = new Vector3(GetCamera().GlobalPosition.X, 0f, GetCamera().GlobalPosition.Z).DistanceTo(new Vector3(_bodyCollisionShape.GlobalPosition.X, 0, _bodyCollisionShape.GlobalPosition.Z));
-        float y = Mathf.Abs(GlobalPosition.Y - _camera.GlobalPosition.Y);
-        y = Mathf.Clamp(y, 0.1f, 10f); 
+        float bodyShapeHeight = Mathf.Abs(GlobalPosition.Y - _camera.GlobalPosition.Y) - _stepHeight;
 
-        _bodyShape.Height = y - _stepHeight; 
+        bodyShapeHeight = Mathf.Clamp(bodyShapeHeight, 0.1f, 10.0f); 
+        _bodyShape.Height = bodyShapeHeight; 
         Vector3 bodyPos = new Vector3(GetCamera().GlobalPosition.X, GetCamera().GlobalPosition.Y - (_bodyShape.Height / 2), GetCamera().GlobalPosition.Z);
 
         
@@ -104,11 +103,13 @@ public partial class Player : CharacterBody3D
 
     public Vector2 GetDominantJoyAxis()
     {
+        if (GetDominantController() == null) return Vector2.Zero; 
         return GetDominantController().GetVector2("primary"); 
     }
 
     public Vector2 GetSecondaryJoyAxis()
     {
+        if (GetSecondaryController() == null) return Vector2.Zero;
         return GetSecondaryController().GetVector2("primary");
     }
 

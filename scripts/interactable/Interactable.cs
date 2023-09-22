@@ -20,10 +20,10 @@ public partial class Interactable : RigidBody3D
 	public float MaxGrabDistance = 0.5f;
 
 	[ExportGroup("Smoothing")]
-	[Export]
-	public float PositionSmoothing = 0.1f;
-	[Export]
-	public float RotationSmoothing = 0.1f;
+	[Export(PropertyHint.Range, "0.0, 1")]
+	public float PositionSmoothing = 1f;
+    [Export(PropertyHint.Range, "0.0, 1")]
+    public float RotationSmoothing = 1f;
 
 
 	[ExportGroup("DropBehaviour")]
@@ -40,11 +40,11 @@ public partial class Interactable : RigidBody3D
 
 	
 	[ExportGroup("Haptics")]
-	[Export]
-	private float _grabPulse = 0.2f; 
+    [Export(PropertyHint.Range, "0.0, 1")]
+    private float _grabPulse = 0.1f;
 
-	[Export]
-	private float _dropPulse = 0.2f; 
+    [Export(PropertyHint.Range, "0.0, 1")]
+    private float _dropPulse = 0.1f; 
 
 
 	public Interactor PrimaryInteractor { set; get; }
@@ -61,10 +61,10 @@ public partial class Interactable : RigidBody3D
 
 
 	[Signal]
-	public delegate void OnGrabbedEventHandler(Interactor interactor);
+	public delegate void OnGrabbedEventHandler(Interactable interactable, Interactor interactor);
 
 	[Signal]
-	public delegate void OnDroppedEventHandler(Interactor interactor);
+	public delegate void OnDroppedEventHandler(Interactable interactable, Interactor interactor);
 
 
     public override void _Ready()
@@ -81,15 +81,20 @@ public partial class Interactable : RigidBody3D
 
 		if (IsInstanceValid(PrimaryInteractor))
 		{
+			LinearVelocity = Vector3.Zero; 
+
 			Transform3D xform = GlobalTransform;
 			Transform3D primaryXform = PrimaryInteractor.GlobalTransform;
 			Vector3 rotOffset = RotationOffset * (Vector3.One * (Mathf.Pi / 180));
 
-			xform.Origin = GlobalTransform.Origin.Lerp(primaryXform.Origin, 1.0f);
-			xform.Basis = primaryXform.Basis * Basis.FromEuler(rotOffset);
+			xform.Origin = GlobalTransform.Origin.Lerp(primaryXform.Origin, PositionSmoothing);
+			xform.Basis = xform.Basis.Slerp(primaryXform.Basis, RotationSmoothing) ;
 
-			GlobalTransform = xform;
-			CallDeferred("SetOffsets", xform.TranslatedLocal(PositionOffset)); 
+			Transform3D offsetTransform = (GlobalTransform * GlobalTransform.AffineInverse()); 
+			offsetTransform = offsetTransform.TranslatedLocal(PositionOffset);
+            offsetTransform.Basis *= Basis.FromEuler(rotOffset);
+
+            GlobalTransform = xform * offsetTransform;
 		}
 
 		if (IsInstanceValid(SecondaryInteractor) && !IsInstanceValid(PrimaryInteractor))
@@ -100,17 +105,22 @@ public partial class Interactable : RigidBody3D
 
 	public void Grab(Interactor interactor)
 	{
+
+		Freeze = true; 
+
 		if (!IsInstanceValid(PrimaryInteractor))
 		{
-			PrimaryInteractor = interactor;
+            PrimaryInteractor = interactor;
+            PrimaryInteractor.Controller.Pulse(0.5f, _grabPulse, 0.1);
 		}
 
 		else
 		{
-			SecondaryInteractor = interactor;
+            SecondaryInteractor = interactor;
+            SecondaryInteractor.Controller.Pulse(0.5f, _grabPulse, 0.1);
 		}
 
-        EmitSignal("OnGrabbed", interactor);
+        EmitSignal("OnGrabbed", this, interactor);
 
 	}
 
@@ -118,22 +128,25 @@ public partial class Interactable : RigidBody3D
 	{
 
 		// emit before so we can access any set interactor before setting null 
-        EmitSignal("OnDropped", interactor);
+		EmitSignal("OnDropped", this, interactor);
+
+		Freeze = _initFreezeState; 
 
         if (interactor == PrimaryInteractor)
 		{
+			PrimaryInteractor.Controller.Pulse(0.5f, _dropPulse, 0.1); 
 			PrimaryInteractor = null;
 		}
-		else
-		{
-			SecondaryInteractor = null;
+
+        if (interactor == SecondaryInteractor)
+        {
+            SecondaryInteractor.Controller.Pulse(0.5f, _dropPulse, 0.1);
+            SecondaryInteractor = null;
 		}
 
 		if (IsInstanceValid(SecondaryInteractor))
 		{
-
 			_secondaryRelativeTransorm = SecondaryInteractor.GlobalTransform.AffineInverse() * GlobalTransform;
-
 
 			// switch primary grab if secondary grabber found 
 			if (_switchOnDrop && interactor != SecondaryInteractor)
@@ -143,13 +156,18 @@ public partial class Interactable : RigidBody3D
                 newPrimary.Grab(this);
 			}
 		}
-
-
 	}
 
-	private void SetOffsets(Transform3D xform)
+	public void FullDrop()
 	{
-		GlobalTransform = xform; 
+		if (IsInstanceValid(PrimaryInteractor))
+		{
+			PrimaryInteractor.Drop();
+		}
+		if (IsInstanceValid(SecondaryInteractor))
+		{
+			SecondaryInteractor.Drop(); 
+		}
 	}
 
 	public bool IsGrabbed()

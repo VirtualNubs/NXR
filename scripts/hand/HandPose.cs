@@ -29,11 +29,11 @@ public partial class HandPose : RemoteTransform3D
         _interactable.OnDropped += OnDrop; 
     }
 
-    private void OnGrab(Interactor interactor)
+    private void OnGrab(Interactable interactable, Interactor interactor)
     {
-        Hand hand = (Hand)interactor.GetNode("hand"); 
+        if (interactor.GetNode("hand") == null) return;
 
-        if (hand == null) return;
+        Hand hand = (Hand)interactor.GetNode("hand");
 
         if (_grabPose == GrabPose.Primary)
         {
@@ -52,12 +52,13 @@ public partial class HandPose : RemoteTransform3D
         }
     }
 
-    private void OnDrop(Interactor interactor)
+    private void OnDrop(Interactable interactable, Interactor interactor)
     {
 
-        Hand hand = (Hand)interactor.GetNode("hand");
 
-        if (hand == null) return;
+        if (!IsInstanceValid(interactor) || interactor.GetNode("hand") == null)  return;
+
+        Hand hand = (Hand)interactor.GetNode("hand");
         
         if (hand.GetPath() == RemotePath)
         {

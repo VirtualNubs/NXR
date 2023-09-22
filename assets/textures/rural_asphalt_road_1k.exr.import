@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dt88kyfpyopql"
-path.bptc="res://.godot/imported/rural_asphalt_road_1k.exr-f6a13b4142e42a078bd4cdf7db182c6b.bptc.ctex"
+path.bptc="res://.godot/imported/rural_asphalt_road_1k.exr-aed366bac349374a70f866cdd832da64.bptc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://scripts/NXR/assets/textures/rural_asphalt_road_1k.exr"
-dest_files=["res://.godot/imported/rural_asphalt_road_1k.exr-f6a13b4142e42a078bd4cdf7db182c6b.bptc.ctex"]
+source_file="res://NXR/assets/textures/rural_asphalt_road_1k.exr"
+dest_files=["res://.godot/imported/rural_asphalt_road_1k.exr-aed366bac349374a70f866cdd832da64.bptc.ctex"]
 
 [params]
 

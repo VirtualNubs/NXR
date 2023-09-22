@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://crkprx4cy1tha"
-path.s3tc="res://.godot/imported/grid.svg-602a665b030218701847d6191758b3c5.s3tc.ctex"
+path.s3tc="res://.godot/imported/grid.svg-ac9c492aa0860066455f301c4c1ad5ca.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://scripts/NXR/assets/textures/grid.svg"
-dest_files=["res://.godot/imported/grid.svg-602a665b030218701847d6191758b3c5.s3tc.ctex"]
+source_file="res://NXR/assets/textures/grid.svg"
+dest_files=["res://.godot/imported/grid.svg-ac9c492aa0860066455f301c4c1ad5ca.s3tc.ctex"]
 
 [params]
 

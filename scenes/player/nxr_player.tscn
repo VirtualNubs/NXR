@@ -1,15 +1,19 @@
-[gd_scene load_steps=9 format=3 uid="uid://ctrtq0t2fqwtr"]
+[gd_scene load_steps=11 format=3 uid="uid://ctrtq0t2fqwtr"]
 
-[ext_resource type="Script" path="res://scripts/NXR/scripts/player/Player.cs" id="1_ck01k"]
-[ext_resource type="Script" path="res://scripts/NXR/scripts/core/Origin.cs" id="2_7dbym"]
-[ext_resource type="Script" path="res://scripts/NXR/scripts/core/Controller.cs" id="3_fhgnu"]
-[ext_resource type="Script" path="res://scripts/NXR/scripts/interactable/Interactor.cs" id="4_x41mc"]
-[ext_resource type="PackedScene" uid="uid://b5s345q0wunft" path="res://scripts/NXR/scenes/hands/nxr_player_hand.tscn" id="5_cg2bp"]
-[ext_resource type="Script" path="res://scripts/NXR/scripts/player/components/PlayerTurn.cs" id="6_ndsx8"]
-[ext_resource type="Script" path="res://scripts/NXR/scripts/player/components/PlayerWalk.cs" id="7_38i7c"]
+[ext_resource type="Script" path="res://NXR/scripts/player/Player.cs" id="1_ck01k"]
+[ext_resource type="Script" path="res://NXR/scripts/core/Origin.cs" id="2_7dbym"]
+[ext_resource type="Script" path="res://NXR/scripts/core/Controller.cs" id="3_fhgnu"]
+[ext_resource type="Script" path="res://NXR/scripts/interactable/Interactor.cs" id="4_x41mc"]
+[ext_resource type="PackedScene" uid="uid://b5s345q0wunft" path="res://NXR/scenes/hands/nxr_player_hand.tscn" id="5_cg2bp"]
+[ext_resource type="Script" path="res://NXR/scripts/player/components/PlayerTurn.cs" id="6_ndsx8"]
+[ext_resource type="Script" path="res://NXR/scripts/player/components/PlayerWalk.cs" id="7_38i7c"]
+[ext_resource type="Script" path="res://NXR/scripts/interactable/InteractableSnapZone.cs" id="8_ly7ov"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_oscbt"]
 radius = 0.213451
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_dfyjr"]
+radius = 0.0776668
 
 [node name="NXRPlayer" type="CharacterBody3D" node_paths=PackedStringArray("_leftController", "_rightController")]
 floor_stop_on_slope = false
@@ -18,7 +22,6 @@ script = ExtResource("1_ck01k")
 _dominantHand = 1
 _leftController = NodePath("XROrigin3D/LeftController")
 _rightController = NodePath("XROrigin3D/RightController")
-_gravityMultiplier = 0.2
 
 [node name="XROrigin3D" type="XROrigin3D" parent="."]
 current = true
@@ -66,3 +69,15 @@ _smoothTurnSpeed = 180.0
 
 [node name="PlayerWalk" type="Node" parent="."]
 script = ExtResource("7_38i7c")
+
+[node name="InteractableSnapZone" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.665213, 0)
+script = ExtResource("8_ly7ov")
+_snapMode = 2
+_tweenTime = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractableSnapZone"]
+shape = SubResource("SphereShape3D_dfyjr")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="InteractableSnapZone"]
+radius = 0.0427387

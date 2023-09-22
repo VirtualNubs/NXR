@@ -76,6 +76,15 @@ public partial class Firearm : Interactable
         return false;
     }
 
+    public float GetTriggerValue()
+    {
+        if (PrimaryInteractor != null)
+        {
+            return PrimaryInteractor.Controller.GetFloat("trigger"); 
+        }
+        return 0.0f; 
+    }
+
     private void Recoil()
     {
 
@@ -90,8 +99,6 @@ public partial class Firearm : Interactable
 
         riseTween.TweenProperty(this, "RotationOffset", RotationOffset + _recoilRise * recoilMultiplier, 0.1);
         PositionOffset += _recoilKick * recoilMultiplier; 
-
-
     }
 
     public async void BurstFire()

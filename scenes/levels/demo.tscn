@@ -1,13 +1,14 @@
-[gd_scene load_steps=15 format=3 uid="uid://de5mtyewlytyu"]
+[gd_scene load_steps=17 format=3 uid="uid://de5mtyewlytyu"]
 
-[ext_resource type="PackedScene" uid="uid://ctrtq0t2fqwtr" path="res://scripts/NXR/scenes/player/nxr_player.tscn" id="1_6eo2v"]
-[ext_resource type="Script" path="res://scripts/NXR/scripts/firearm/Firearm.cs" id="5_ikwv2"]
-[ext_resource type="Script" path="res://scripts/NXR/scripts/hand/HandPose.cs" id="6_c7v5t"]
-[ext_resource type="Script" path="res://scripts/NXR/scripts/interactable/components/InteractableSecondaryLook.cs" id="7_25df8"]
-[ext_resource type="Script" path="res://scripts/NXR/scripts/firearm/components/FirearmRay.cs" id="7_d4ebf"]
-[ext_resource type="Texture2D" uid="uid://blji1mxlwcbg3" path="res://scripts/NXR/assets/textures/kloofendal_48d_partly_cloudy_puresky_1k.exr" id="7_ncv0a"]
-[ext_resource type="Texture2D" uid="uid://crkprx4cy1tha" path="res://scripts/NXR/assets/textures/grid.svg" id="8_j3uob"]
-[ext_resource type="Script" path="res://scripts/NXR/scripts/firearm/components/FirearmInputRotator.cs" id="10_umxv6"]
+[ext_resource type="PackedScene" uid="uid://ctrtq0t2fqwtr" path="res://NXR/scenes/player/nxr_player.tscn" id="1_6eo2v"]
+[ext_resource type="Script" path="res://NXR/scripts/firearm/Firearm.cs" id="5_ikwv2"]
+[ext_resource type="Script" path="res://NXR/scripts/hand/HandPose.cs" id="6_c7v5t"]
+[ext_resource type="Script" path="res://NXR/scripts/firearm/components/FirearmTrigger.cs" id="6_l8xah"]
+[ext_resource type="Script" path="res://NXR/scripts/interactable/components/InteractableSecondaryLook.cs" id="7_25df8"]
+[ext_resource type="Script" path="res://NXR/scripts/firearm/components/FirearmRay.cs" id="7_d4ebf"]
+[ext_resource type="Texture2D" uid="uid://blji1mxlwcbg3" path="res://NXR/assets/textures/kloofendal_48d_partly_cloudy_puresky_1k.exr" id="7_ncv0a"]
+[ext_resource type="Texture2D" uid="uid://crkprx4cy1tha" path="res://NXR/assets/textures/grid.svg" id="8_j3uob"]
+[ext_resource type="Script" path="res://NXR/scripts/interactable/InteractableSnapZone.cs" id="10_j34kh"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_0tnvr"]
 panorama = ExtResource("7_ncv0a")
@@ -22,8 +23,8 @@ ambient_light_color = Color(0.231373, 0.219608, 0.184314, 1)
 ambient_light_sky_contribution = 0.25
 tonemap_mode = 3
 ssao_enabled = true
-ssao_radius = 1.5
-ssao_intensity = 3.34
+ssao_radius = 0.5
+ssao_intensity = 3.0
 glow_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r832g"]
@@ -41,9 +42,14 @@ uv1_triplanar = true
 uv1_world_triplanar = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c5qrw"]
-size = Vector3(0.092469, 0.0591053, 0.561005)
+size = Vector3(0.0665236, 0.0591053, 0.561005)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_t0bgk"]
+radius = 0.0776668
 
 [node name="Node3D" type="Node3D"]
+
+[node name="NXRPlayer" parent="." instance=ExtResource("1_6eo2v")]
 
 [node name="Enviroment" type="Node3D" parent="."]
 
@@ -228,11 +234,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0559098, -0.418292)
 target_position = Vector3(0, 0, -9)
 script = ExtResource("7_d4ebf")
 
-[node name="FirearmInputRotator" type="Node3D" parent="Interactables/Firearm"]
-transform = Transform3D(1, 0, 0, 0, 0.902758, 0.430149, 0, -0.430149, 0.902758, 0, 0, 0)
-script = ExtResource("10_umxv6")
-_end = Vector3(-0.444658, 0, 0)
-
 [node name="HandPose" type="RemoteTransform3D" parent="Interactables/Firearm"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000430107, -0.0134324, 0.0246271)
 script = ExtResource("6_c7v5t")
@@ -246,6 +247,12 @@ _grabPose = 1
 
 [node name="InteractableSecondaryLook" type="Node" parent="Interactables/Firearm"]
 script = ExtResource("7_25df8")
+_lookUpVector = 2
+
+[node name="FirearmTrigger" type="Node3D" parent="Interactables/Firearm"]
+transform = Transform3D(0.999983, 0.00578491, 0.000986503, -0.00578491, 0.943466, 0.331419, 0.0009865, -0.331419, 0.943483, 0, 0, 0)
+script = ExtResource("6_l8xah")
+_end = Vector3(-0.337807, 0.00104559, -0.00613147)
 
 [node name="Firearm2" type="RigidBody3D" parent="Interactables"]
 transform = Transform3D(0.0174523, 0, -0.999848, 0, 1, 0, 0.999848, 0, 0.0174523, 13.5188, 0.565503, -0.571707)
@@ -272,11 +279,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00463974, 0.0559098, -0.15
 target_position = Vector3(0, 0, -9)
 script = ExtResource("7_d4ebf")
 
-[node name="FirearmInputRotator" type="Node3D" parent="Interactables/Firearm2"]
-transform = Transform3D(1, 0, -5.58794e-09, 0, 0.902758, 0.430149, 0, -0.430149, 0.902758, -0.00104183, 0, 0.0596905)
-script = ExtResource("10_umxv6")
-_end = Vector3(-0.444658, 0, 0)
-
 [node name="HandPose" type="RemoteTransform3D" parent="Interactables/Firearm2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000236809, -0.0134324, -0.0135727)
 script = ExtResource("6_c7v5t")
@@ -288,7 +290,40 @@ script = ExtResource("6_c7v5t")
 _pose = "poses/idle"
 _grabPose = 1
 
-[node name="InteractableSecondaryLook" type="Node" parent="Interactables/Firearm2"]
-script = ExtResource("7_25df8")
+[node name="InteractableSnapZone" type="Area3D" parent="Interactables"]
+script = ExtResource("10_j34kh")
 
-[node name="NXRPlayer" parent="." instance=ExtResource("1_6eo2v")]
+[node name="InteractableSnapZone2" type="Area3D" parent="Interactables"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6026, 0.632943, 0.823808)
+script = ExtResource("10_j34kh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/InteractableSnapZone2"]
+shape = SubResource("SphereShape3D_t0bgk")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="Interactables/InteractableSnapZone2"]
+radius = 0.0427387
+
+[node name="InteractableSnapZone3" type="Area3D" parent="Interactables"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6026, 0.632943, 1.26419)
+script = ExtResource("10_j34kh")
+_snapMode = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/InteractableSnapZone3"]
+shape = SubResource("SphereShape3D_t0bgk")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="Interactables/InteractableSnapZone3"]
+radius = 0.0427387
+
+[node name="InteractableSnapZone4" type="Area3D" parent="Interactables"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6026, 0.632943, 1.70825)
+script = ExtResource("10_j34kh")
+_snapMode = 2
+_unsapDistance = 0.4
+_tweenTime = 0.0
+_easeType = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/InteractableSnapZone4"]
+shape = SubResource("SphereShape3D_t0bgk")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="Interactables/InteractableSnapZone4"]
+radius = 0.0427387
