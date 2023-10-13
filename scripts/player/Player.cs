@@ -15,9 +15,18 @@ public partial class Player : CharacterBody3D
     private Controller _rightController;
 
     [Export]
-    private bool _gravityEnabled = true;
+    private XROrigin3D _xrOrigin; 
 
+
+    [Export]
+    private bool _gravityEnabled = true;
+    
+    [ExportGroup("Step Settings")]
+    [Export]
     private float _stepHeight = 0.4f;
+    [Export(PropertyHint.Range, "0.01, 1.0")]
+    private float _stepSmoothing = 0.2f; 
+
 
     private Camera3D _camera;
     private RayCast3D _groundRay = new(); 
@@ -27,6 +36,9 @@ public partial class Player : CharacterBody3D
 
     private CylinderShape3D _bodyShape = new();
     private CollisionShape3D _bodyCollisionShape = new();
+
+    private Node3D lastGroundNode; 
+    private Transform3D lastGroundXform; 
 
     [Export]
     private float _gravityMultiplier = 1.0f; 
@@ -49,13 +61,12 @@ public partial class Player : CharacterBody3D
         _groundRay.GlobalPosition = _camera.GlobalPosition;
 
         float flatDistance = new Vector3(GetCamera().GlobalPosition.X, 0f, GetCamera().GlobalPosition.Z).DistanceTo(new Vector3(_bodyCollisionShape.GlobalPosition.X, 0, _bodyCollisionShape.GlobalPosition.Z));
-        float bodyShapeHeight = Mathf.Abs(GlobalPosition.Y - _camera.GlobalPosition.Y) - _stepHeight;
 
+        float bodyShapeHeight = Mathf.Abs(_xrOrigin.GlobalPosition.Y - _camera.GlobalPosition.Y) - _stepHeight;
         bodyShapeHeight = Mathf.Clamp(bodyShapeHeight, 0.1f, 10.0f); 
         _bodyShape.Height = bodyShapeHeight; 
         Vector3 bodyPos = new Vector3(GetCamera().GlobalPosition.X, GetCamera().GlobalPosition.Y - (_bodyShape.Height / 2), GetCamera().GlobalPosition.Z);
 
-        
         _bodyCollisionShape.GlobalPosition = bodyPos; 
         
     }
@@ -65,18 +76,22 @@ public partial class Player : CharacterBody3D
 
         if (IsOnGround())
         {
-            Grounder(); 
+            Grounder();
+
         }
         else
         {
-            Vector3 gravity = (Vector3)ProjectSettings.GetSetting("physics/3d/default_gravity_vector");
-            Accelerate(gravity * _gravityMultiplier);
+            int physicsStep = (int)ProjectSettings.GetSetting("physics/common/physics_ticks_per_second"); 
+            float gravity = (float)ProjectSettings.GetSetting("physics/3d/default_gravity") / 30f; 
+            Vector3 gravityVector = (Vector3)ProjectSettings.GetSetting("physics/3d/default_gravity_vector") * Mathf.Abs(gravity);
+
+            if (_gravityEnabled) {
+                Accelerate(gravityVector  * _gravityMultiplier);
+            }
         }
 
         MoveAndSlide(); 
     }
-
-
 
     public void ApplyDampening(Vector3 velocity, float amount)
     {
@@ -87,6 +102,12 @@ public partial class Player : CharacterBody3D
     public void Accelerate(Vector3 vel)
     {
         Velocity += vel; 
+    }
+
+    public void CenterOnNode(Node3D node) {
+        Vector3 bodyOffset = GlobalPosition - GetCamera().GlobalPosition; 
+
+        GlobalPosition = node.GlobalPosition + bodyOffset; 
     }
 
     public Controller GetDominantController()
@@ -120,7 +141,7 @@ public partial class Player : CharacterBody3D
 
     public bool IsOnGround()
     {
-        return _groundRay.IsColliding(); 
+        return _groundRay.IsColliding() || IsOnFloor(); 
     }
 
 
@@ -131,9 +152,8 @@ public partial class Player : CharacterBody3D
 
     private void Grounder()
     {
-        if (!_groundRay.IsColliding()) return;
 
-
+        Node3D coll = (Node3D)_groundRay.GetCollider(); 
         Vector3 pos = GlobalPosition;
         Vector3 camPos = _camera.GlobalPosition;
         float castDistance = Mathf.Abs(pos.Y - camPos.Y);
@@ -146,9 +166,8 @@ public partial class Player : CharacterBody3D
         Vector3 newPos = new Vector3(GlobalPosition.X, _groundRay.GetCollisionPoint().Y, GlobalPosition.Z); 
         GlobalPosition = GlobalPosition.Lerp(
             newPos,
-            0.3f
+            _stepSmoothing
         );
-
     }
 
     private void ConfigureCollisionShapes()

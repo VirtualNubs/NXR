@@ -1,5 +1,5 @@
 
-namespace NXR; 
+namespace NXRInteractable; 
 
 public enum InteratableType
 {

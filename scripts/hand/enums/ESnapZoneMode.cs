@@ -7,5 +7,4 @@ public enum SnapMode
 {
     OnEnter, 
     OnDrop, 
-    Sticky
 }

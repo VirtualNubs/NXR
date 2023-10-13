@@ -8,6 +8,9 @@ namespace NXR;
 public partial class InputRotator : Node3D
 {
     [Export]
+    public Node3D Target; 
+
+    [Export]
     private Vector3 _start = new();
     [Export]
     private Vector3 _end = new();
@@ -22,7 +25,15 @@ public partial class InputRotator : Node3D
     [Export]
     private bool _goEnd = false;
 
-    public float rotationDelta = 0.0f; 
+
+
+    public float rotationDelta = 0.0f;
+
+
+    public override void _Ready()
+    {
+        Target = this; 
+    }
 
     public override void _Process(double delta)
     {
@@ -30,32 +41,33 @@ public partial class InputRotator : Node3D
 
             if (_setStart)
             {
-                _start = Rotation;
+                _start = Target.Rotation;
                 _setStart = false;
             }
             if (_setEnd)
             {
-                _end = Rotation;
+                _end = Target.Rotation;
                 _setEnd = false;
             }
 
             if (_goStart)
             {
-                Rotation = _start; 
+                Target.Rotation = _start; 
                 _goStart = false;
             }
             if (_goEnd)
             {
-                Rotation = _end; 
+                Target.Rotation = _end; 
                 _goEnd = false;
             }
             return; 
         }
         
-        Basis = Basis.FromEuler(_start).Slerp(
+        if (Target == null) return;
+        
+        Target.Basis = Basis.FromEuler(_start).Slerp(
             Basis.FromEuler(_end),
             rotationDelta
         ); 
-        
     }
 }

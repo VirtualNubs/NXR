@@ -1,4 +1,5 @@
 using Godot;
+using NXRInteractable; 
 
 namespace NXR; 
 
@@ -50,6 +51,7 @@ public partial class HandPose : RemoteTransform3D
                 Pose(hand);
             }
         }
+        
     }
 
     private void OnDrop(Interactable interactable, Interactor interactor)
@@ -60,6 +62,8 @@ public partial class HandPose : RemoteTransform3D
 
         Hand hand = (Hand)interactor.GetNode("hand");
         
+
+    
         if (hand.GetPath() == RemotePath)
         {
             RemotePath = "";
@@ -71,33 +75,29 @@ public partial class HandPose : RemoteTransform3D
             _lastPath = "";
             hand.ResetHand();
         }
-
     }
 
     private void Pose(Hand hand)
     {
-
-        // Scale for mirrored hand if using 
-        if (hand.Scale.X < 0)
-        {
+        
+        if (hand.Scale.X < 0) { 
             Scale = new Vector3(-1, 1, 1); 
-        }else
-        {
-            Scale = Vector3.One; 
         }
 
+        // set pose based on selected pose type 
         if (_poseType == PoseType.Pose)
         {
             hand.SetHandPose(_pose); 
         }
-
         if (_poseType == PoseType.Tree && _customTree != null)
         {
             hand.SetCurrentTree(_customTree);
         }
 
+        // set RT vars
         _lastPath = hand.GetPath();
         RemotePath = hand.GetPath(); 
+
     }
 
     private void Reset()

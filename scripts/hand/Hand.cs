@@ -28,6 +28,7 @@ public partial class Hand : Node3D
 
     public override void _Ready()
     {
+        Transform = Transform.Orthonormalized(); 
         _initTransform = Transform;
 
         if (IsInstanceValid(_animTree))
@@ -40,6 +41,7 @@ public partial class Hand : Node3D
             Controller.InputFloatChanged += InputFloat; 
             Controller.InputVector2Changed += InputVec;  
         }
+
     }
 
     public void SetHandPose(String pose) {

@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://ckhn2nohm0vht"]
+
+[ext_resource type="Texture2D" uid="uid://ck8e5f423bpu1" path="res://NXR/assets/models/guns/M4A1/M4A1_Height.png" id="1_nd5yx"]
+
+[resource]
+albedo_texture = ExtResource("1_nd5yx")

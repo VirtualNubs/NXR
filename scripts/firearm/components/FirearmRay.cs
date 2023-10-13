@@ -23,6 +23,9 @@ public partial class FirearmRay : RayCast3D
     {
         if (IsInstanceValid(GetCollider())) {
             EmitSignal("OnHit", GetCollider(), GetCollisionPoint()); 
+            if (GetCollider().HasMethod("hit")) { 
+                GetCollider().Call("hit", GetCollider(), GetCollisionPoint()) ; 
+            }
         }
     }
 }

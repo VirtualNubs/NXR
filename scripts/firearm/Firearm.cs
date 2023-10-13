@@ -1,5 +1,6 @@
+using System;
 using Godot;
-using NXR; 
+using NXRInteractable; 
 
 namespace NXRFirearm;
 
@@ -10,6 +11,13 @@ public partial class Firearm : Interactable
     private FireMode _fireMode = FireMode.Single; 
     [Export]
     private float _fireRate = 0.1f;
+    
+
+    [Export]
+    private bool _startChambered = false; 
+    [Export]
+    private bool _chamberOnFire = true; 
+
 
     [ExportGroup("TwoHanded Settings")]
     [Export]
@@ -25,20 +33,42 @@ public partial class Firearm : Interactable
     [Export]
     private float _riseRecoverSpeed = 0.1f;
 
+    [Export]
+    private Curve _yCurve; 
 
-    public bool IsChamnberd = false; 
+    public bool Chambered = false; 
 
     private Vector3 _initPositionOffset; 
     private Vector3 _initRotationOffset;
     private Timer _fireTimer = new();
+    private int _shotCount = 0; 
+
+    [ExportGroup("Haptic Settings")]
+    [Export]
+    private float _hapticStrength = 0.5f; 
 
     [Signal]
     public delegate void OnFireEventHandler(); 
 
+    [Signal]
+    public delegate void TryChamberEventHandler(); 
+
+    [Signal]
+    public delegate void OnChamberdEventHandler(); 
+
+
     public override void _Ready() {
+        base._Ready(); 
+
+        _initPositionOffset = PositionOffset; 
+        _initRotationOffset = RotationOffset; 
         AddChild(_fireTimer);
         _fireTimer.WaitTime = _fireRate;
         _fireTimer.OneShot = true;
+
+        if (_startChambered) { 
+            Chambered = true; 
+        }
     }
 
     public override void _Process(double delta)
@@ -47,19 +77,29 @@ public partial class Firearm : Interactable
         {
             Fire(); 
         }
-        RecoilReturn(); 
     }
 
-    public void Fire()
+    public override void _PhysicsProcess(double delta)
     {
+        RecoilReturn(); 
+    }
+    public void Fire()
+    {   
+        _shotCount += 1; 
+        Chambered = false; 
         _fireTimer.Start();
         Recoil(); 
         EmitSignal("OnFire"); 
+
+        if (_chamberOnFire) { EmitSignal("TryChamber"); }
+        
+        GetPrimaryInteractor()?.Controller.Pulse(_hapticStrength, 1.0, 0.1);
+        GetSecondaryInteractor()?.Controller.Pulse(_hapticStrength, 1.0, 0.1);
     }
 
     private bool CanFire()
     {
-        return _fireTimer.IsStopped() && IsInstanceValid(PrimaryInteractor); 
+        return _fireTimer.IsStopped() && IsInstanceValid(PrimaryInteractor) && Chambered; 
     }
 
     private bool GetFireInput()
@@ -90,15 +130,21 @@ public partial class Firearm : Interactable
 
         float recoilMultiplier = 1.0f; 
 
+
         if (SecondaryInteractor != null) 
         {
             recoilMultiplier = _recoilMultiplier;
         }
 
         Tween riseTween = GetTree().CreateTween();
+        
+        if (_yCurve != null) {
+            float sampled = _yCurve.SampleBaked(Mathf.Cos(_shotCount ) / _yCurve.BakeResolution); 
+            RotationOffset.Y = sampled; 
+        }
 
         riseTween.TweenProperty(this, "RotationOffset", RotationOffset + _recoilRise * recoilMultiplier, 0.1);
-        PositionOffset += _recoilKick * recoilMultiplier; 
+        PositionOffset += _recoilKick * _recoilMultiplier; 
     }
 
     public async void BurstFire()
@@ -112,8 +158,14 @@ public partial class Firearm : Interactable
 
     private void RecoilReturn()
     {
+        float recoverMultiplier = 1.0f; 
+
+        if (SecondaryInteractor == null) { 
+            recoverMultiplier = 0.5f; 
+        }
+
         float positionLength = Mathf.Abs(_initPositionOffset.Length() - PositionOffset.Length()); 
-        PositionOffset = PositionOffset.Lerp(_initPositionOffset, _kickRecoverSpeed);
-        RotationOffset = RotationOffset.Lerp(_initRotationOffset, _riseRecoverSpeed);
+        PositionOffset = PositionOffset.Lerp(_initPositionOffset, _kickRecoverSpeed * recoverMultiplier);
+        RotationOffset = RotationOffset.Lerp(_initRotationOffset, _riseRecoverSpeed * recoverMultiplier);
     }
 }
