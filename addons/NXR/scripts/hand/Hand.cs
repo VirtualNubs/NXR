@@ -68,12 +68,18 @@ public partial class Hand : Node3D
     }
 
     public void ResetHand(bool resetTransform=true) { 
+
+        if (_animPlayer == null) { 
+            GD.PushWarning("No AnimationPlayer Found!"); 
+            return; 
+        }
+
         if (resetTransform) { 
             Transform = _initTransform; 
         }
 
 
-        if (_idleAnimation != "")
+        if (_idleAnimation != "" && _animPlayer.HasAnimation(_idleAnimation))
         {
             _animPlayer.Play(_idleAnimation); 
         }

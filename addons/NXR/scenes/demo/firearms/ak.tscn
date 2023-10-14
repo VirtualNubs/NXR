@@ -333,10 +333,10 @@ _restartOnFire = true
 [node name="SHandPose" type="RemoteTransform3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0145819, -0.210683)
 script = ExtResource("12_agfiq")
-_pose = "poses_ak/hold_secondary"
+_pose = "poses_default/grip"
 _grabPose = 1
 
 [node name="HandPose" type="RemoteTransform3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0219548, 0.126555)
 script = ExtResource("12_agfiq")
-_pose = "poses/grip"
+_pose = "poses_default/grip"
