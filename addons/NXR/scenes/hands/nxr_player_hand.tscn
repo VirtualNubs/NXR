@@ -1,9 +1,9 @@
 [gd_scene load_steps=13 format=3 uid="uid://b5s345q0wunft"]
 
 [ext_resource type="Script" path="res://addons/NXR/scripts/hand/Hand.cs" id="1_upwee"]
-[ext_resource type="PackedScene" uid="uid://w7th3d2hl7b5" path="res://addons/NXR/assets/models/hands/dn_hands/hands/model/Hand_Glove_R.gltf" id="2_3oxeg"]
-[ext_resource type="AnimationLibrary" uid="uid://bvxp1d4s8s2h" path="res://addons/NXR/assets/models/hands/dn_hands/hands/poses/poses_default.res" id="2_68dih"]
-[ext_resource type="Material" uid="uid://p0q2df2dmy62" path="res://addons/NXR/assets/models/hands/dn_hands/hands/materials/ghost_hand.tres" id="3_mk4gs"]
+[ext_resource type="PackedScene" uid="uid://w7th3d2hl7b5" path="res://addons/NXR/assets/hands/model/Hand_Glove_R.gltf" id="2_3oxeg"]
+[ext_resource type="AnimationLibrary" uid="uid://bvxp1d4s8s2h" path="res://addons/NXR/assets/hands/poses/poses_default.res" id="2_68dih"]
+[ext_resource type="Material" uid="uid://p0q2df2dmy62" path="res://addons/NXR/assets/hands/materials/ghost_hand.tres" id="3_mk4gs"]
 
 [sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_o3iwq"]
 
@@ -25,7 +25,6 @@ sync = true
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_6sady"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_fuvam"]
-graph_offset = Vector2(-758.086, 179.175)
 nodes/Add2/node = SubResource("AnimationNodeAdd2_o3iwq")
 nodes/Add2/position = Vector2(67.9509, 134.583)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_nceky")
@@ -77,9 +76,7 @@ bones/8/scale = Vector3(1, 1, 1)
 bones/9/rotation = Quaternion(-0.0522884, 0.000557213, -0.103621, 0.993241)
 bones/10/rotation = Quaternion(-0.0358546, -4.20049e-05, -0.0499776, 0.998107)
 bones/11/rotation = Quaternion(-0.0119466, -0.000966737, 0.0105008, 0.999873)
-bones/11/scale = Vector3(1, 1, 1)
 bones/12/rotation = Quaternion(0.0394554, -0.00492874, 0.137827, 0.989658)
-bones/12/scale = Vector3(1, 1, 1)
 bones/13/rotation = Quaternion(-0.0139315, 0.000142422, 0.168612, 0.985584)
 bones/13/scale = Vector3(1, 1, 1)
 bones/14/rotation = Quaternion(0.0136882, -7.99245e-05, -0.168411, 0.985622)
