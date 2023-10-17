@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://sfgdm1jksecs"]
+[gd_scene load_steps=39 format=3 uid="uid://sfgdm1jksecs"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_3xpfa"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="2_1xwbp"]
@@ -157,9 +157,6 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_mvjiw")
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_7u4ib"]
-points = PackedVector3Array(0.040265, 29.8808, 14.5118, 0.379375, 29.8808, 14.4444, 0.040265, 30.816, 14.4313, -0.549949, 29.8808, 14.5118, -0.161879, -31.5517, 2.09118, 0.654508, 29.898, 14.2722, 0.654508, 30.7903, 14.1936, 0.379375, 30.8074, 14.3621, -0.549949, 30.816, 14.4313, 0.0892242, 55.9896, 11.0085, -0.889059, 29.8808, 14.4444, -0.347804, -31.5517, 2.09118, -0.169989, -31.5689, 2.06685, -0.0113975, -31.5517, 1.98264, 0.743415, 29.9065, 14.087, 0.743415, 30.7645, 14.0121, 0.501323, -31.0712, 1.03196, 1.09604, 55.981, 10.2917, 0.780661, 55.981, 10.7315, -0.598908, 55.9896, 11.0085, -0.889059, 30.8074, 14.3621, 0.0715028, 56.084, 10.913, -1.16419, 30.7903, 14.1936, -1.16419, 29.898, 14.2722, -0.498286, -31.5517, 1.98264, -0.339694, -31.5689, 2.06685, -0.0327233, -31.5689, 1.96579, 0.0198404, -31.5689, 1.80485, 0.0462723, -31.5517, 1.80485, 1.23151, 55.4662, 9.94365, 1.23151, 55.9467, 9.90996, 0.618464, -31.0712, 0.594043, 1.24322, -9.20949, 1.89655, 1.25283, -8.45446, 1.85538, 1.1402, 56.0411, 9.88938, 1.01434, 56.0668, 10.2449, 0.72209, 56.0668, 10.6529, -0.581187, 56.084, 10.913, -1.29034, 55.981, 10.7315, -1.2531, 30.7645, 14.0121, -1.60573, 55.981, 10.2917, -1.2531, 29.9065, 14.087, -1.01101, -31.0712, 1.03196, -0.555956, -31.5517, 1.80485, -0.529524, -31.5689, 1.80485, -0.476961, -31.5689, 1.96579, -0.0327233, -31.5689, 1.64391, 0.501323, -31.0712, 0.158003, 1.25283, 5.53945, 3.29263, 1.27956, 1.67847, -0.876891, 1.27956, 2.31339, -0.876891, 1.23151, 55.5177, 2.47856, 1.27956, 2.31339, -2.66971, 0.368562, -29.3552, -4.39141, 1.24322, -9.20949, -2.69591, 1.25283, -8.45446, -2.65848, 1.1402, 55.6121, 2.49353, 1.01494, 55.6207, 2.16978, 0.720888, 55.6207, 1.75432, 0.070001, 55.6292, 1.46612, -1.52403, 56.0668, 10.2449, -1.23177, 56.0668, 10.6529, -1.74119, 55.9467, 9.90996, -1.64988, 56.0411, 9.88938, -1.74119, 55.4662, 9.94365, -1.76252, -8.45446, 1.85538, -1.7529, -9.20949, 1.89655, -1.12815, -31.0712, 0.594043, -0.476961, -31.5689, 1.64391, -1.01101, -31.0712, 0.158003, -0.169989, -31.5689, 1.54472, 0.181736, -31.0712, -0.162009, 0.275449, -29.3552, -4.58417, 1.27956, 1.67847, -2.66971, 1.16422, 31.6826, -0.886248, 1.09844, 31.2879, -1.28112, 1.09604, 55.5263, 2.12486, 0.275449, -27.9395, -4.58417, 1.07261, 2.31339, -3.06084, 0.578816, 8.6025, -3.90485, 0.780661, 55.5349, 1.67947, 0.0892242, 55.5349, 1.37442, -0.579685, 55.6292, 1.46612, -1.23057, 55.6207, 1.75432, -1.74119, 55.5177, 2.47856, -1.78895, 2.31339, -2.66971, -1.78895, 2.31339, -0.876891, -1.52463, 55.6207, 2.16978, -1.64988, 55.6121, 2.49353, -1.76252, 5.53945, 3.29263, -1.78895, 1.67847, -0.876891, -1.76252, -8.45446, -2.65848, -1.7529, -9.20949, -2.69591, -0.878246, -29.3552, -4.39141, -0.339694, -31.5689, 1.54472, -0.69142, -31.0712, -0.162009, -0.785133, -29.3552, -4.58417, -0.254692, -31.0712, -0.278038, 0.253823, -29.3295, -4.60476, 0.851546, 30.919, -1.61797, 0.253823, -27.9653, -4.60476, 0.199458, 9.95813, -4.2024, 0.30068, 30.2154, -2.21308, 0.108447, 30.0953, -2.33098, -0.598908, 55.5349, 1.37442, -0.0834846, 30.0095, -2.4021, -1.29034, 55.5349, 1.67947, -1.60573, 55.5263, 2.12486, -1.60813, 31.2879, -1.28112, -1.67391, 31.6826, -0.886248, -1.5823, 2.31339, -3.06084, -0.785133, -27.9395, -4.58417, -1.78895, 1.67847, -2.66971, -1.0885, 8.6025, -3.90485, -0.763507, -29.3295, -4.60476, -0.763507, -27.9653, -4.60476, -0.709141, 9.95813, -4.2024, -0.426199, 30.0095, -2.4021, -0.618131, 30.0953, -2.33098, -0.810364, 30.2154, -2.21308, -1.36123, 30.919, -1.61797)
-
 [sub_resource type="SphereShape3D" id="SphereShape3D_5t150"]
 radius = 0.0408566
 
@@ -217,6 +214,40 @@ scale_curve = SubResource("CurveTexture_f4e5s")
 radius = 0.1
 height = 0.2
 
+[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_fwdc7"]
+filter_enabled = true
+filters = ["Hand_Glove_R/Armature/Skeleton3D:Index_Distal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Intermediate_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Metacarpal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Proximal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Tip_R"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pmg1p"]
+animation = &"poses_rifle/grip"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_blunq"]
+animation = &"poses_default/trigger"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8ktkq"]
+animation = &"poses_rifle/grip"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_xr7fb"]
+filter_enabled = true
+filters = ["Hand_Glove_R/Armature/Skeleton3D:Index_Distal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Intermediate_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Metacarpal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Proximal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Tip_R"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_rj4lp"]
+graph_offset = Vector2(-470.799, 93.8707)
+nodes/Add2/node = SubResource("AnimationNodeAdd2_fwdc7")
+nodes/Add2/position = Vector2(52.1763, 190.161)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_8ktkq")
+nodes/Animation/position = Vector2(-200, 160)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_pmg1p")
+"nodes/Animation 2/position" = Vector2(-400, 260)
+"nodes/Animation 3/node" = SubResource("AnimationNodeAnimation_blunq")
+"nodes/Animation 3/position" = Vector2(-480, 400)
+nodes/trigger/node = SubResource("AnimationNodeBlend2_xr7fb")
+nodes/trigger/position = Vector2(-220, 320)
+node_connections = [&"output", 0, &"Add2", &"Add2", 0, &"Animation", &"Add2", 1, &"trigger", &"trigger", 0, &"Animation 2", &"trigger", 1, &"Animation 3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tke8a"]
+size = Vector3(0.0733045, 0.274158, 0.80076)
+
 [node name="Ak" type="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000165045, 0.00190675, 0.00244612)
 collision_layer = 8
@@ -264,10 +295,6 @@ skeleton = NodePath("")
 transform = Transform3D(1, 0, 0, 0, 1, 1.42109e-14, 0, -1.42109e-14, 1, -0.254692, 24.2673, 4.61869)
 mesh = SubResource("ArrayMesh_viq4q")
 skeleton = NodePath("")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.01, 0, 0, 0, -1.19209e-09, -0.01, 0, 0.01, -1.19209e-09, 0, 0.0403072, -0.219687)
-shape = SubResource("ConvexPolygonShape3D_7u4ib")
 
 [node name="FirearmMagZone" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.00254692, -0.0224589, -0.059502)
@@ -335,14 +362,25 @@ _restartOnFire = true
 [node name="SHandPose" type="RemoteTransform3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0145819, -0.210683)
 script = ExtResource("12_v4fnm")
-_pose = "poses_default/grip"
+_pose = "poses_rifle/secondary"
 _grabPose = 1
 
-[node name="HandPose" type="RemoteTransform3D" parent="."]
+[node name="HandPose" type="RemoteTransform3D" parent="." node_paths=PackedStringArray("_customTree")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0219548, 0.126555)
 script = ExtResource("12_v4fnm")
 _pose = "poses_default/grip"
+_poseType = 1
+_customTree = NodePath("AnimationTree")
+
+[node name="AnimationTree" type="AnimationTree" parent="HandPose"]
+tree_root = SubResource("AnimationNodeBlendTree_rj4lp")
+parameters/Add2/add_amount = 1.0
+parameters/trigger/blend_amount = 1.0
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 script = ExtResource("13_taqtg")
 _signal = "OnFire"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0809006)
+shape = SubResource("BoxShape3D_tke8a")

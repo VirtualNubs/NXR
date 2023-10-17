@@ -15,4 +15,4 @@ next_pass = SubResource("ORMMaterial3D_wu6j1")
 transparency = 1
 no_depth_test = true
 shading_mode = 0
-albedo_color = Color(0, 1, 1, 0.25098)
+albedo_color = Color(0, 1, 1, 0)

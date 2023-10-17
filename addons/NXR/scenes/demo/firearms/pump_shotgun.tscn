@@ -142,7 +142,6 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_xyj0y")
 
 [node name="Firearm" type="RigidBody3D"]
-transform = Transform3D(0.433477, 0, 0, 0, 0.433477, 0, 0, 0, 0.433477, 0, 0, 0)
 collision_layer = 8
 script = ExtResource("1_4naqp")
 _chamberOnFire = false

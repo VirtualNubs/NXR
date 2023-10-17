@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://dydxi0x7d4u7l"]
+[gd_scene load_steps=56 format=3 uid="uid://dydxi0x7d4u7l"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_12tsm"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="2_p772n"]
@@ -8,21 +8,13 @@
 [ext_resource type="PackedScene" uid="uid://bo3g10fj20ul3" path="res://addons/nxr/scenes/demo/firearms/mags/stanag.tscn" id="6_5aeej"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmSlide.cs" id="7_drbwx"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmTrigger.cs" id="8_ny0ka"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="9_u455c"]
 
 [sub_resource type="Curve" id="Curve_6jb1b"]
 min_value = -5.0
 max_value = 5.0
 _data = [Vector2(0.0826873, -0.0526314), 0.0, 0.0, 0, 0, Vector2(0.410853, 2.15789), 0.0, 0.0, 0, 0, Vector2(0.671835, 0.263158), 0.0, 0.0, 0, 0, Vector2(0.917313, 3), 0.0, 0.0, 0, 0, Vector2(1, -0.368421), 0.0, 0.0, 0, 0]
 point_count = 5
-
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_gtec1"]
-points = PackedVector3Array(-0.1442, 6.85318, 9.44039, 0.0896633, 6.91692, 9.32948, -0.1442, 7.54724, 9.37199, -1.67818, 6.85318, 9.44039, -0.0762596, -10.7555, 0.698741, 0.171469, -10.6138, 0.730166, 0.35819, -10.3966, 0.761591, 0.186259, 7.07509, 9.0559, 0.0896633, 7.54015, 9.25923, -1.67818, 7.54724, 9.37199, 0.0896633, 10.8947, 8.66956, -0.1442, 10.9349, 8.76938, -1.91158, 6.91692, 9.32948, -2.18011, -10.3966, 0.761591, -1.99708, -10.6138, 0.730166, -1.75305, -10.7555, 0.698741, -0.113696, -12.0586, -3.38649, 0.0975204, -11.9382, -3.42715, 0.250964, -11.754, -3.48815, 0.458946, -11.8178, -6.39588, 0.479282, -10.9113, -4.04271, 2.36082, 8.26726, -6.21102, 0.186259, 7.52363, 8.9875, 0.186259, 10.798, 8.4274, -1.91158, 7.54015, 9.25923, -1.67818, 10.9349, 8.76938, -1.91158, 10.8947, 8.66956, 0.186259, 11.2111, 8.18524, 0.0896633, 11.3622, 8.39228, -0.1442, 11.4235, 8.47916, -2.00864, 7.07509, 9.0559, -2.22725, -5.63741, 1.25884, -2.35019, -2.84231, -3.33842, -2.28086, -11.8178, -6.39588, -2.11633, -11.754, -3.48815, -1.96011, -11.9382, -3.42715, -1.74519, -12.0586, -3.38649, -0.0984442, -12.0586, -4.03162, 0.284703, -11.8178, -6.93379, -0.0549994, -11.7234, -9.07068, 2.2388, 8.30267, -6.60106, 2.20414, 8.38057, -6.56039, 2.31275, 8.34988, -6.21102, 0.0896633, 11.924, 7.71942, 0.186259, 11.5982, 7.77302, 0.186259, 11.4849, 7.98376, -2.00864, 7.52363, 8.9875, -2.00864, 10.798, 8.4274, -1.67818, 11.4235, 8.47916, -1.91158, 11.3622, 8.39228, -2.00864, 11.2111, 8.18524, 0.0896633, 11.721, 8.1187, -0.1442, 11.8201, 8.17415, -2.35019, -2.66761, -3.33842, -2.22725, -4.35081, 1.48251, -2.36082, 8.44903, -6.24615, -2.35019, -2.89897, -3.41421, -1.76738, -11.7234, -9.07068, -2.01927, -11.8178, -7.20183, -1.7304, -12.0586, -4.03162, -2.35019, -2.90133, -3.44009, -2.36082, 8.56471, -6.51973, -0.4876, -11.8178, -7.69908, 0.197351, -11.8178, -7.20183, -0.219998, -11.5439, -9.44223, -0.219998, 5.51701, -9.44223, -0.0549994, 7.76678, -9.07068, -0.154368, 8.00994, -9.07068, 1.92082, 8.3971, -6.84322, 0.094285, 9.93629, -7.35895, 0.366509, 9.93629, -6.94489, 0.452013, 9.93629, -6.4957, -0.1442, 12.0586, 7.69723, -2.36082, 9.509, -6.4957, -1.67818, 11.8201, 8.17415, -1.91158, 11.721, 8.1187, -2.00864, 11.4849, 7.98376, -1.60238, -11.5439, -9.44223, -1.33432, -11.8178, -7.69908, -2.26931, 8.81258, -6.97816, -1.76738, 7.76678, -9.07068, -2.26931, 9.509, -6.97816, -1.60238, 5.51701, -9.44223, -0.385921, 8.17047, -9.07068, -0.320291, 9.93629, -7.63253, -1.67818, 12.0586, 7.69723, -0.777388, 9.93629, -7.71942, -2.00864, 11.5982, 7.77302, -2.27439, 9.93629, -6.4957, -1.91158, 11.924, 7.71942, -2.18843, 9.93629, -6.94489, -1.66755, 8.00994, -9.07068, -1.436, 8.17047, -9.07068, -1.04453, 9.93629, -7.71942, -1.50162, 9.93629, -7.63253, -1.9162, 9.93629, -7.35895)
-
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_f583v"]
-points = PackedVector3Array(0.691187, 19.3352, 4.93045, 3.08887, 19.3352, 2.53183, 2.06509, 21.4276, 3.32332, 0.788546, 21.4276, 4.25092, -0.691791, 19.3352, 4.93045, 0.691187, 2.27171, 4.93045, 3.08887, 19.3352, 1.1496, 2.55249, 21.4276, 1.82237, 3.08887, 2.27171, 2.53183, 0.934281, 21.8119, 1.81562, 0.755891, 21.8119, 2.36484, 0.288448, 21.8119, 2.70364, -0.78915, 21.4276, 4.25092, -2.0657, 21.4276, 3.32332, -3.08887, 19.3352, 2.53183, -0.691791, 2.27171, 4.93045, -0.00967526, -21.8119, 2.73935, 0.355571, -21.8119, 2.66599, 0.664579, -21.8119, 2.45943, 2.06509, 21.4276, 0.322389, 3.08887, 2.27171, 1.1496, 0.629506, -2.50231, -4.93045, 0.755891, 21.8119, 1.2664, 0.871391, -21.8119, 2.15056, 0.943957, -21.8119, 1.78473, -0.289053, 21.8119, 2.70364, -0.756495, 21.8119, 2.36484, -0.934886, 21.8119, 1.81562, -2.5531, 21.4276, 1.82237, -3.08887, 19.3352, 1.1496, -3.08887, 2.27171, 2.53183, -0.68393, -21.8119, 2.45943, -0.374317, -21.8119, 2.66599, 0.788546, 21.4276, -0.605207, 0.288448, 21.8119, 0.92663, 0.691187, 19.3352, -1.24806, 0.871391, -21.8119, 1.41987, 0.629506, -3.63816, -4.91694, 0.629506, -3.55703, -4.93045, -0.630111, -2.50231, -4.93045, -0.756495, 21.8119, 1.2664, -2.0657, 21.4276, 0.322389, -3.08887, 2.27171, 1.1496, -0.963307, -21.8119, 1.78473, -0.890742, -21.8119, 2.15056, -0.78915, 21.4276, -0.605207, -0.289053, 21.8119, 0.92663, -0.691791, 19.3352, -1.24806, 0.664579, -21.8119, 1.11099, 0.355571, -21.8119, 0.904429, -0.00967526, -21.8119, 0.831071, -0.630111, -3.63816, -4.91694, -0.630111, -3.55703, -4.93045, -0.890742, -21.8119, 1.41987, -0.374317, -21.8119, 0.904429, -0.68393, -21.8119, 1.11099)
-
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_vd5qr"]
-points = PackedVector3Array(-0.000310302, 8.23887, 7.39119, 0.573792, 7.83943, 7.13829, 0.573792, 8.26711, 7.18066, 1.34743, 8.60401, 4.90321, 0, 10.3046, -6.5743, -1.34774, 8.60401, 4.90321, -0.574103, 8.26711, 7.18066, -0.574103, 7.83943, 7.13829, -0.000310302, 7.81321, 7.34881, 1.17241, 7.93223, 6.40283, 0.685199, -5.0111, 0.32369, 1.17241, 8.36596, 6.44521, 1.34743, 8.14809, 4.85673, 1.58514, -8.65242, -4.69464, 1.58514, 8.20659, -4.69464, 1.58514, 10.0545, -5.00906, 1.46443, 10.1493, -5.60918, 1.12059, 10.23, -6.11634, 0.606377, 10.2845, -6.45536, -0.606687, 10.2845, -6.45536, 0, -8.65242, -6.27902, -1.58514, 8.20659, -4.69464, -1.58514, -8.65242, -4.69464, -1.34774, 8.14809, 4.85673, -1.17272, 7.93223, 6.40283, -1.17272, 8.36596, 6.44521, -1.1209, 10.23, -6.11634, -1.46474, 10.1493, -5.60918, -1.58514, 10.0545, -5.00906, -0.68551, -5.0111, 0.32369, -0.17099, -2.71939, 1.60185, 0.170679, -2.71939, 1.60185, 1.12059, -8.65242, -2.27912, 1.34743, -8.65242, -3.3659, 0, -8.65242, -1.81433, 0.606377, -8.65242, -1.93463, 1.21927, -10.3046, -4.90516, 1.46443, -8.65242, -5.30023, 1.12059, -8.65242, -5.8156, 0.606377, -8.65242, -6.15872, -0.606687, -8.65242, -6.15872, 0.376735, -10.3046, -6.0644, -0.377046, -10.3046, -6.0644, -1.46474, -8.65242, -5.30023, -1.21958, -10.3046, -4.90516, -1.34774, -8.65242, -3.3659, -1.1209, -8.65242, -2.27912, -1.1209, -8.65242, -5.8156, -0.606687, -8.65242, -1.93463, 0.376735, -10.3046, -3.74456, 0.986215, -10.3046, -4.18748, -0.377046, -10.3046, -3.74456, 0.986215, -10.3046, -5.62148, -0.986526, -10.3046, -5.62148, -0.986526, -10.3046, -4.18748)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g20ow"]
 
@@ -414,23 +406,45 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_wj11k")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_mmquv"]
+size = Vector3(0.0433025, 0.144541, 0.79179)
+
+[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_fwdc7"]
+filter_enabled = true
+filters = ["Hand_Glove_R/Armature/Skeleton3D:Index_Distal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Intermediate_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Metacarpal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Proximal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Tip_R"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pmg1p"]
+animation = &"poses_rifle/grip"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_blunq"]
+animation = &"poses_default/trigger"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8ktkq"]
+animation = &"poses_rifle/grip"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_xr7fb"]
+filter_enabled = true
+filters = ["Hand_Glove_R/Armature/Skeleton3D:Index_Distal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Intermediate_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Metacarpal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Proximal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Tip_R"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_snprm"]
+graph_offset = Vector2(-470.799, 93.8707)
+nodes/Add2/node = SubResource("AnimationNodeAdd2_fwdc7")
+nodes/Add2/position = Vector2(52.1763, 190.161)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_8ktkq")
+nodes/Animation/position = Vector2(-200, 160)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_pmg1p")
+"nodes/Animation 2/position" = Vector2(-400, 260)
+"nodes/Animation 3/node" = SubResource("AnimationNodeAnimation_blunq")
+"nodes/Animation 3/position" = Vector2(-480, 400)
+nodes/trigger/node = SubResource("AnimationNodeBlend2_xr7fb")
+nodes/trigger/position = Vector2(-220, 320)
+node_connections = [&"output", 0, &"Add2", &"Add2", 0, &"Animation", &"Add2", 1, &"trigger", &"trigger", 0, &"Animation 2", &"trigger", 1, &"Animation 3"]
+
 [node name="Firearm" type="RigidBody3D"]
 collision_layer = 8
 script = ExtResource("1_12tsm")
 _fireMode = 2
 _yCurve = SubResource("Curve_6jb1b")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.01, 0, 0, 0, -1.19209e-09, -0.01, 0, 0.01, -1.19209e-09, 0.0083498, -0.0431816, 0.0180117)
-shape = SubResource("ConvexPolygonShape3D_gtec1")
-
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.01, 0, 0, 0, -1.19209e-09, -0.01, 0, 0.01, -1.19209e-09, -0.000758566, 0.0387396, -0.317749)
-shape = SubResource("ConvexPolygonShape3D_f583v")
-
-[node name="CollisionShape3D3" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.01, 0, 0, 0, -1.19209e-09, -0.01, 0, 0.01, -1.19209e-09, -0.000758563, -0.0282734, 0.219929)
-shape = SubResource("ConvexPolygonShape3D_vd5qr")
 
 [node name="InteractableGrabKinematic" type="Node" parent="."]
 script = ExtResource("2_p772n")
@@ -556,3 +570,25 @@ script = ExtResource("8_ny0ka")
 Target = NodePath("../m4a1/M4A1/Parts/Trigger")
 _start = Vector3(-0.330324, 0, 0)
 _end = Vector3(-0.919355, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00923935, -0.0814102)
+shape = SubResource("BoxShape3D_mmquv")
+
+[node name="SHandPose" type="RemoteTransform3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00757359, -0.193493)
+script = ExtResource("9_u455c")
+_pose = "poses_rifle/secondary"
+_grabPose = 1
+
+[node name="HandPose" type="RemoteTransform3D" parent="." node_paths=PackedStringArray("_customTree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0576804, 0.126555)
+script = ExtResource("9_u455c")
+_pose = "poses_default/grip"
+_poseType = 1
+_customTree = NodePath("AnimationTree")
+
+[node name="AnimationTree" type="AnimationTree" parent="HandPose"]
+tree_root = SubResource("AnimationNodeBlendTree_snprm")
+parameters/Add2/add_amount = 1.0
+parameters/trigger/blend_amount = 1.0

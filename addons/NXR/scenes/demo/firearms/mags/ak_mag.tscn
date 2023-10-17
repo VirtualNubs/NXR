@@ -45,10 +45,10 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_75srk")
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_0r5ca"]
-points = PackedVector3Array(0.428714, -3.32914, 10.4065, -0.691054, -12.5022, 8.94265, -0.691054, -4.31997, -3.03281, 1.35436, -12.2096, 9.52843, -1.27571, -8.41034, 14.7876, 0.456549, 2.62014, -2.06248, -0.901295, 2.09613, -0.180205, 1.35436, -8.41034, 14.4947, 1.06164, -4.02889, -3.03281, -1.27571, -12.2096, 10.1124, 0.940937, 1.29749, 2.12503, -0.876184, -1.22635, 7.56066, -0.945861, 1.85708, -2.71236, -0.983256, -4.02889, -3.03281, 0.97, 2.02543, -1.71571, 1.35436, -9.57923, 13.9108, 0.769438, -12.5022, 8.94265, 0.929474, -1.32328, 7.51042, -0.352147, 0.593405, 4.94993, -0.691054, -8.11622, 15.0805, -1.27571, -12.2096, 9.23554, -0.351021, -1.24392, 8.07175, -1.27571, -9.57923, 13.9108, 1.06164, -8.11622, 14.7876, 0.769438, -4.31997, -3.03281, 1.35436, -12.2096, 10.1124, -0.359603, 1.7595, 2.00857, -0.939868, -1.82124, -3.22367, 0.97, 0.428573, -2.51395, -0.35852, -3.299, 10.5051, -0.887364, 0.670174, 4.14414, 0.421667, 0.471782, 4.96766)
+[sub_resource type="BoxShape3D" id="BoxShape3D_1y36l"]
+size = Vector3(2.72664, 6.35289, 18.1497)
 
-[node name="Interactable" type="RigidBody3D" groups=["AKMag"]]
+[node name="AKMag" type="RigidBody3D" groups=["AKMag"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000677347, -0.00169241, 0.00201139)
 collision_layer = 8
 script = ExtResource("1_1dbia")
@@ -66,8 +66,8 @@ mesh = SubResource("ArrayMesh_qxhbv")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
-shape = SubResource("ConvexPolygonShape3D_0r5ca")
+transform = Transform3D(0.01, 0, 0, 0, 0.00812246, -0.00583314, 0, 0.00583314, 0.00812246, 0, -0.0416401, 0.0550474)
+shape = SubResource("BoxShape3D_1y36l")
 
 [node name="InteractableGrabPoint" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.72499, -0.68876, 0, 0.68876, 0.72499, 0, -0.0385372, 0.0497322)
