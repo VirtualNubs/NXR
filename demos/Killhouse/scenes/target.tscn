@@ -1,0 +1,61 @@
+[gd_scene load_steps=6 format=3 uid="uid://cr025w2yl4xtx"]
+
+[ext_resource type="Script" path="res://demos/Killhouse/scripts/target.gd" id="1_kx46r"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mhbf3"]
+size = Vector3(0.804089, 1.28473, 0.0722132)
+
+[sub_resource type="Animation" id="Animation_hrvv0"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_6w3xh"]
+resource_name = "hit"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0, 0, 1.35666, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_onc4t"]
+_data = {
+"RESET": SubResource("Animation_hrvv0"),
+"hit": SubResource("Animation_6w3xh")
+}
+
+[node name="Target" type="RigidBody3D"]
+freeze = true
+script = ExtResource("1_kx46r")
+one_shot = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.627084, 0)
+size = Vector3(0.795118, 1.30626, 0.0711132)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.630768, 0)
+shape = SubResource("BoxShape3D_mhbf3")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+speed_scale = 10.0
+libraries = {
+"": SubResource("AnimationLibrary_onc4t")
+}
+
+[node name="ResetTimer" type="Timer" parent="."]

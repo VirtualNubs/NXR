@@ -65,6 +65,8 @@ public partial class Hand : Node3D
         _currentAnimTree = tree; 
         _currentAnimTree.AnimPlayer = _animPlayer.GetPath(); 
         _currentAnimTree.Active = true; 
+        _currentAnimTree.Advance(0); 
+        GD.Print(_currentAnimTree.Name); 
     }
 
     public void ResetHand(bool resetTransform=true) { 

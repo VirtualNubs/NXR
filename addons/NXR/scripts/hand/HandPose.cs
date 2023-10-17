@@ -93,6 +93,7 @@ public partial class HandPose : RemoteTransform3D
         }
         if (_poseType == PoseType.Tree && _customTree != null)
         {
+            GD.Print("set custom tree"); 
             hand.SetCurrentTree(_customTree);
         }
 
