@@ -29,6 +29,7 @@ public partial class FirearmSlide : Interactable
     protected Firearm _firearm = null; 
     protected bool back = false; 
     private Transform3D _relativeGrabXform; 
+    
     public override void _Ready()
     {
         base._Ready(); 

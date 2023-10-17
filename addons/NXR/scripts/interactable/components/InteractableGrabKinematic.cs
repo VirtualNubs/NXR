@@ -43,7 +43,9 @@ public partial class InteractableGrabKinematic : Node
     }
 
     public override void _PhysicsProcess(double delta)
-    {
+    {   
+        if (Interactable.IsGrabbed()) { Interactable.LinearVelocity = Vector3.Zero; }
+
         if (IsInstanceValid(Interactable.PrimaryInteractor))
         {
             _primaryXform = Interactable.PrimaryInteractor.GlobalTransform;

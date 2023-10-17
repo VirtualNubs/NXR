@@ -46,7 +46,7 @@ public partial class InteractableSnapZone : Area3D
     public override void _Ready()
     {
         AreaEntered += Entered;
-        BodyExited += Exited;
+        AreaExited += Exited;
 
 
         if (Util.NodeIs(GetChild(0), typeof(Interactable)))
@@ -60,7 +60,6 @@ public partial class InteractableSnapZone : Area3D
         if (_snappedInteractable == null) return;
         Interactable interactable = _snappedInteractable; 
 
-        Disconnect(_snappedInteractable);
         _snappedInteractable = null;
         EmitSignal("OnUnSnap");
         interactable.Freeze = interactable.InitFreeze; 
@@ -106,15 +105,13 @@ public partial class InteractableSnapZone : Area3D
 
         _hoveredInteractable = (Interactable)interactor._grabbedInteractable;
 
-        bool inGroup = false;
-
         if (AllowedGroups != null)
         {
             foreach (String group in _hoveredInteractable.GetGroups())
             {
                 if (AllowedGroups.Contains(group))
                 {
-                    inGroup = true;
+                    continue; 
                 }
                 else
                 {
@@ -122,7 +119,7 @@ public partial class InteractableSnapZone : Area3D
                 }
             }
         }
-
+    
         Connect(_hoveredInteractable);
 
         if (_snapMode == SnapMode.OnEnter)
@@ -132,13 +129,12 @@ public partial class InteractableSnapZone : Area3D
         }
     }
 
-    public void Exited(Node3D body)
+    public void Exited(Node3D area)
     {
-        if (_snappedInteractable != null) return; 
+        if (_hoveredInteractable == null) return; 
 
-        if (body == _hoveredInteractable) { 
-
-            Disconnect((Interactable)body); 
+        if (area == _hoveredInteractable.PrimaryInteractor || area == _hoveredInteractable.SecondaryInteractor) { 
+            Disconnect((Interactable)_hoveredInteractable); 
         }
     }
 
@@ -161,8 +157,12 @@ public partial class InteractableSnapZone : Area3D
         if (Locked) { 
             return; 
         }
+        
+        Unsnap();
 
-        Unsnap(); 
+        if (_snapMode != SnapMode.OnDrop) {
+            Disconnect(interactable); 
+        }
     }
 
     private void Connect(Interactable interactable)

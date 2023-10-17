@@ -1,15 +1,15 @@
 [gd_scene load_steps=9 format=3 uid="uid://cicqk5srmto4a"]
 
-[ext_resource type="Script" path="res://addons/NXR/scripts/firearm/components/FirearmMag.cs" id="1_7t37m"]
-[ext_resource type="Texture2D" uid="uid://c1gf38f0limd3" path="res://NXR/assets/models/guns/AK-47/ak_AK47_Base_Color.png" id="2_8bd0n"]
-[ext_resource type="Script" path="res://addons/NXR/scripts/interactable/components/InteractableGrabPoint.cs" id="3_7pq1q"]
-[ext_resource type="Script" path="res://addons/NXR/scripts/interactable/components/InteractableGrabKinematic.cs" id="4_seoy6"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMag.cs" id="1_1dbia"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="2_ja2qw"]
+[ext_resource type="Texture2D" uid="uid://c1gf38f0limd3" path="res://assets/models/guns/AK-47/ak_AK47_Base_Color.png" id="3_ysu2p"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="4_kb0pp"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ukrw3"]
 resource_name = "Mat"
 cull_mode = 2
 vertex_color_use_as_albedo = true
-albedo_texture = ExtResource("2_8bd0n")
+albedo_texture = ExtResource("3_ysu2p")
 roughness = 0.434315
 uv1_offset = Vector3(0, -1, 0)
 
@@ -51,14 +51,14 @@ points = PackedVector3Array(0.428714, -3.32914, 10.4065, -0.691054, -12.5022, 8.
 [node name="Interactable" type="RigidBody3D" groups=["AKMag"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000677347, -0.00169241, 0.00201139)
 collision_layer = 8
-script = ExtResource("1_7t37m")
+script = ExtResource("1_1dbia")
 MaxAmmo = 30
 CurrentAmmo = 30
 Priority = 2
 _switchOnDrop = true
 
 [node name="InteractableGrabKinematic" type="Node" parent="."]
-script = ExtResource("4_seoy6")
+script = ExtResource("2_ja2qw")
 
 [node name="Magazine" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
@@ -71,4 +71,4 @@ shape = SubResource("ConvexPolygonShape3D_0r5ca")
 
 [node name="InteractableGrabPoint" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.72499, -0.68876, 0, 0.68876, 0.72499, 0, -0.0385372, 0.0497322)
-script = ExtResource("3_7pq1q")
+script = ExtResource("4_kb0pp")

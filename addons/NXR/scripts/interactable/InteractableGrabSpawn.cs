@@ -1,15 +1,37 @@
 using Godot;
-using System;
 
-public partial class InteractableGrabSpawn : Node
+namespace NXRInteractable; 
+
+[GlobalClass]
+public partial class InteractableGrabSpawn : Interactable
 {
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
+	[Export]
+	public bool Disabled = false; 
+
+	[Export]
+	private PackedScene _scene;
+
+    public override void _Ready()
+    {
+        base._Ready();
+		OnGrabbed += Grabbed;  
+    }
+
+	private void Grabbed(Interactable interactable, Interactor interactor) { 
+
+		if (Disabled) return; 
+
+		SpawnAndGrab(interactor); 
+		
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
+	public void SpawnAndGrab(Interactor interactor) {
+		interactor.Drop(); 
+
+		Interactable inst = (Interactable)_scene.Instantiate(); 
+		GetParent().AddChild(inst); 
+		inst.GlobalPosition = this.GlobalPosition; 
+		interactor.Grab(inst); 
 	}
+	
 }

@@ -1,17 +1,18 @@
-[gd_scene load_steps=32 format=3 uid="uid://sfgdm1jksecs"]
+[gd_scene load_steps=33 format=3 uid="uid://sfgdm1jksecs"]
 
-[ext_resource type="Script" path="res://addons/NXR/scripts/firearm/Firearm.cs" id="1_snqyy"]
-[ext_resource type="Script" path="res://addons/NXR/scripts/interactable/components/InteractableGrabKinematic.cs" id="2_geudq"]
-[ext_resource type="Texture2D" uid="uid://c1gf38f0limd3" path="res://addons/NXR/assets/models/guns/AK-47/ak_AK47_Base_Color.png" id="2_wc26j"]
-[ext_resource type="Script" path="res://addons/NXR/scripts/firearm/components/FirearmTrigger.cs" id="3_e4lu2"]
-[ext_resource type="Script" path="res://addons/NXR/scripts/firearm/components/FirearmMagZone.cs" id="3_fgpl3"]
-[ext_resource type="Script" path="res://addons/NXR/scripts/firearm/components/FirearmSlide.cs" id="4_4j8a0"]
-[ext_resource type="PackedScene" uid="uid://cicqk5srmto4a" path="res://addons/NXR/scenes/demo/firearms/mags/ak_mag.tscn" id="4_4qs2x"]
-[ext_resource type="Script" path="res://addons/NXR/scripts/interactable/components/InteractableGrabPoint.cs" id="6_mjm64"]
-[ext_resource type="Script" path="res://addons/NXR/scripts/firearm/components/FirearmLight.cs" id="8_etq3u"]
-[ext_resource type="Script" path="res://addons/NXR/scripts/firearm/components/FirearmRay.cs" id="9_1wd0b"]
-[ext_resource type="Script" path="res://addons/NXR/scripts/firearm/components/FirearmParticlePlayer.cs" id="11_rcqqw"]
-[ext_resource type="Script" path="res://addons/NXR/scripts/hand/HandPose.cs" id="12_agfiq"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_3xpfa"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="2_1xwbp"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="3_8x1a7"]
+[ext_resource type="Texture2D" uid="uid://c1gf38f0limd3" path="res://assets/models/guns/AK-47/ak_AK47_Base_Color.png" id="4_r1sai"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMagZone.cs" id="5_nrs13"]
+[ext_resource type="PackedScene" uid="uid://cicqk5srmto4a" path="res://addons/nxr/scenes/demo/firearms/mags/ak_mag.tscn" id="6_qf2kd"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmTrigger.cs" id="7_p3jr7"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmSlide.cs" id="8_1owmr"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmLight.cs" id="9_4bba8"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRay.cs" id="10_m1jlv"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmParticlePlayer.cs" id="11_aoebd"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="12_v4fnm"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/audio/SignalAudioPlayer.cs" id="13_taqtg"]
 
 [sub_resource type="Curve" id="Curve_ur3b0"]
 min_value = -5.0
@@ -24,7 +25,7 @@ point_count = 6
 resource_name = "Mat"
 cull_mode = 2
 vertex_color_use_as_albedo = true
-albedo_texture = ExtResource("2_wc26j")
+albedo_texture = ExtResource("4_r1sai")
 roughness = 0.434315
 uv1_offset = Vector3(0, -1, 0)
 
@@ -219,24 +220,25 @@ height = 0.2
 [node name="Ak" type="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000165045, 0.00190675, 0.00244612)
 collision_layer = 8
-script = ExtResource("1_snqyy")
+script = ExtResource("1_3xpfa")
 _fireMode = 2
 _fireRate = 0.12
+_startChambered = true
 _recoilKick = Vector3(0, 0, 0.2)
 _yCurve = SubResource("Curve_ur3b0")
 Priority = 2
 
 [node name="PrimaryGrabPoint" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.998954, 0.0457292, 0, -0.0457292, 0.998954, 0, 0.00361047, 0.00453164)
-script = ExtResource("6_mjm64")
+script = ExtResource("2_1xwbp")
 
 [node name="SecondaryGrabPoint" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.999934, 0.011519, 0, -0.011519, 0.999934, 0, 0.0141437, -0.213857)
-script = ExtResource("6_mjm64")
+script = ExtResource("2_1xwbp")
 _grabType = 1
 
 [node name="InteractableGrabKinematic" type="Node" parent="."]
-script = ExtResource("2_geudq")
+script = ExtResource("3_8x1a7")
 _twoHanded = true
 
 [node name="ak" type="Node3D" parent="."]
@@ -270,20 +272,20 @@ shape = SubResource("ConvexPolygonShape3D_7u4ib")
 [node name="FirearmMagZone" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.00254692, -0.0224589, -0.059502)
 collision_mask = 9
-script = ExtResource("3_fgpl3")
+script = ExtResource("5_nrs13")
 _dropAction = ""
 AllowedGroups = PackedStringArray("AKMag")
 _easeType = 1
 _transType = 5
 
-[node name="Interactable" parent="FirearmMagZone" instance=ExtResource("4_4qs2x")]
+[node name="Interactable" parent="FirearmMagZone" instance=ExtResource("6_qf2kd")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FirearmMagZone"]
 shape = SubResource("SphereShape3D_5t150")
 
 [node name="FirearmTrigger" type="Node3D" parent="." node_paths=PackedStringArray("Target")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00591835, 0.0259152)
-script = ExtResource("3_e4lu2")
+script = ExtResource("7_p3jr7")
 Target = NodePath("../ak/AK_47/Trigger")
 _start = Vector3(-1.42109e-14, 0, 0)
 _end = Vector3(-0.816116, 0, 0)
@@ -292,12 +294,12 @@ _end = Vector3(-0.816116, 0, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0179696, 0.0459852, -0.126392)
 collision_layer = 8
 freeze = true
-script = ExtResource("4_4j8a0")
+script = ExtResource("8_1owmr")
 _startPosition = Vector3(0.0179696, 0.0459852, -0.126392)
 _endPosition = Vector3(0.0179696, 0.0459852, 0.00136367)
 _setBackOnFire = true
-GrabAction = "trigger_click"
 MaxGrabDistance = 0.3
+GrabAction = "trigger_click"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FirearmSlide"]
 shape = SubResource("SphereShape3D_6lssy")
@@ -310,13 +312,13 @@ skeleton = NodePath("")
 [node name="FirearmLight" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0375146, -0.561836)
 light_color = Color(1, 0.643137, 0.505882, 1)
-script = ExtResource("8_etq3u")
+script = ExtResource("9_4bba8")
 Energy = 0.2
 
 [node name="FirearmRay" type="RayCast3D" parent="." node_paths=PackedStringArray("_firearm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0376992, -0.536953)
 target_position = Vector3(0, 0, -100)
-script = ExtResource("9_1wd0b")
+script = ExtResource("10_m1jlv")
 _firearm = NodePath("..")
 
 [node name="FirearmParticlePlayer" type="GPUParticles3D" parent="."]
@@ -327,16 +329,20 @@ one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_toekm")
 draw_pass_1 = SubResource("SphereMesh_ht5sy")
-script = ExtResource("11_rcqqw")
+script = ExtResource("11_aoebd")
 _restartOnFire = true
 
 [node name="SHandPose" type="RemoteTransform3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0145819, -0.210683)
-script = ExtResource("12_agfiq")
+script = ExtResource("12_v4fnm")
 _pose = "poses_default/grip"
 _grabPose = 1
 
 [node name="HandPose" type="RemoteTransform3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0219548, 0.126555)
-script = ExtResource("12_agfiq")
+script = ExtResource("12_v4fnm")
 _pose = "poses_default/grip"
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+script = ExtResource("13_taqtg")
+_signal = "OnFire"

@@ -81,7 +81,9 @@ public partial class Firearm : Interactable
 
     public override void _PhysicsProcess(double delta)
     {
-        RecoilReturn(); 
+        if (IsGrabbed()) {
+            RecoilReturn(); 
+        }
     }
     public void Fire()
     {   

@@ -1,9 +1,9 @@
 [gd_scene load_steps=9 format=3 uid="uid://bo3g10fj20ul3"]
 
-[ext_resource type="Script" path="res://addons/NXR/scripts/firearm/components/FirearmMag.cs" id="1_oxl60"]
-[ext_resource type="Script" path="res://addons/NXR/scripts/interactable/components/InteractableGrabPoint.cs" id="2_g0xm4"]
-[ext_resource type="Material" uid="uid://ckhn2nohm0vht" path="res://NXR/assets/models/guns/M4A1/mat_m4.tres" id="2_xnldj"]
-[ext_resource type="Script" path="res://addons/NXR/scripts/interactable/components/InteractableGrabKinematic.cs" id="3_h6u8r"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMag.cs" id="1_tjp0p"]
+[ext_resource type="Material" uid="uid://ckhn2nohm0vht" path="res://assets/models/guns/M4A1/mat_m4.tres" id="2_5kvyr"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="3_xtm44"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="4_mtw8e"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_221b8"]
 
@@ -40,15 +40,15 @@ shadow_mesh = SubResource("ArrayMesh_rhv65")
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_cyow2"]
 points = PackedVector3Array(-1.02953, -5.20011, 12.7134, 1.02953, -5.20011, 12.7134, -0.429104, 1.21013, 14.462, -1.02953, -3.43377, 13.1952, -1.02953, -3.28259, -3.59684, 1.02953, -3.43377, 13.1952, 0.428903, 1.21013, 14.462, 1.02953, -3.28259, -3.59684, -0.429104, 2.61176, 9.49933, -1.02953, 2.37602, 9.43616, -1.02953, 0.975249, 14.3953, -1.02953, 0.304757, 14.213, -1.02953, -1.35311, 13.7619, -1.02953, -0.502396, -3.97401, 1.02953, -1.35311, 13.7619, 1.02953, 0.304757, 14.213, 1.02953, 0.975249, 14.3953, 1.02953, 2.37602, 9.43616, 0.428903, 2.61176, 9.49933, 1.02953, -0.502396, -3.97401, -0.429104, 3.08922, 7.63334, -1.02953, 2.85007, 7.58281, -1.02953, 2.99271, -3.97401, 1.02953, 2.85007, 7.58281, 0.428903, 3.08922, 7.63334, 1.02953, 2.99271, -3.97401, -0.429104, 3.45991, 5.33966, -1.02953, 3.21649, 5.3162, -1.02953, 3.2814, -3.59684, 1.02953, 3.21649, 5.3162, 0.428903, 3.45991, 5.33966, 1.02953, 3.2814, -3.59684, -0.429104, 3.52568, 3.52782, -1.02953, 3.2814, 3.52241, -0.485539, 3.52568, -2.11524, 1.02953, 3.2814, 3.52241, 0.428903, 3.52568, 3.52782, 0.485337, 3.52568, -2.11524)
 
-[node name="FirearmMag" type="RigidBody3D"]
+[node name="FirearmMag" type="RigidBody3D" groups=["stanag"]]
 collision_layer = 8
-script = ExtResource("1_oxl60")
+script = ExtResource("1_tjp0p")
 MaxAmmo = 30
 CurrentAmmo = 30
 
 [node name="Magazine" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
-material_override = ExtResource("2_xnldj")
+material_override = ExtResource("2_5kvyr")
 mesh = SubResource("ArrayMesh_n5rdb")
 skeleton = NodePath("")
 
@@ -58,7 +58,7 @@ shape = SubResource("ConvexPolygonShape3D_cyow2")
 
 [node name="InteractableGrabPoint" type="Marker3D" parent="."]
 transform = Transform3D(1, 5.96046e-08, -2.63099e-07, -2.64816e-07, 0.0199129, -0.999802, -8.9407e-08, 0.999802, 0.0199129, -1.12748e-08, -0.051305, 0.0418841)
-script = ExtResource("2_g0xm4")
+script = ExtResource("3_xtm44")
 
 [node name="InteractableGrabKinematic" type="Node" parent="."]
-script = ExtResource("3_h6u8r")
+script = ExtResource("4_mtw8e")

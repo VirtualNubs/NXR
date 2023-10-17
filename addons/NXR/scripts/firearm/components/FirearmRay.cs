@@ -2,6 +2,7 @@ using Godot;
 
 namespace NXRFirearm;
 
+
 [GlobalClass]
 public partial class FirearmRay : RayCast3D
 {

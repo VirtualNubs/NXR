@@ -1,9 +1,9 @@
 [gd_scene load_steps=13 format=3 uid="uid://b5s345q0wunft"]
 
-[ext_resource type="Script" path="res://addons/NXR/scripts/hand/Hand.cs" id="1_upwee"]
-[ext_resource type="PackedScene" uid="uid://w7th3d2hl7b5" path="res://addons/NXR/assets/hands/model/Hand_Glove_R.gltf" id="2_3oxeg"]
-[ext_resource type="AnimationLibrary" uid="uid://bvxp1d4s8s2h" path="res://addons/NXR/assets/hands/poses/poses_default.res" id="2_68dih"]
-[ext_resource type="Material" uid="uid://p0q2df2dmy62" path="res://addons/NXR/assets/hands/materials/ghost_hand.tres" id="3_mk4gs"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/hand/Hand.cs" id="1_lqjae"]
+[ext_resource type="AnimationLibrary" uid="uid://bvxp1d4s8s2h" path="res://assets/hands/poses/poses_default.res" id="2_pec5k"]
+[ext_resource type="PackedScene" uid="uid://w7th3d2hl7b5" path="res://assets/hands/model/Hand_Glove_R.gltf" id="3_pnv6c"]
+[ext_resource type="Material" uid="uid://p0q2df2dmy62" path="res://assets/hands/materials/ghost_hand.tres" id="4_a8fot"]
 
 [sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_o3iwq"]
 
@@ -42,14 +42,14 @@ nodes/trigger/position = Vector2(-320, 20)
 node_connections = [&"output", 0, &"Add2", &"Add2", 0, &"trigger", &"Add2", 1, &"grip", &"grip", 0, &"Animation 3", &"grip", 1, &"Animation 4", &"trigger", 0, &"Animation", &"trigger", 1, &"Animation 2"]
 
 [node name="NXRHandRight" type="Node3D" node_paths=PackedStringArray("_animPlayer", "_animTree")]
-script = ExtResource("1_upwee")
+script = ExtResource("1_lqjae")
 _idleAnimation = "default_poses/idle"
 _animPlayer = NodePath("AnimationPlayer")
 _animTree = NodePath("AnimationTree")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"poses_default": ExtResource("2_68dih")
+"poses_default": ExtResource("2_pec5k")
 }
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
@@ -60,7 +60,7 @@ parameters/Add2/add_amount = 1.0
 parameters/grip/blend_amount = 0.0
 parameters/trigger/blend_amount = 0.0
 
-[node name="Hand_Glove_R" parent="." instance=ExtResource("2_3oxeg")]
+[node name="Hand_Glove_R" parent="." instance=ExtResource("3_pnv6c")]
 
 [node name="Skeleton3D" parent="Hand_Glove_R/Armature" index="0"]
 bones/0/rotation = Quaternion(-0.706517, -6.47275e-06, -6.47275e-06, 0.707696)
@@ -98,6 +98,6 @@ bones/23/scale = Vector3(1, 1, 1)
 bones/24/rotation = Quaternion(0.0158363, 0.0193397, -0.153777, 0.987789)
 
 [node name="mesh_Glove_R" parent="Hand_Glove_R/Armature/Skeleton3D" index="0"]
-material_override = ExtResource("3_mk4gs")
+material_override = ExtResource("4_a8fot")
 
 [editable path="Hand_Glove_R"]

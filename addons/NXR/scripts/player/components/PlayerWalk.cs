@@ -5,9 +5,14 @@ namespace NXRPlayer;
 
 [GlobalClass]
 public partial class PlayerWalk : PlayerBehaviour
-{
+{   
+
+    [Export]
+    private MovementDirection _movementDirection = MovementDirection.Camera; 
+
     [Export]
     private float _walkSpeed = 50.0f;
+
 
     public override void _PhysicsProcess(double delta)
     {
@@ -31,7 +36,11 @@ public partial class PlayerWalk : PlayerBehaviour
     }
 
     private Basis GetMovementBasis()
-    {
+    {   
+        if (_movementDirection == MovementDirection.Camera) { 
+            return this._player.GetCamera().GlobalTransform.Basis; 
+        }
+
         return this._player.GetSecondaryController().GlobalTransform.Basis; 
     }
 }
