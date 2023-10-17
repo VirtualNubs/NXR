@@ -1,6 +1,6 @@
 extends Node3D
 
-@export var cost = 0 
+@export var cost: int = 0 
 @export var knob: Node3D = null
 @export var unlocked = false
 
@@ -11,3 +11,7 @@ func _ready():
 func _grabbed(interactable, interactor) : 
 	if (ZombieDemoManager.current_money >= cost): 
 		get_node("AnimationPlayer").play("open")
+		
+		if !unlocked: 
+			unlocked = true 
+			ZombieDemoManager.current_money -= cost

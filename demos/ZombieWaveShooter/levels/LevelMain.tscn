@@ -31,7 +31,9 @@ sky = SubResource("Sky_rj4c7")
 tonemap_mode = 2
 ssao_enabled = true
 glow_enabled = true
-volumetric_fog_enabled = true
+fog_enabled = true
+fog_light_color = Color(0.329412, 0.372549, 0.384314, 1)
+fog_density = 0.026
 volumetric_fog_density = 0.0423
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_rf1ln"]

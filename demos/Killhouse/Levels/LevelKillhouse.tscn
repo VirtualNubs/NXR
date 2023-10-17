@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://cl4qvbc778whe"]
+
+[ext_resource type="Material" uid="uid://cdocfolymvn5h" path="res://assets/materials/mat_grid.tres" id="1_lf15c"]
+[ext_resource type="PackedScene" uid="uid://cr025w2yl4xtx" path="res://demos/Killhouse/scenes/target.tscn" id="2_66513"]
+[ext_resource type="PackedScene" uid="uid://ctrtq0t2fqwtr" path="res://addons/nxr/scenes/player/nxr_player.tscn" id="3_dqn21"]
+[ext_resource type="PackedScene" uid="uid://sfgdm1jksecs" path="res://addons/nxr/scenes/demo/firearms/ak.tscn" id="4_kkmbx"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mhb5w"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_4vtrk"]
+sky_material = SubResource("ProceduralSkyMaterial_mhb5w")
+
+[sub_resource type="Environment" id="Environment_y1bw6"]
+background_mode = 2
+sky = SubResource("Sky_4vtrk")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="LevelMain" type="Node3D"]
+
+[node name="NXRPlayer" parent="." instance=ExtResource("3_dqn21")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00377, 0, 2.01254)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_y1bw6")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(100, 1, 100)
+material = ExtResource("1_lf15c")
+
+[node name="Target" parent="." instance=ExtResource("2_66513")]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -2.37657, 0, -13.4836)
+
+[node name="Target2" parent="." instance=ExtResource("2_66513")]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0.383958, 0, -9.92998)
+
+[node name="Target3" parent="." instance=ExtResource("2_66513")]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 2.56602, 0, -17.0111)
+
+[node name="Ak" parent="." instance=ExtResource("4_kkmbx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.054643, 0.168404, 2.23371)
