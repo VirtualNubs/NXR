@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://cl4qvbc778whe"]
+[gd_scene load_steps=9 format=3 uid="uid://cl4qvbc778whe"]
 
 [ext_resource type="Material" uid="uid://cdocfolymvn5h" path="res://assets/materials/mat_grid.tres" id="1_lf15c"]
 [ext_resource type="PackedScene" uid="uid://cr025w2yl4xtx" path="res://demos/Killhouse/scenes/target.tscn" id="2_66513"]
+[ext_resource type="MeshLibrary" uid="uid://bg647wato5l4b" path="res://assets/models/tactical_plywood/tac_mesh_library.tres" id="2_t6c1v"]
 [ext_resource type="PackedScene" uid="uid://ctrtq0t2fqwtr" path="res://addons/nxr/scenes/player/nxr_player.tscn" id="3_dqn21"]
 [ext_resource type="PackedScene" uid="uid://sfgdm1jksecs" path="res://addons/nxr/scenes/demo/firearms/ak.tscn" id="4_kkmbx"]
 
@@ -22,6 +23,17 @@ glow_enabled = true
 
 [node name="NXRPlayer" parent="." instance=ExtResource("3_dqn21")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00377, 0, 2.01254)
+
+[node name="GridMap" type="GridMap" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.136, -1.02, -1.68)
+mesh_library = ExtResource("2_t6c1v")
+cell_size = Vector3(1, 2, 2)
+cell_center_x = false
+cell_center_z = false
+data = {
+"cells": PackedInt32Array(65533, 2, 0, 65533, 1, 0, 65533, 0, 0, 65533, 65535, 0, 65533, 65534, 8, 65533, 3, 8, 65535, 65533, 655363, 65533, 65533, 8, 65533, 65532, 8, 65534, 3, 1048584, 0, 3, 1048584, 1, 3, 1048584, 2, 3, 1048584, 65534, 65532, 1441800, 0, 65532, 1441800, 2, 65532, 1441800, 4, 65532, 1441800, 131069, 65532, 8, 131069, 65533, 8, 131069, 65534, 8, 131069, 65535, 8, 131069, 0, 8, 131069, 1, 8, 131069, 2, 8, 131069, 3, 8, 131070, 3, 1048584, 65536, 3, 1048584, 65538, 3, 1048584, 65536, 65532, 1441800, 65538, 65532, 1441800, 65540, 65532, 1441800, 131072, 65532, 1441800, 196606, 65532, 1441800)
+}
+metadata/_editor_floor_ = Vector3(0, 0, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_y1bw6")
