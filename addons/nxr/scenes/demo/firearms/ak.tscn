@@ -214,6 +214,9 @@ scale_curve = SubResource("CurveTexture_f4e5s")
 radius = 0.1
 height = 0.2
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_tke8a"]
+size = Vector3(0.0733045, 0.274158, 0.80076)
+
 [sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_fwdc7"]
 filter_enabled = true
 filters = ["Hand_Glove_R/Armature/Skeleton3D:Index_Distal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Intermediate_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Metacarpal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Proximal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Tip_R"]
@@ -231,7 +234,7 @@ animation = &"poses_rifle/grip"
 filter_enabled = true
 filters = ["Hand_Glove_R/Armature/Skeleton3D:Index_Distal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Intermediate_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Metacarpal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Proximal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Tip_R"]
 
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_rj4lp"]
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_gbbqf"]
 graph_offset = Vector2(-470.799, 93.8707)
 nodes/Add2/node = SubResource("AnimationNodeAdd2_fwdc7")
 nodes/Add2/position = Vector2(52.1763, 190.161)
@@ -244,9 +247,6 @@ nodes/Animation/position = Vector2(-200, 160)
 nodes/trigger/node = SubResource("AnimationNodeBlend2_xr7fb")
 nodes/trigger/position = Vector2(-220, 320)
 node_connections = [&"output", 0, &"Add2", &"Add2", 0, &"Animation", &"Add2", 1, &"trigger", &"trigger", 0, &"Animation 2", &"trigger", 1, &"Animation 3"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_tke8a"]
-size = Vector3(0.0733045, 0.274158, 0.80076)
 
 [node name="Ak" type="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000165045, 0.00190675, 0.00244612)
@@ -365,18 +365,6 @@ script = ExtResource("12_v4fnm")
 _pose = "poses_rifle/secondary"
 _grabPose = 1
 
-[node name="HandPose" type="RemoteTransform3D" parent="." node_paths=PackedStringArray("_customTree")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0219548, 0.126555)
-script = ExtResource("12_v4fnm")
-_pose = "poses_default/grip"
-_poseType = 1
-_customTree = NodePath("AnimationTree")
-
-[node name="AnimationTree" type="AnimationTree" parent="HandPose"]
-tree_root = SubResource("AnimationNodeBlendTree_rj4lp")
-parameters/Add2/add_amount = 1.0
-parameters/trigger/blend_amount = 1.0
-
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 script = ExtResource("13_taqtg")
 _signal = "OnFire"
@@ -384,3 +372,15 @@ _signal = "OnFire"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0809006)
 shape = SubResource("BoxShape3D_tke8a")
+
+[node name="HandPose" type="RemoteTransform3D" parent="." node_paths=PackedStringArray("_customTree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0221531, 0.120832)
+script = ExtResource("12_v4fnm")
+_pose = "poses_default/grip"
+_poseType = 1
+_customTree = NodePath("AnimationTree")
+
+[node name="AnimationTree" type="AnimationTree" parent="HandPose"]
+tree_root = SubResource("AnimationNodeBlendTree_gbbqf")
+parameters/Add2/add_amount = 1.0
+parameters/trigger/blend_amount = 1.0

@@ -90,6 +90,7 @@ public partial class Interactable : RigidBody3D
 		{
 			SecondaryInteractor = interactor;
 			SecondaryInteractor.Controller.Pulse(0.5f, _grabPulse, 0.1);
+			_secondaryRelativeTransorm = SecondaryInteractor.GlobalTransform.AffineInverse() * GlobalTransform;
 		}
 
 		// emit after to access available interactors

@@ -1,4 +1,5 @@
 using Godot;
+using NXR;
 using NXRInteractable;
 using System;
 
@@ -44,6 +45,10 @@ public partial class FirearmRotatingBolt : Interactable
 
     private Transform3D _relativeGrab = new(); 
 
+    private bool _setBack = false; 
+
+    private Firearm _firearm = null; 
+
     [Signal]
     public delegate void OnBoltBackEventHandler();
 
@@ -52,6 +57,10 @@ public partial class FirearmRotatingBolt : Interactable
         base._Ready();
         _initTransform = Transform;
         OnGrabbed += OnGrab; 
+
+        if (Util.NodeIs(GetParent(), typeof(Firearm))) { 
+            _firearm = (Firearm)GetParent(); 
+        }
     }
 
     public override void _Process(double delta)
@@ -149,10 +158,21 @@ public partial class FirearmRotatingBolt : Interactable
         if (!newRot.IsEqualApprox(_endRotation))
         {
             newPos.Z = Mathf.Clamp(newPos.Z, _startPosition.Z, _startPosition.Z);
-        }
+        } 
         
         Rotation = newRot;
         Position = newPos;
+
+        if (Position.IsEqualApprox(_endPosition)) { 
+            _setBack = true; 
+        }
+
+        if (Position.IsEqualApprox(_startPosition) && _setBack) { 
+            _setBack = false; 
+
+            _firearm?.EmitSignal("TryChamber"); 
+            GD.Print("Try Chamber"); 
+        }
     }
 
     public void OnGrab(Interactable interactable, Interactor interactor) { 

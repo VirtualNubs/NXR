@@ -4,6 +4,7 @@ extends Node
 @export var bought = false
 var grab_spawner: InteractableGrabSpawn = null
 var label_price: Label3D = null 
+var out_item: Interactable = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -12,6 +13,7 @@ func _ready():
 	
 	label_price = get_parent().get_node("LabelPrice")
 	label_price.text = str(price)
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if !bought: 
@@ -26,6 +28,13 @@ func _process(delta):
 		grab_spawner.Disabled = false 
 
 func grabbed(interactable, interactor): 
-	if ZombieDemoManager.current_money >= price: 
+	
+	if out_item: 
+		out_item.FullDrop()
+		out_item.queue_free()
+		out_item = grab_spawner.GetLastSpawned()
+	if ZombieDemoManager.current_money >= price and !bought: 
 		bought = true 
 		grab_spawner.SpawnAndGrab(interactor)
+		out_item = grab_spawner.GetLastSpawned()
+

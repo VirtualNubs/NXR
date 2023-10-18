@@ -1,4 +1,5 @@
 using Godot;
+using NXR;
 
 namespace NXRFirearm;
 
@@ -14,6 +15,11 @@ public partial class FirearmRay : RayCast3D
 
     public override void _Ready()
     {
+        if (Util.NodeIs(GetParent(), typeof(Firearm)))
+        {
+            _firearm = (Firearm)GetParent();
+        }
+
         if (IsInstanceValid(_firearm))
         {
             _firearm.OnFire += OnFire; 

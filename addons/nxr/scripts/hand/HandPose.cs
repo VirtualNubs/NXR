@@ -7,6 +7,9 @@ namespace NXR;
 public partial class HandPose : RemoteTransform3D
 {
     [Export]
+    private Interactable _interactable;
+
+    [Export]
     private string _pose = "";
 
     [Export]
@@ -18,18 +21,22 @@ public partial class HandPose : RemoteTransform3D
     [Export]
     private AnimationTree _customTree; 
 
-    private Interactable _interactable;
     private NodePath _lastPath;
     private Vector3 _initScale; 
     public override void _Ready()
     {
-        if (!GetParent().HasMethod("IsInteractable")) return; 
 
-        _interactable = (Interactable)GetParent(); 
+        _initScale = Scale;  
+        
+        if (_interactable == null && Util.NodeIs(GetParent(), typeof(Interactable))) { 
+            _interactable = (Interactable)GetParent(); 
+        } 
+
+        if (_interactable == null) return; 
+
         _interactable.OnGrabbed += OnGrab;
         _interactable.OnDropped += OnDrop;
 
-        _initScale = Scale;  
     }
 
     private void OnGrab(Interactable interactable, Interactor interactor)

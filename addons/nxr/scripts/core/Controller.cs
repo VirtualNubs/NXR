@@ -13,9 +13,11 @@ public partial class Controller : XRController3D
 
 	private List<String> _buttonStates = new List<String>();
 
+	private Array<Vector3> _localVels = new Array<Vector3>(); 
 	private Array<Vector3> _globalVels = new Array<Vector3>(); 
 	private Array<Vector3> _angularVels = new Array<Vector3>(); 
 	private Vector3 _globalVelocity; 
+	private Vector3 _localVelocity; 
 	private Vector3 _angulerVelocity; 
 
     public override void _Ready()
@@ -24,6 +26,7 @@ public partial class Controller : XRController3D
 
     public override void _PhysicsProcess(double delta)
     {
+		_localVelocity = GetXformVelocityAverage(_localVels, Transform, delta); 
 		_globalVelocity = GetXformVelocityAverage(_globalVels, GlobalTransform, delta); 
 		_angulerVelocity = GetAngulerVelocity(_angularVels, GlobalRotation, delta); 
     }
@@ -107,6 +110,9 @@ public partial class Controller : XRController3D
 		return vel * vMult; 
 	}
 
+	public Vector3 GetLocalVelocity() { 
+		return _localVelocity; 
+	}
 	public Vector3 GetGlobalVelocity() { 
 		return _globalVelocity; 
 	}

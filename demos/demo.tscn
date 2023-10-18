@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://de5mtyewlytyu"]
+[gd_scene load_steps=21 format=3 uid="uid://de5mtyewlytyu"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/InteractableSnapZone.cs" id="2_w5q6s"]
 [ext_resource type="PackedScene" uid="uid://cicqk5srmto4a" path="res://addons/nxr/scenes/demo/firearms/mags/ak_mag.tscn" id="3_2q3cp"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bo3g10fj20ul3" path="res://addons/nxr/scenes/demo/firearms/mags/stanag.tscn" id="6_aof3j"]
 [ext_resource type="Texture2D" uid="uid://blji1mxlwcbg3" path="res://assets/textures/kloofendal_48d_partly_cloudy_puresky_1k.exr" id="7_yoxst"]
 [ext_resource type="Texture2D" uid="uid://crkprx4cy1tha" path="res://assets/textures/grid.svg" id="8_vfar5"]
+[ext_resource type="Material" uid="uid://bmmxg6i8pehbi" path="res://assets/materials/ambientcg/concrete_dirty/mat_concrete_dirty.tres" id="9_5cas6"]
 [ext_resource type="PackedScene" uid="uid://ctrtq0t2fqwtr" path="res://addons/nxr/scenes/player/nxr_player.tscn" id="9_sulpo"]
 [ext_resource type="PackedScene" uid="uid://dv28qodnevgfd" path="res://addons/nxr/scenes/demo/firearms/pump_shotgun.tscn" id="9_yb3sr"]
 
@@ -39,6 +40,21 @@ albedo_color = Color(0.192157, 0.647059, 1, 1)
 albedo_texture = ExtResource("8_vfar5")
 uv1_triplanar = true
 uv1_world_triplanar = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s3i3x"]
+size = Vector3(1.00853, 0.993614, 0.0164716)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_wfw4n"]
+viewport_path = NodePath("StaticBody3D/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2fdkw"]
+resource_local_to_scene = true
+transparency = 1
+albedo_texture = SubResource("ViewportTexture_wfw4n")
+
+[sub_resource type="QuadMesh" id="QuadMesh_bgc42"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_2fdkw")
 
 [node name="Node3D" type="Node3D"]
 
@@ -176,7 +192,7 @@ size = Vector3(15, 1, 57.53)
 
 [node name="CSGBox3D7" type="CSGBox3D" parent="Geometry"]
 transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -13.6197, 0.48779, 13.083)
-material_override = SubResource("StandardMaterial3D_424j4")
+material_override = ExtResource("9_5cas6")
 use_collision = true
 size = Vector3(9.97388, 11.0733, 30)
 
@@ -259,4 +275,43 @@ use_collision = true
 size = Vector3(14.7021, 1, 30)
 
 [node name="Firearm2" parent="." instance=ExtResource("9_yb3sr")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 13.6271, 0.632586, -1.95031)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 13.6271, 0.699837, -1.72433)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 14.1225, 0.871555, 2.96735)
+
+[node name="SubViewport" type="SubViewport" parent="StaticBody3D"]
+transparent_bg = true
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="Control" type="Control" parent="StaticBody3D/SubViewport"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="Panel" type="Panel" parent="StaticBody3D/SubViewport/Control"]
+custom_minimum_size = Vector2(512, 512)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="Button" type="Button" parent="StaticBody3D/SubViewport/Control"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0, 1, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0, 0, 1)
+toggle_mode = true
+text = "click"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_s3i3x")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("QuadMesh_bgc42")

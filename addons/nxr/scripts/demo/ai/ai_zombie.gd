@@ -36,3 +36,4 @@ func _physics_process(delta):
 
 func hit(node, at): 
 	queue_free()
+	ZombieDemoManager.current_money += 10

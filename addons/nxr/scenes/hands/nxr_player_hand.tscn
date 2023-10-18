@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://b5s345q0wunft"]
+[gd_scene load_steps=15 format=3 uid="uid://b5s345q0wunft"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/Hand.cs" id="1_lqjae"]
 [ext_resource type="AnimationLibrary" uid="uid://bvxp1d4s8s2h" path="res://assets/hands/poses/poses_default.res" id="2_pec5k"]
-[ext_resource type="AnimationLibrary" path="res://assets/hands/poses/poses_rifle.res" id="3_6o8r8"]
+[ext_resource type="AnimationLibrary" uid="uid://cfxiq30ri52j5" path="res://assets/hands/poses/poses_rifle.res" id="3_6o8r8"]
 [ext_resource type="PackedScene" uid="uid://w7th3d2hl7b5" path="res://assets/hands/model/Hand_Glove_R.gltf" id="3_pnv6c"]
 [ext_resource type="Material" uid="uid://p0q2df2dmy62" path="res://assets/hands/materials/ghost_hand.tres" id="4_a8fot"]
+[ext_resource type="AnimationLibrary" uid="uid://h7sli6dulrsl" path="res://assets/hands/poses/poses_shotgun.res" id="4_fdhxg"]
 
 [sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_o3iwq"]
 
@@ -51,7 +52,8 @@ _animTree = NodePath("AnimationTree")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "poses_default": ExtResource("2_pec5k"),
-"poses_rifle": ExtResource("3_6o8r8")
+"poses_rifle": ExtResource("3_6o8r8"),
+"poses_shotgun": ExtResource("4_fdhxg")
 }
 
 [node name="AnimationTree" type="AnimationTree" parent="."]

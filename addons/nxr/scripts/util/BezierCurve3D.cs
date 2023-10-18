@@ -96,7 +96,8 @@ public partial class BezierCurve3D : Path3D
     {
 
         Curve.ClearPoints();
-        Curve.UpVectorEnabled = false;
+        Curve.UpVectorEnabled = true;
+        Curve.ResourceLocalToScene = true; 
         for (int i = 0; i < Resolution; i++)
         {
             float t = (float)i / (Resolution - 1);

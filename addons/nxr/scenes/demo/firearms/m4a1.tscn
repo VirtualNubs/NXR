@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://dydxi0x7d4u7l"]
+[gd_scene load_steps=57 format=3 uid="uid://dydxi0x7d4u7l"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_12tsm"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="2_p772n"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmSlide.cs" id="7_drbwx"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmTrigger.cs" id="8_ny0ka"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="9_u455c"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRay.cs" id="10_8vsy6"]
 
 [sub_resource type="Curve" id="Curve_6jb1b"]
 min_value = -5.0
@@ -592,3 +593,9 @@ _customTree = NodePath("AnimationTree")
 tree_root = SubResource("AnimationNodeBlendTree_snprm")
 parameters/Add2/add_amount = 1.0
 parameters/trigger/blend_amount = 1.0
+
+[node name="FirearmRay" type="RayCast3D" parent="." node_paths=PackedStringArray("_firearm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.019971, -0.537196)
+target_position = Vector3(0, 0, -100)
+script = ExtResource("10_8vsy6")
+_firearm = NodePath("")

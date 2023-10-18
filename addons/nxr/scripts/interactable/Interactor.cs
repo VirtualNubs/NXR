@@ -14,6 +14,8 @@ public partial class Interactor : Area3D
 	[Export]
 	public Controller Controller;
 
+	[Export]
+	private float _smoothing = 0.5f; 
 	public Interactable _grabbedInteractable;
 
 	public RigidBody3D PhysicsGrabBody = new(); 
@@ -29,11 +31,10 @@ public partial class Interactor : Area3D
 		Controller.ButtonReleased += InteractDrop;
 	}
 
-
 	public override void _PhysicsProcess(double delta)
 	{
 		// follow controller transform 
-		GlobalTransform = Controller.GlobalTransform;
+		GlobalTransform = GlobalTransform.InterpolateWith(Controller.GlobalTransform, _smoothing);
 
 		if (_grabbedInteractable != null) {
 			Interactable interactable = _grabbedInteractable; 
