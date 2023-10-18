@@ -1,9 +1,18 @@
-[gd_scene load_steps=8 format=3 uid="uid://cl4qvbc778whe"]
+[gd_scene load_steps=19 format=3 uid="uid://cl4qvbc778whe"]
 
-[ext_resource type="Material" uid="uid://cdocfolymvn5h" path="res://assets/materials/mat_grid.tres" id="1_lf15c"]
 [ext_resource type="PackedScene" uid="uid://cr025w2yl4xtx" path="res://demos/Killhouse/scenes/target.tscn" id="2_66513"]
 [ext_resource type="PackedScene" uid="uid://ctrtq0t2fqwtr" path="res://addons/nxr/scenes/player/nxr_player.tscn" id="3_dqn21"]
+[ext_resource type="Material" uid="uid://bmmxg6i8pehbi" path="res://assets/materials/ambientcg/concrete_dirty/mat_concrete_dirty.tres" id="4_e3ifh"]
 [ext_resource type="PackedScene" uid="uid://sfgdm1jksecs" path="res://addons/nxr/scenes/demo/firearms/ak.tscn" id="4_kkmbx"]
+[ext_resource type="MeshLibrary" uid="uid://bg647wato5l4b" path="res://assets/models/tactical_plywood/tac_mesh_library.tres" id="5_pqlhk"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/InteractableGrabSpawn.cs" id="6_7x8e7"]
+[ext_resource type="PackedScene" uid="uid://blf1qjxlcgbvb" path="res://assets/models/guns/AK-47/ak.glb" id="7_8lg73"]
+[ext_resource type="PackedScene" uid="uid://dydxi0x7d4u7l" path="res://addons/nxr/scenes/demo/firearms/m4a1.tscn" id="8_lfwu6"]
+[ext_resource type="PackedScene" uid="uid://b0l5qbqtfnr1n" path="res://assets/models/guns/M4A1/m4a1.glb" id="9_oss6r"]
+[ext_resource type="PackedScene" uid="uid://dv28qodnevgfd" path="res://addons/nxr/scenes/demo/firearms/pump_shotgun.tscn" id="10_dpaa8"]
+[ext_resource type="PackedScene" uid="uid://pdrc1uwgjown" path="res://assets/models/guns/Shotgun/shotgun.glb" id="11_jowfi"]
+[ext_resource type="PackedScene" uid="uid://dfl5qvof7chxv" path="res://addons/nxr/scenes/demo/firearms/sniper.tscn" id="12_q0ymn"]
+[ext_resource type="PackedScene" uid="uid://mq0wadk8h4pl" path="res://assets/models/guns/Sniper/sniper.glb" id="13_kg5a5"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mhb5w"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -18,10 +27,16 @@ sky = SubResource("Sky_4vtrk")
 tonemap_mode = 2
 glow_enabled = true
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_uopkg"]
+size = Vector2(100, 100)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_usygw"]
+radius = 0.172111
+
 [node name="LevelMain" type="Node3D"]
 
 [node name="NXRPlayer" parent="." instance=ExtResource("3_dqn21")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00377, 0, 2.01254)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.12344, 1.05864, -2.60311)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_y1bw6")
@@ -29,12 +44,6 @@ environment = SubResource("Environment_y1bw6")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
 shadow_enabled = true
-
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
-use_collision = true
-size = Vector3(100, 1, 100)
-material = ExtResource("1_lf15c")
 
 [node name="Target" parent="." instance=ExtResource("2_66513")]
 transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -2.37657, 0, -13.4836)
@@ -45,5 +54,68 @@ transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0.3839
 [node name="Target3" parent="." instance=ExtResource("2_66513")]
 transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 2.56602, 0, -17.0111)
 
-[node name="Ak" parent="." instance=ExtResource("4_kkmbx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.054643, 0.168404, 2.23371)
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+material_override = ExtResource("4_e3ifh")
+use_collision = true
+mesh = SubResource("PlaneMesh_uopkg")
+
+[node name="GridMapBase" type="GridMap" parent="."]
+mesh_library = ExtResource("5_pqlhk")
+cell_size = Vector3(1, 2, 2)
+cell_center_x = false
+cell_center_y = false
+cell_center_z = false
+data = {
+"cells": PackedInt32Array(65532, 1, 8, 65532, 0, 8, 65532, 65535, 8, 65532, 65534, 8, 65532, 65533, 8, 65532, 65532, 8, 65532, 65531, 8, 65532, 65530, 8, 65532, 65529, 8, 65532, 65528, 8, 65532, 65527, 8, 65533, 1, 1048584, 65535, 1, 1048584, 1, 1, 1048584, 3, 1, 1048584, 5, 1, 1048584, 7, 1, 1048584, 9, 1, 1048584, 11, 1, 1048584, 65533, 65527, 1441800, 65535, 65527, 1441800, 1, 65527, 1441800, 3, 65527, 1441800, 5, 65527, 1441800, 7, 65527, 1441800, 9, 65527, 1441800, 11, 65527, 1441800, 13, 65527, 1441800, 15, 65527, 1441800, 16, 65527, 655368, 16, 65528, 655368, 16, 65529, 655368, 16, 65530, 655368, 16, 65531, 655368, 16, 65532, 655368, 16, 65533, 655368, 16, 65534, 655368, 16, 65535, 655368, 16, 0, 655368, 16, 1, 655368, 13, 1, 1048584, 15, 1, 1048584, 14, 65530, 1048579, 14, 65531, 1048579, 65555, 65530, 458760, 65557, 65530, 458760, 65557, 65529, 458760, 65557, 65531, 458760, 65557, 65532, 458760, 65559, 65529, 458760, 65559, 65530, 458760, 65559, 65531, 458760, 65559, 65532, 458760, 65559, 65533, 458760, 65553, 65530, 458760, 65553, 65529, 458760, 65555, 65529, 458760, 24, 65535, 655363, 22, 65535, 655363, 65557, 65533, 458760)
+}
+metadata/_editor_floor_ = Vector3(0, 1, 0)
+
+[node name="GunWall" type="Node3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.568072, 0.906119, 1.85705)
+
+[node name="AKSpawner" type="RigidBody3D" parent="GunWall"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.113388, 0)
+freeze = true
+script = ExtResource("6_7x8e7")
+_scene = ExtResource("4_kkmbx")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GunWall/AKSpawner"]
+shape = SubResource("SphereShape3D_usygw")
+
+[node name="ak" parent="GunWall/AKSpawner" instance=ExtResource("7_8lg73")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0586739, -0.235682)
+
+[node name="M4Spawner" type="RigidBody3D" parent="GunWall"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.449921, -0.0125461)
+freeze = true
+script = ExtResource("6_7x8e7")
+_scene = ExtResource("8_lfwu6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GunWall/M4Spawner"]
+shape = SubResource("SphereShape3D_usygw")
+
+[node name="m4a1" parent="GunWall/M4Spawner" instance=ExtResource("9_oss6r")]
+
+[node name="PumpSpawner" type="RigidBody3D" parent="GunWall"]
+transform = Transform3D(1, -4.37114e-08, 4.37114e-08, 4.37114e-08, -4.37114e-08, -1, 4.37114e-08, 1, -4.37114e-08, 7.15256e-07, 0.336533, -1.10688)
+freeze = true
+script = ExtResource("6_7x8e7")
+_scene = ExtResource("10_dpaa8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GunWall/PumpSpawner"]
+shape = SubResource("SphereShape3D_usygw")
+
+[node name="shotgun" parent="GunWall/PumpSpawner" instance=ExtResource("11_jowfi")]
+transform = Transform3D(0.782362, 2.11758e-22, 0, 2.11758e-22, 0.782362, 6.53419e-23, 0, 4.62812e-30, 0.782362, 4.76837e-07, -2.38419e-07, -0.206136)
+
+[node name="SniperSpawner" type="RigidBody3D" parent="GunWall"]
+transform = Transform3D(1, -4.37114e-08, 4.37114e-08, 4.37114e-08, -4.37114e-08, -1, 4.37114e-08, 1, -4.37114e-08, 8.34465e-07, 0.336533, -1.41393)
+freeze = true
+script = ExtResource("6_7x8e7")
+_scene = ExtResource("12_q0ymn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GunWall/SniperSpawner"]
+shape = SubResource("SphereShape3D_usygw")
+
+[node name="sniper" parent="GunWall/SniperSpawner" instance=ExtResource("13_kg5a5")]
+transform = Transform3D(1, 0, 0, 0, 1, 8.35187e-23, 0, 0, 1, 2.38419e-07, -2.38419e-07, -0.211828)

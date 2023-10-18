@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://8ap3o7qw7wri"]
+
+[ext_resource type="Script" path="res://addons/nxr/scripts/ui/Pointer.cs" id="1_08ols"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/util/BezierCurve3D.cs" id="2_ar3rb"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/util/PolygonPath.cs" id="3_su0kv"]
+
+[sub_resource type="Curve3D" id="Curve3D_sebyo"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.111111, 0, 0, 0, 0, 0, 0, 0, 0, -0.222222, 0, 0, 0, 0, 0, 0, 0, 0, -0.333333, 0, 0, 0, 0, 0, 0, 0, 0, -0.444444, 0, 0, 0, 0, 0, 0, 0, 0, -0.555556, 0, 0, 0, 0, 0, 0, 0, 0, -0.666667, 0, 0, 0, 0, 0, 0, 0, 0, -0.777778, 0, 0, 0, 0, 0, 0, 0, 0, -0.888889, 0, 0, 0, 0, 0, 0, 0, 0, -1),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 10
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a8tyh"]
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 1)
+
+[node name="RayCast3D" type="RayCast3D"]
+target_position = Vector3(0, 0, -4)
+script = ExtResource("1_08ols")
+_velocityStrength = 0.2
+
+[node name="BezierCurve3D" type="Path3D" parent="."]
+curve = SubResource("Curve3D_sebyo")
+script = ExtResource("2_ar3rb")
+MidPoint = Vector3(0, 0, -0.5)
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="."]
+polygon = PackedVector2Array(0.004, 0, 0.00323607, 0.00235114, 0.00123607, 0.00380423, -0.00123607, 0.00380423, -0.00323607, 0.00235114, -0.004, -3.49691e-10, -0.00323607, -0.00235114, -0.00123607, -0.00380423, 0.00123607, -0.00380423, 0.00323607, -0.00235114)
+mode = 2
+path_node = NodePath("../BezierCurve3D")
+path_interval_type = 0
+path_interval = 0.08
+path_simplify_angle = 0.0
+path_rotation = 2
+path_local = true
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = SubResource("StandardMaterial3D_a8tyh")
+script = ExtResource("3_su0kv")
+_radius = 0.4

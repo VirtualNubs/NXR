@@ -42,7 +42,6 @@ _data = {
 [node name="Target" type="RigidBody3D"]
 freeze = true
 script = ExtResource("1_kx46r")
-one_shot = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.627084, 0)
@@ -59,3 +58,5 @@ libraries = {
 }
 
 [node name="ResetTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="ResetTimer" to="." method="_on_reset_timer_timeout"]
