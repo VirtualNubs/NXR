@@ -10,6 +10,7 @@ public partial class InteractableGrabSpawn : Interactable
 
 	[Export]
 	private PackedScene _scene;
+	private Interactable _lastSpawned = null;
 
     public override void _Ready()
     {
@@ -32,6 +33,10 @@ public partial class InteractableGrabSpawn : Interactable
 		GetParent().AddChild(inst); 
 		inst.GlobalPosition = this.GlobalPosition; 
 		interactor.Grab(inst); 
+		_lastSpawned = inst; 
 	}
-	
+
+	public Interactable GetLastSpawned() { 
+		return _lastSpawned; 
+	}
 }

@@ -1,10 +1,11 @@
-[gd_scene load_steps=25 format=3 uid="uid://dfl5qvof7chxv"]
+[gd_scene load_steps=26 format=3 uid="uid://dfl5qvof7chxv"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_hrx52"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="2_yg4sk"]
 [ext_resource type="Material" uid="uid://cqyydsr8wxrs7" path="res://assets/models/guns/Sniper/mat_sniper.tres" id="3_rgx54"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="4_f0mic"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRotatingBolt.cs" id="5_obog8"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMag.cs" id="6_60hkw"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRay.cs" id="7_8wr27"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_gmehx"]
 points = PackedVector3Array(0.734928, 10.7152, 7.29222, 1.20744, 10.7152, 7.10993, -0.73522, 10.7152, 7.29061, -0.73522, 6.00495, 7.29222, 0.734928, 6.00495, 7.29222, 1.39183, 10.7152, 6.95506, 1.20744, 6.00495, 7.10993, -1.20774, 10.7152, 7.10993, -1.20774, 6.00495, 7.10993, -1.15806, -19.4379, 3.02202, -0.70483, -19.5537, 3.1543, 0.704537, -19.5537, 3.1543, 1.15777, -19.4379, 3.02202, 1.49265, 10.7152, 6.77115, 1.39183, 6.00495, 6.95506, 1.33456, -19.3453, 2.91071, -1.39213, 10.7152, 6.95506, -1.39213, 6.00495, 6.95506, -1.33485, -19.3453, 2.91071, -1.33485, -67.096, -5.62002, -1.15806, -67.1346, -5.51032, -0.70483, -67.1887, -5.37965, 0.704537, -67.1887, -5.37965, 1.15777, -67.1346, -5.51032, 1.33456, -67.096, -5.62002, 1.49265, 10.7152, -6.28144, 1.49265, 6.00495, 6.77115, 1.43099, -19.2294, 2.77681, 1.43099, -67.042, -5.7523, -1.49265, 10.7152, 6.77115, -1.49265, 6.00495, 6.77115, -1.43128, -19.2294, 2.77681, -1.43128, -67.042, -5.7523, -1.33485, -67.4667, -5.99751, -1.15806, -67.5593, -5.92653, -0.70483, -67.6597, -5.84426, 0.704537, -67.6597, -5.84426, 1.15777, -67.5593, -5.92653, 1.33456, -67.4667, -5.99751, 1.39183, 10.7152, -6.41695, 1.49265, 6.00495, -6.28144, 1.43099, -67.042, -8.80936, 1.43099, -24.6346, -8.48672, 1.33456, -24.6114, -8.62062, 1.43099, -67.3586, -6.0814, 1.43099, -67.5284, -6.52665, 1.43099, -67.7832, -7.26067, 1.43099, -67.845, -7.935, -1.49265, 10.7152, -6.28144, -1.49265, 6.00495, -6.28144, -1.43128, -67.845, -7.935, -1.43128, -67.7832, -7.26067, -1.43128, -67.5284, -6.52665, -1.43128, -67.3586, -6.0814, -1.33485, -67.652, -6.47987, -1.15806, -67.7601, -6.44276, -0.70483, -67.8836, -6.39598, 0.704537, -67.8836, -6.39598, 1.15777, -67.7601, -6.44276, 1.33456, -67.652, -6.47987, 1.20744, 10.7152, -6.52988, 1.15777, -24.5883, -8.73354, 1.43099, -67.652, -8.48026, 1.43099, -67.4358, -8.62062, 1.33456, -67.0729, -8.94487, 1.33456, -67.9145, -7.24292, 1.33456, -67.984, -7.9721, -1.39213, 10.7152, -6.41695, -1.33485, -24.6114, -8.62062, -1.43128, -24.6346, -8.48672, -1.43128, -67.042, -8.80936, -1.43128, -67.4358, -8.62062, -1.43128, -67.652, -8.48026, -1.33485, -67.984, -7.9721, -1.33485, -67.9145, -7.24292, -1.15806, -68.0303, -7.23002, -0.70483, -68.1616, -7.21388, 0.704537, -68.1616, -7.21388, 1.15777, -68.0303, -7.23002, 0.734928, 10.7152, -6.66216, 0.704537, -24.5651, -8.86582, 1.15777, -67.096, -9.05619, 1.33456, -67.7446, -8.57706, 1.33456, -67.4976, -8.73838, 1.15777, -67.5516, -8.83517, 1.15777, -68.0921, -8.00436, -1.20774, 10.7152, -6.52988, -1.15806, -24.5883, -8.73354, -1.33485, -67.0729, -8.94487, -1.33485, -67.4976, -8.73838, -1.33485, -67.7446, -8.57706, -1.15806, -68.0921, -8.00436, -0.70483, -68.1616, -8.04308, 0.704537, -68.1616, -8.04308, -0.73522, 10.7152, -6.66216, -0.70483, -24.5651, -8.86582, 0.704537, -67.1269, -9.18847, 0.704537, -67.6211, -8.95133, 1.15777, -67.8296, -8.65772, 0.704537, -67.9222, -8.7529, -1.15806, -67.096, -9.05619, -1.15806, -67.5516, -8.83517, -1.15806, -67.8296, -8.65772, -0.70483, -67.9222, -8.7529, -0.70483, -67.1269, -9.18847, -0.70483, -67.6211, -8.95133)
@@ -279,6 +280,10 @@ radius = 2.93662
 [node name="Firearm" type="RigidBody3D"]
 collision_layer = 8
 script = ExtResource("1_hrx52")
+_startChambered = true
+_chamberOnFire = false
+_recoilRise = Vector3(40, 0, 0)
+_riseRecoverSpeed = 0.05
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.01, 4.08457e-07, -1.4081e-06, -1.41065e-06, 6.32104e-05, -0.0099998, -3.99548e-07, 0.0099998, 6.32103e-05, -0.00371698, -0.0315297, 0.322658)
@@ -287,10 +292,7 @@ shape = SubResource("ConvexPolygonShape3D_gmehx")
 [node name="InteractableGrabKinematic" type="Node" parent="."]
 script = ExtResource("2_yg4sk")
 _twoHanded = true
-
-[node name="InteractableGrabPoint" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00666133, 0.037238)
-script = ExtResource("4_f0mic")
+_lookUpVector = 2
 
 [node name="sniper" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0375042, -0.189064)
@@ -360,3 +362,16 @@ skeleton = NodePath("")
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="FirearmRotatingBolt"]
 transform = Transform3D(0.00372299, 4.08583e-07, -0.00928113, -0.00928094, 6.321e-05, -0.00372291, 5.85139e-05, 0.00999981, 2.39122e-05, 0.0311775, -0.0125943, 0.0394004)
 shape = SubResource("SphereShape3D_4lby0")
+
+[node name="FirearmMag" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0639857, -0.0344918)
+script = ExtResource("6_60hkw")
+_internal = true
+MaxAmmo = 10
+CurrentAmmo = 10
+
+[node name="FirearmRay" type="RayCast3D" parent="." node_paths=PackedStringArray("_firearm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0602699, -0.729414)
+target_position = Vector3(0, 0, -100)
+script = ExtResource("7_8wr27")
+_firearm = NodePath("..")

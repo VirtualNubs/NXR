@@ -1,4 +1,5 @@
 using Godot;
+using NXR;
 using NXRInteractable;
 using System;
 
@@ -44,6 +45,10 @@ public partial class FirearmRotatingBolt : Interactable
 
     private Transform3D _relativeGrab = new(); 
 
+    private bool _setBack = false; 
+
+    private Firearm _firearm = null; 
+
     [Signal]
     public delegate void OnBoltBackEventHandler();
 
@@ -52,6 +57,10 @@ public partial class FirearmRotatingBolt : Interactable
         base._Ready();
         _initTransform = Transform;
         OnGrabbed += OnGrab; 
+
+        if (Util.NodeIs(GetParent(), typeof(Firearm))) { 
+            _firearm = (Firearm)GetParent(); 
+        }
     }
 
     public override void _Process(double delta)
@@ -121,7 +130,7 @@ public partial class FirearmRotatingBolt : Interactable
         if (Position.IsEqualApprox(_startPosition))
         {
             Transform3D xform = GlobalTransform * _relativeGrab; 
-            Vector3 axis = Vector3.Right; 
+            Vector3 axis = Vector3.One; 
             Vector3 grab = ToLocal(GetPrimaryInteractor().GlobalPosition); 
             Vector3 loc = ToLocal(xform.Origin); 
             grab.Z = 0; 
@@ -132,7 +141,7 @@ public partial class FirearmRotatingBolt : Interactable
 
             float rotAngle = locDir.Normalized().SignedAngleTo(grabDir.Normalized(), axis);
 
-            RotateZ(rotAngle * (float)delta * 10.0f);
+            RotateZ(rotAngle);
         }
 
         // Isues with clamp if not deconsturected 
@@ -149,10 +158,20 @@ public partial class FirearmRotatingBolt : Interactable
         if (!newRot.IsEqualApprox(_endRotation))
         {
             newPos.Z = Mathf.Clamp(newPos.Z, _startPosition.Z, _startPosition.Z);
-        }
+        } 
         
         Rotation = newRot;
         Position = newPos;
+
+        if (Position.IsEqualApprox(_endPosition)) { 
+            _setBack = true; 
+        }
+
+        if (Position.IsEqualApprox(_startPosition) && _setBack) { 
+            _setBack = false; 
+
+            _firearm?.EmitSignal("TryChamber"); 
+        }
     }
 
     public void OnGrab(Interactable interactable, Interactor interactor) { 

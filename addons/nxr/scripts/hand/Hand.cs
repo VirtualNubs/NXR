@@ -48,13 +48,14 @@ public partial class Hand : Node3D
 
         _currentAnimTree.Active = false; 
 
+        
         if (!IsInstanceValid(_animPlayer)) { 
             GD.PushWarning("No animation player found!"); 
             return; 
         }
-
-        _animPlayer.Play(pose, _blendTime); 
+        _animPlayer.Play(_idleAnimation); 
         _animPlayer.Advance(0); 
+        _animPlayer.Play(pose, _blendTime); 
     }
 
     public void SetCurrentTree(AnimationTree tree) { 

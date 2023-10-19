@@ -5,7 +5,8 @@ using NXRFirearm;
 [Tool]
 public partial class FirearmPump : FirearmSlide
 {
-	
+    
+
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
@@ -14,9 +15,9 @@ public partial class FirearmPump : FirearmSlide
 
 		if (_firearm == null) return;  
 
-		if (_firearm.GetSecondaryInteractor() != null)  {
+		if (_firearm.GetSecondaryInteractor() != null && !_firearm.Chambered)  {
 			Node3D parent = (Node3D)GetParent();
-            Transform3D grabXform = _firearm.GetSecondaryRelativeXform(); 
+            Transform3D grabXform = _firearm.SecondaryInteractor.GlobalTransform; 
             Vector3 newPos = parent.ToLocal(grabXform.Origin);
 
             newPos= newPos.Clamp(_startPosition, _endPosition);
