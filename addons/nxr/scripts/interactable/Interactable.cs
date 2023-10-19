@@ -7,7 +7,7 @@ namespace NXRInteractable;
 public partial class Interactable : RigidBody3D
 {
 	[Export]
-	public int Priority = 1; 
+	public float Priority = 1; 
 	
 	[Export]
 	public float MaxGrabDistance = 0.5f;
@@ -79,6 +79,9 @@ public partial class Interactable : RigidBody3D
 
 	public void Grab(Interactor interactor)
 	{
+
+		interactor._grabbedInteractable = this; 
+
 		if (!IsInstanceValid(PrimaryInteractor))
 		{
 			PrimaryInteractor = interactor;
@@ -97,6 +100,21 @@ public partial class Interactable : RigidBody3D
 		EmitSignal("OnGrabbed", this, interactor);
 	}
 
+	public void SecondaryGrab(Interactor interactor)
+	{
+
+
+		if (!IsInstanceValid(SecondaryInteractor))
+		{
+			interactor._grabbedInteractable = this; 
+			SecondaryInteractor = interactor;
+			SecondaryInteractor.Controller.Pulse(0.5f, _grabPulse, 0.1);
+			_secondaryRelativeTransorm = SecondaryInteractor.GlobalTransform.AffineInverse() * GlobalTransform;
+		}
+
+		// emit after to access available interactors
+		EmitSignal("OnGrabbed", this, interactor);
+	}
 	public void Drop(Interactor interactor)
 	{
 		// emit before so we can access any set interactor before setting null 

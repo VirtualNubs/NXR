@@ -21,6 +21,8 @@ _dominantHand = 1
 _leftController = NodePath("XROrigin3D/LeftController")
 _rightController = NodePath("XROrigin3D/RightController")
 _xrOrigin = NodePath("XROrigin3D")
+_stepHeight = 0.66
+_stepSmoothing = 0.4
 
 [node name="XROrigin3D" type="XROrigin3D" parent="."]
 current = true
