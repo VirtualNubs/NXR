@@ -45,7 +45,8 @@ node_connections = [&"output", 0, &"Add2", &"Add2", 0, &"trigger", &"Add2", 1, &
 
 [node name="NXRHandRight" type="Node3D" node_paths=PackedStringArray("_animPlayer", "_animTree")]
 script = ExtResource("1_lqjae")
-_idleAnimation = "default_poses/idle"
+_idleAnimation = "poses_default/idle"
+_blendTime = 0.0
 _animPlayer = NodePath("AnimationPlayer")
 _animTree = NodePath("AnimationTree")
 

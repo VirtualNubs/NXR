@@ -1,9 +1,8 @@
-[gd_scene load_steps=27 format=3 uid="uid://dfl5qvof7chxv"]
+[gd_scene load_steps=26 format=3 uid="uid://dfl5qvof7chxv"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_hrx52"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="2_yg4sk"]
 [ext_resource type="Material" uid="uid://cqyydsr8wxrs7" path="res://assets/models/guns/Sniper/mat_sniper.tres" id="3_rgx54"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="4_f0mic"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRotatingBolt.cs" id="5_obog8"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMag.cs" id="6_60hkw"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRay.cs" id="7_8wr27"]
@@ -293,10 +292,7 @@ shape = SubResource("ConvexPolygonShape3D_gmehx")
 [node name="InteractableGrabKinematic" type="Node" parent="."]
 script = ExtResource("2_yg4sk")
 _twoHanded = true
-
-[node name="InteractableGrabPoint" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00666133, 0.037238)
-script = ExtResource("4_f0mic")
+_lookUpVector = 2
 
 [node name="sniper" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0375042, -0.189064)

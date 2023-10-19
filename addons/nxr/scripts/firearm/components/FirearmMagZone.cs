@@ -36,6 +36,7 @@ public partial class FirearmMagZone : InteractableSnapZone
         if (_firearm != null && _firearm.GetPrimaryInteractor() != null) { 
             if (_dropAction != null && _firearm.GetPrimaryInteractor().Controller.ButtonOneShot(_dropAction)) { 
                 Unsnap(); 
+                _hoveredInteractable = null; 
             }
         }
     }

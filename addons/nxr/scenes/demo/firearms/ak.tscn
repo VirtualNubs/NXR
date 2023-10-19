@@ -1,7 +1,6 @@
 [gd_scene load_steps=39 format=3 uid="uid://sfgdm1jksecs"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_3xpfa"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="2_1xwbp"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="3_8x1a7"]
 [ext_resource type="Texture2D" uid="uid://c1gf38f0limd3" path="res://assets/models/guns/AK-47/ak_AK47_Base_Color.png" id="4_r1sai"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMagZone.cs" id="5_nrs13"]
@@ -11,8 +10,8 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmLight.cs" id="9_4bba8"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRay.cs" id="10_m1jlv"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmParticlePlayer.cs" id="11_aoebd"]
+[ext_resource type="Texture2D" uid="uid://daigr38dvr8gw" path="res://assets/textures/puff.png" id="11_o8u1s"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="12_v4fnm"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/audio/SignalAudioPlayer.cs" id="13_taqtg"]
 
 [sub_resource type="Curve" id="Curve_ur3b0"]
 min_value = -5.0
@@ -195,25 +194,6 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_v8235")
 
-[sub_resource type="Curve" id="Curve_7rk7q"]
-_data = [Vector2(0, 0.326316), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_f4e5s"]
-curve = SubResource("Curve_7rk7q")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_toekm"]
-direction = Vector3(0, 0, -1)
-spread = 23.76
-gravity = Vector3(0, 0, 0)
-initial_velocity_min = 3.0
-initial_velocity_max = 3.0
-scale_curve = SubResource("CurveTexture_f4e5s")
-
-[sub_resource type="SphereMesh" id="SphereMesh_ht5sy"]
-radius = 0.1
-height = 0.2
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_tke8a"]
 size = Vector3(0.0733045, 0.274158, 0.80076)
 
@@ -248,6 +228,39 @@ nodes/trigger/node = SubResource("AnimationNodeBlend2_xr7fb")
 nodes/trigger/position = Vector2(-220, 320)
 node_connections = [&"output", 0, &"Add2", &"Add2", 0, &"Animation", &"Add2", 1, &"trigger", &"trigger", 0, &"Animation 2", &"trigger", 1, &"Animation 3"]
 
+[sub_resource type="Gradient" id="Gradient_m7fwa"]
+offsets = PackedFloat32Array(0, 0.858824)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_th4vu"]
+gradient = SubResource("Gradient_m7fwa")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_i1cpv"]
+direction = Vector3(0, 0, -1)
+spread = 23.76
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 3.0
+initial_velocity_max = 3.0
+scale_min = 0.1
+scale_max = 0.2
+color_ramp = SubResource("GradientTexture1D_th4vu")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ps7jg"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_color = Color(1, 1, 1, 0.0784314)
+albedo_texture = ExtResource("11_o8u1s")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_uylga"]
+material = SubResource("StandardMaterial3D_ps7jg")
+
 [node name="Ak" type="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000165045, 0.00190675, 0.00244612)
 collision_layer = 8
@@ -257,16 +270,6 @@ _fireRate = 0.12
 _startChambered = true
 _recoilKick = Vector3(0, 0, 0.2)
 _yCurve = SubResource("Curve_ur3b0")
-Priority = 2
-
-[node name="PrimaryGrabPoint" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.998954, 0.0457292, 0, -0.0457292, 0.998954, 0, 0.00361047, 0.00453164)
-script = ExtResource("2_1xwbp")
-
-[node name="SecondaryGrabPoint" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.999934, 0.011519, 0, -0.011519, 0.999934, 0, 0.0141437, -0.213857)
-script = ExtResource("2_1xwbp")
-_grabType = 1
 
 [node name="InteractableGrabKinematic" type="Node" parent="."]
 script = ExtResource("3_8x1a7")
@@ -302,6 +305,8 @@ collision_mask = 9
 script = ExtResource("5_nrs13")
 _dropAction = ""
 AllowedGroups = PackedStringArray("AKMag")
+_sticky = true
+_tweenTime = 0.0
 _easeType = 1
 _transType = 5
 
@@ -348,26 +353,11 @@ target_position = Vector3(0, 0, -100)
 script = ExtResource("10_m1jlv")
 _firearm = NodePath("..")
 
-[node name="FirearmParticlePlayer" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0330113, -0.544843)
-emitting = false
-lifetime = 0.32
-one_shot = true
-explosiveness = 1.0
-process_material = SubResource("ParticleProcessMaterial_toekm")
-draw_pass_1 = SubResource("SphereMesh_ht5sy")
-script = ExtResource("11_aoebd")
-_restartOnFire = true
-
 [node name="SHandPose" type="RemoteTransform3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0145819, -0.210683)
 script = ExtResource("12_v4fnm")
 _pose = "poses_rifle/secondary"
 _grabPose = 1
-
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
-script = ExtResource("13_taqtg")
-_signal = "OnFire"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0809006)
@@ -384,3 +374,14 @@ _customTree = NodePath("AnimationTree")
 tree_root = SubResource("AnimationNodeBlendTree_gbbqf")
 parameters/Add2/add_amount = 1.0
 parameters/trigger/blend_amount = 1.0
+
+[node name="FirearmParticlePlayer2" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0342045, -0.539386)
+emitting = false
+lifetime = 0.32
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_i1cpv")
+draw_pass_1 = SubResource("QuadMesh_uylga")
+script = ExtResource("11_aoebd")
+_restartOnFire = true

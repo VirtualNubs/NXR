@@ -97,6 +97,7 @@ public partial class InteractableGrabKinematic : Node
 
     public Transform3D TwoHandXform()
     {
+
         Transform3D lookXform = _primaryXform;
         Transform3D secondaryXform = Interactable.SecondaryInteractor.GlobalTransform;
         Vector3 lookDir = secondaryXform.Origin - Interactable.PrimaryInteractor.GlobalTransform.Origin;

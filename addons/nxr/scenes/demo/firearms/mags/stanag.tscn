@@ -1,8 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://bo3g10fj20ul3"]
+[gd_scene load_steps=15 format=3 uid="uid://bo3g10fj20ul3"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMag.cs" id="1_tjp0p"]
 [ext_resource type="Material" uid="uid://ckhn2nohm0vht" path="res://assets/models/guns/M4A1/mat_m4.tres" id="2_5kvyr"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="3_xtm44"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="4_mtw8e"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="5_gnqtu"]
 [ext_resource type="PackedScene" uid="uid://b5s345q0wunft" path="res://addons/nxr/scenes/hands/nxr_player_hand.tscn" id="6_1dgw3"]
@@ -422,6 +421,8 @@ collision_layer = 8
 script = ExtResource("1_tjp0p")
 MaxAmmo = 30
 CurrentAmmo = 30
+_switchOnDrop = true
+RotationOffset = Vector3(43.15, 0, 0)
 
 [node name="Magazine" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
@@ -432,10 +433,6 @@ skeleton = NodePath("")
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
 shape = SubResource("ConvexPolygonShape3D_cyow2")
-
-[node name="InteractableGrabPoint" type="Marker3D" parent="."]
-transform = Transform3D(1, 5.96046e-08, -2.63099e-07, -2.64816e-07, 0.0199129, -0.999802, -8.9407e-08, 0.999802, 0.0199129, -1.12748e-08, -0.051305, 0.0418841)
-script = ExtResource("3_xtm44")
 
 [node name="InteractableGrabKinematic" type="Node" parent="."]
 script = ExtResource("4_mtw8e")

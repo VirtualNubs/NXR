@@ -130,7 +130,7 @@ public partial class FirearmRotatingBolt : Interactable
         if (Position.IsEqualApprox(_startPosition))
         {
             Transform3D xform = GlobalTransform * _relativeGrab; 
-            Vector3 axis = Vector3.Right; 
+            Vector3 axis = Vector3.One; 
             Vector3 grab = ToLocal(GetPrimaryInteractor().GlobalPosition); 
             Vector3 loc = ToLocal(xform.Origin); 
             grab.Z = 0; 
@@ -141,7 +141,7 @@ public partial class FirearmRotatingBolt : Interactable
 
             float rotAngle = locDir.Normalized().SignedAngleTo(grabDir.Normalized(), axis);
 
-            RotateZ(rotAngle * (float)delta * 10.0f);
+            RotateZ(rotAngle);
         }
 
         // Isues with clamp if not deconsturected 
@@ -171,7 +171,6 @@ public partial class FirearmRotatingBolt : Interactable
             _setBack = false; 
 
             _firearm?.EmitSignal("TryChamber"); 
-            GD.Print("Try Chamber"); 
         }
     }
 
