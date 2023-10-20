@@ -1,5 +1,6 @@
 shader_type spatial;
 
+uniform float dist = 0.001; 
 uniform float scale = 1.0;
 uniform float glow  = 1.0; 
 uniform sampler2D reticle_texture : source_color, repeat_disable;
@@ -15,11 +16,10 @@ void fragment() {
 	vec3 view = (vec4(-normalize(VIEW), 1.0) * VIEW_MATRIX).xyz;
 	float s = scale * 10.0;
 
-	vec3 m1 = view * vec3(len / s);
-	vec3 tm = (vec4(m1, 1.0) * MODEL_MATRIX).xyz;
-	vec3 o = tm * vec3(256);
+	vec3 m1 = view * vec3(dist);
+	vec3 tm = (vec4(m1, 1) * MODEL_MATRIX).xyz;
 
-	vec3 offset = o + vec3(0.5);
+	vec3 offset = tm + vec3(0.5);
 	vec3 clmp = clamp(offset, vec3(0), vec3(1));
 	vec3 clmp0 = vec3(1.0, 1.0, 1.0) - clmp;
 

@@ -31,15 +31,16 @@ public partial class InteractableGrabPoint : Interactable
         
         if (_grabType == GrabType.Primary) { 
             if (_interactable.GetPrimaryInteractor() == null) { 
+                _interactable.PrimaryGrabPoint = this; 
                 _interactable.Grab(interactor); 
             }
         }
 
         if (_grabType == GrabType.Secondary) { 
             if (_interactable.GetSecondaryInteractor() == null) { 
+                _interactable.SecondaryGrabPoint = this; 
                 _interactable.SecondaryGrab(interactor); 
             }
         }
-
     }
 }

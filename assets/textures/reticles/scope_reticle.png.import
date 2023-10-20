@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3kq2wpdv8510"
-path.s3tc="res://.godot/imported/Sniper_Roughness.png-f9992a83a5f4caf55566fd7222dc9aa9.s3tc.ctex"
+uid="uid://cu4ilugwmnsgd"
+path.s3tc="res://.godot/imported/scope_reticle.png-6c3b5d3dce40ad69cc35a255f8589d17.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/models/guns/Sniper/Sniper_Roughness.png"
-dest_files=["res://.godot/imported/Sniper_Roughness.png-f9992a83a5f4caf55566fd7222dc9aa9.s3tc.ctex"]
+source_file="res://assets/textures/reticles/scope_reticle.png"
+dest_files=["res://.godot/imported/scope_reticle.png-6c3b5d3dce40ad69cc35a255f8589d17.s3tc.ctex"]
 
 [params]
 
