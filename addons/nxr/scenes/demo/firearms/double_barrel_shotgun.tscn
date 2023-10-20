@@ -537,31 +537,31 @@ bones/25/rotation = Quaternion(0.706524, 6.47993e-06, 8.68672e-06, 0.707689)
 [node name="Rays" type="Node3D" parent="."]
 
 [node name="FirearmRay" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(1, 0, 0, 0, 0.998681, 0.0513425, 0, -0.0513425, 0.998681, 0, 0.0256179, -0.624934)
+transform = Transform3D(1, 0, 0, 0, 0.998681, 0.0513425, 0, -0.0513425, 0.998681, 0, 0.0256179, -0.448217)
 target_position = Vector3(0, 0, -100)
 script = ExtResource("11_1ciw0")
 _firearm = NodePath("../..")
 
 [node name="FirearmRay2" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(0.998953, 0, -0.0457466, 0, 1, 0, 0.0457466, 0, 0.998953, 0, 0.0256179, -0.624934)
+transform = Transform3D(0.998953, 0, -0.0457466, 0, 1, 0, 0.0457466, 0, 0.998953, 0, 0.0256179, -0.448217)
 target_position = Vector3(0, 0, -100)
 script = ExtResource("11_1ciw0")
 _firearm = NodePath("../..")
 
 [node name="FirearmRay4" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(0.998953, 0, -0.0457466, -0.00479929, 0.994482, -0.1048, 0.0454941, 0.10491, 0.993441, 0, 0.0256179, -0.624934)
+transform = Transform3D(0.998953, 0, -0.0457466, -0.00479929, 0.994482, -0.1048, 0.0454941, 0.10491, 0.993441, 0, 0.0256179, -0.448217)
 target_position = Vector3(0, 0, -100)
 script = ExtResource("11_1ciw0")
 _firearm = NodePath("../..")
 
 [node name="FirearmRay5" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(0.998953, 0, -0.0457466, 0.00135314, 0.999562, 0.029548, 0.0457266, -0.029579, 0.998516, 0, 0.0256179, -0.624934)
+transform = Transform3D(0.998953, 0, -0.0457466, 0.00135314, 0.999562, 0.029548, 0.0457266, -0.029579, 0.998516, 0, 0.0256179, -0.448217)
 target_position = Vector3(0, 0, -100)
 script = ExtResource("11_1ciw0")
 _firearm = NodePath("../..")
 
 [node name="FirearmRay3" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(0.997094, 0, 0.0761796, 0, 1, 0, -0.0761796, 0, 0.997094, 0, 0.0256179, -0.624934)
+transform = Transform3D(0.997094, 0, 0.0761796, 0, 1, 0, -0.0761796, 0, 0.997094, 0, 0.0256179, -0.448217)
 target_position = Vector3(0, 0, -100)
 script = ExtResource("11_1ciw0")
 _firearm = NodePath("../..")
