@@ -1,9 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://cicqk5srmto4a"]
+[gd_scene load_steps=10 format=3 uid="uid://cicqk5srmto4a"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMag.cs" id="1_1dbia"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="2_ja2qw"]
 [ext_resource type="Texture2D" uid="uid://c1gf38f0limd3" path="res://assets/models/guns/AK-47/ak_AK47_Base_Color.png" id="3_ysu2p"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="4_kb0pp"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="5_v5u03"]
 [ext_resource type="PackedScene" uid="uid://b5s345q0wunft" path="res://addons/nxr/scenes/hands/nxr_player_hand.tscn" id="6_dm0of"]
 
@@ -56,7 +55,6 @@ collision_layer = 8
 script = ExtResource("1_1dbia")
 MaxAmmo = 30
 CurrentAmmo = 30
-Priority = 2
 _switchOnDrop = true
 
 [node name="InteractableGrabKinematic" type="Node" parent="."]
@@ -70,10 +68,6 @@ skeleton = NodePath("")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.01, 0, 0, 0, 0.00812246, -0.00583314, 0, 0.00583314, 0.00812246, 0, -0.0416401, 0.0550474)
 shape = SubResource("BoxShape3D_1y36l")
-
-[node name="InteractableGrabPoint" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.72499, -0.68876, 0, 0.68876, 0.72499, 0, -0.0702426, 0.0196112)
-script = ExtResource("4_kb0pp")
 
 [node name="HandPose" type="RemoteTransform3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.924566, -0.381022, 0, 0.381022, 0.924566, 0, 0.017062, 0.0080215)

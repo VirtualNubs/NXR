@@ -38,12 +38,6 @@ public partial class BezierCurve3D : Path3D
     private float _sinTime = 0.0f;
     private float _cosTime = 0.0f;
 
-    [ExportGroup("Debug")]
-    [Export]
-    private Color _debugColor = new Color();
-
-    [Export(PropertyHint.Range, "0.0, 5")]
-    private float _debugScale = 0.05f; 
 
     public override void _Process(double delta)
     {
@@ -52,41 +46,6 @@ public partial class BezierCurve3D : Path3D
 
         _sinTime += (float)delta; 
         _cosTime += (float)delta; 
-
-        if (Engine.IsEditorHint())
-        {
-
-            if (GetNode("DebugDraws") == null)
-            {
-                Node3D debugDraws = new Node3D();
-                debugDraws.Name = "DebugDraws"; 
-
-                AddChild(debugDraws);
-            } else
-            {
-                Node3D debugDraws = (Node3D)GetNode("DebugDraws");
-                foreach (Node3D chilld in debugDraws.GetChildren())
-                {
-                    chilld.QueueFree(); 
-                }
-            }
-
-            for (int i = 0; i < 3; i++)
-            {
-                switch (i)
-                {
-                    case 0:
-                        MeshInstance3D debug1 = SpawnDebug(StartPoint, GetNode("DebugDraws"));
-                        break;
-                    case 1:
-                        MeshInstance3D debug2 = SpawnDebug(MidPoint, GetNode("DebugDraws"));
-                        break;
-                     case 2:
-                        MeshInstance3D debug3 = SpawnDebug(EndPoint, GetNode("DebugDraws"));
-                        break;
-                }
-            }
-        }
 
         UpdateCurve(); 
     }
@@ -108,25 +67,6 @@ public partial class BezierCurve3D : Path3D
 
             Curve.AddPoint(point + sin + cos);
         }
-    }
-    public MeshInstance3D SpawnDebug(Vector3 position, Node parent)
-    {
-        StandardMaterial3D mat = new(); 
-        MeshInstance3D mesh = new MeshInstance3D();
-        SphereMesh sphere = new SphereMesh();
-
-        sphere.Material = mat;
-        sphere.Material.Set("transparency", 1); 
-        sphere.Radius = _debugScale;
-        sphere.Height = _debugScale * 2; 
-        mat.Set("albedo_color", _debugColor);
-        mat.Set("shading_mode", 0);
-        mesh.Mesh = sphere; 
-
-        parent.AddChild(mesh);
-        mesh.Position = position;
-
-        return mesh; 
     }
 
     public Vector3 GetCurve(float t)
