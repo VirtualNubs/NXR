@@ -7,9 +7,10 @@ using System;
 [GlobalClass]
 public partial class FirearmMagZone : InteractableSnapZone
 {
+    [Export]
+    private Firearm _firearm = null; 
     public FirearmMag CurrentMag = null; 
 
-    private Firearm _firearm = null; 
     
     [Export]
     private string _dropAction = "ax_button"; 

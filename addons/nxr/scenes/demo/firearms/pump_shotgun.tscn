@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://dv28qodnevgfd"]
+[gd_scene load_steps=40 format=3 uid="uid://dv28qodnevgfd"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_4naqp"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="2_dxnb2"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRay.cs" id="12_ap1x4"]
 [ext_resource type="Texture2D" uid="uid://daigr38dvr8gw" path="res://assets/textures/puff.png" id="13_w2cqu"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmParticlePlayer.cs" id="14_m6tgk"]
+[ext_resource type="PackedScene" uid="uid://pkqns3n458ob" path="res://addons/nxr/scenes/demo/firearms/optics/OpticHolo.tscn" id="15_jpqg1"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_i000j"]
 size = Vector3(0.0298283, 0.159043, 0.727847)
@@ -792,6 +793,9 @@ _grabType = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="GrabForegrip"]
 shape = SubResource("SphereShape3D_ywvdo")
+
+[node name="OpticHolo" parent="." instance=ExtResource("15_jpqg1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.033707, -0.0156561)
 
 [editable path="HandPose/NXRHandRight"]
 [editable path="HandPose/NXRHandRight/Hand_Glove_R"]

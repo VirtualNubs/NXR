@@ -15,7 +15,8 @@ radius = 0.0982442
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5ynnm"]
 render_priority = 0
 shader = ExtResource("2_or6wn")
-shader_parameter/scale = -0.015
+shader_parameter/dist = 250.0
+shader_parameter/scale = 1.0
 shader_parameter/glow = 1.0
 shader_parameter/reticle_color = Color(1, 0, 0, 1)
 shader_parameter/glass_color = null
