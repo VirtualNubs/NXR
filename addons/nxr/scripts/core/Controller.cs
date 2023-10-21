@@ -1,5 +1,6 @@
 using Godot;
 using Godot.Collections;
+using NXRInteractable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -118,6 +119,11 @@ public partial class Controller : XRController3D
 	}
 	public Vector3 GetAngularVelocity() { 
 		return _angulerVelocity; 
+	}
+
+	public bool LocalVelMatches(Vector3 dir, float threshold) { 
+		Node3D parent = (Node3D)GetParent(); 
+		return GetLocalVelocity().Dot(parent.ToLocal(dir)) > threshold; 
 	}
 }
 

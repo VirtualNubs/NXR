@@ -508,7 +508,7 @@ _pose = "poses_rifle/secondary"
 _grabPose = 1
 
 [node name="GrabForegrip" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0280531, -0.216)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0474252, -0.21525)
 collision_layer = 8
 freeze = true
 script = ExtResource("3_gvwdn")

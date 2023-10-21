@@ -1,10 +1,9 @@
-[gd_scene load_steps=28 format=3 uid="uid://de5mtyewlytyu"]
+[gd_scene load_steps=29 format=3 uid="uid://de5mtyewlytyu"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/InteractableSnapZone.cs" id="2_w5q6s"]
 [ext_resource type="PackedScene" uid="uid://cicqk5srmto4a" path="res://addons/nxr/scenes/demo/firearms/mags/ak_mag.tscn" id="3_2q3cp"]
 [ext_resource type="PackedScene" uid="uid://sfgdm1jksecs" path="res://addons/nxr/scenes/demo/firearms/ak.tscn" id="4_ckwcl"]
 [ext_resource type="PackedScene" uid="uid://dydxi0x7d4u7l" path="res://addons/nxr/scenes/demo/firearms/m4a1.tscn" id="5_7pwt6"]
-[ext_resource type="PackedScene" uid="uid://bo3g10fj20ul3" path="res://addons/nxr/scenes/demo/firearms/mags/stanag.tscn" id="6_aof3j"]
 [ext_resource type="Texture2D" uid="uid://blji1mxlwcbg3" path="res://assets/textures/kloofendal_48d_partly_cloudy_puresky_1k.exr" id="7_yoxst"]
 [ext_resource type="Texture2D" uid="uid://crkprx4cy1tha" path="res://assets/textures/grid.svg" id="8_vfar5"]
 [ext_resource type="Material" uid="uid://bmmxg6i8pehbi" path="res://assets/materials/ambientcg/concrete_dirty/mat_concrete_dirty.tres" id="9_5cas6"]
@@ -17,6 +16,8 @@
 [ext_resource type="PackedScene" uid="uid://cruglw88e4scn" path="res://demos/scenes/backpack.tscn" id="15_f3jrh"]
 [ext_resource type="PackedScene" uid="uid://dwwuwicdo1maj" path="res://addons/nxr/scenes/demo/firearms/870_shotgun.tscn" id="16_044cx"]
 [ext_resource type="PackedScene" uid="uid://b18gjqs5ilgv8" path="res://addons/nxr/scenes/demo/firearms/attachments/FlagAttachment.tscn" id="17_plhss"]
+[ext_resource type="PackedScene" uid="uid://dfl5qvof7chxv" path="res://addons/nxr/scenes/demo/firearms/sniper.tscn" id="18_2uk8a"]
+[ext_resource type="PackedScene" uid="uid://ogwv7761rv6u" path="res://addons/nxr/scenes/demo/firearms/double_barrel_shotgun.tscn" id="18_weicj"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_t0bgk"]
 radius = 0.0776668
@@ -143,15 +144,9 @@ billboard = 2
 text = "On Drop"
 
 [node name="Firearm" parent="." instance=ExtResource("5_7pwt6")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 13.6635, 0.638185, -1.17637)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 13.6635, 0.638185, -1.64072)
 center_of_mass_mode = 1
 _recoilKick = Vector3(0, 0, 0.1)
-
-[node name="FirearmMag" parent="." instance=ExtResource("6_aof3j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.7377, 0.548464, -1.43231)
-
-[node name="FirearmMag2" parent="." instance=ExtResource("6_aof3j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.8195, 0.550394, -1.44065)
 
 [node name="Enviroment" type="Node3D" parent="."]
 
@@ -299,26 +294,26 @@ use_collision = true
 size = Vector3(14.7021, 1, 30)
 
 [node name="Firearm2" parent="." instance=ExtResource("9_yb3sr")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 13.6271, 0.699837, -1.72433)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 13.6271, 0.699837, 0.119998)
 
 [node name="OpticHolo" parent="." instance=ExtResource("11_3h5en")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6623, 0.503144, -1.76339)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6623, 0.503144, -2.17065)
 Priority = 1.0
 
 [node name="OpticHolo3" parent="." instance=ExtResource("11_3h5en")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.563, 0.503144, -1.76607)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.563, 0.503144, -2.17124)
 Priority = 1.0
 
 [node name="OpticHolo4" parent="." instance=ExtResource("11_3h5en")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.7744, 0.503144, -1.71557)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.7744, 0.503144, -2.17447)
 Priority = 1.0
 
 [node name="OpticHolo2" parent="." instance=ExtResource("12_73mnm")]
-transform = Transform3D(0.998565, 0, 0.053556, 0, 1, 0, -0.053556, 0, 0.998565, 13.6194, 0.5, -1.39151)
+transform = Transform3D(0.998565, 0, 0.053556, 0, 1, 0, -0.053556, 0, 0.998565, 13.7608, 0.5, -2.06161)
 Priority = 1.0
 
 [node name="AKMagSpawn" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5506, 0.632263, -0.0226012)
+transform = Transform3D(2.98023e-08, 0, -1, 0, 1, 0, 1, 0, 2.98023e-08, 13.6876, 0.632263, -1.29238)
 freeze = true
 script = ExtResource("13_nip3a")
 _scene = ExtResource("3_2q3cp")
@@ -333,18 +328,27 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0202637, 0.0471917)
 shape = SubResource("SphereShape3D_r8t2f")
 
 [node name="Ak" parent="." instance=ExtResource("4_ckwcl")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 13.6584, 0.63482, -0.459777)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 13.6584, 0.63482, -1.46418)
 
 [node name="Backpack" parent="." instance=ExtResource("15_f3jrh")]
 
 [node name="Firearm870PumpAction" parent="." instance=ExtResource("16_044cx")]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 13.5428, 0.602928, -0.683761)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 13.5428, 0.602928, -0.118418)
 
 [node name="LaserAttachment" parent="." instance=ExtResource("17_plhss")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6331, 0.516168, -1.54404)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6331, 0.516168, -1.96783)
 
 [node name="LaserAttachment2" parent="." instance=ExtResource("17_plhss")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6331, 0.516168, -1.45728)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6331, 0.516168, -1.88107)
 
 [node name="LaserAttachment3" parent="." instance=ExtResource("17_plhss")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5282, 0.516168, -1.54404)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5282, 0.516168, -1.96783)
+
+[node name="DoubleBarrelShotgun" parent="." instance=ExtResource("18_weicj")]
+transform = Transform3D(2.98023e-08, 0, -1, 0, 1, 0, 1, 0, 2.98023e-08, 13.6898, 0.622407, -0.34124)
+
+[node name="DoubleBarrelShotgun2" parent="." instance=ExtResource("18_weicj")]
+transform = Transform3D(2.98023e-08, 0, -1, 0, 1, 0, 1, 0, 2.98023e-08, 13.6898, 0.622407, -0.504889)
+
+[node name="Firearm3" parent="." instance=ExtResource("18_2uk8a")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 13.6444, 0.559988, -1.17713)

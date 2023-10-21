@@ -53,7 +53,6 @@ size = Vector3(2.72664, 6.35289, 18.1497)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000677347, -0.00169241, 0.00201139)
 collision_layer = 8
 script = ExtResource("1_1dbia")
-MaxAmmo = 30
 CurrentAmmo = 30
 _switchOnDrop = true
 

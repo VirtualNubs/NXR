@@ -100,7 +100,6 @@ surface_material_override/0 = ExtResource("14_olsd1")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00379207, -0.104417)
 script = ExtResource("8_ab7qs")
 _internal = true
-MaxAmmo = 10
 CurrentAmmo = 10
 
 [node name="HandPose" type="RemoteTransform3D" parent="." node_paths=PackedStringArray("_customTree")]
