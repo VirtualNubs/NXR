@@ -443,7 +443,7 @@ remote_path = NodePath("../SubViewport/Camera3D")
 render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="sniper/Sniper_Rifle/Scope/SubViewport"]
-transform = Transform3D(0.01, 4.08457e-07, -1.4081e-06, -3.99547e-07, 0.0099998, 6.32067e-05, 1.41065e-06, -6.32065e-05, 0.0099998, -1.39698e-09, 0.0995567, -0.196502)
+transform = Transform3D(0.01, 4.08457e-07, -1.4081e-06, -3.99547e-07, 0.0099998, 6.32067e-05, 1.41066e-06, -6.32065e-05, 0.0099998, -4.42378e-09, 0.0995567, -0.196502)
 fov = 2.8
 
 [node name="glass2" parent="sniper/Sniper_Rifle/Scope" instance=ExtResource("4_u5hcn")]
@@ -473,15 +473,15 @@ material_override = ExtResource("3_rgx54")
 mesh = SubResource("ArrayMesh_i20k7")
 skeleton = NodePath("")
 
-[node name="FirearmRotatingBolt" type="RigidBody3D" parent="."]
+[node name="FirearmRotatingBolt" type="RigidBody3D" parent="." node_paths=PackedStringArray("Target")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00371663, 0.0592214, 0.0110642)
 collision_layer = 8
 collision_mask = 0
 freeze = true
 script = ExtResource("5_obog8")
-_endRotation = Vector3(0, 0, 1.34561)
-_startPosition = Vector3(-0.00371663, 0.0592214, 0.0110642)
-_endPosition = Vector3(-0.00371663, 0.0592214, 0.0893073)
+Target = NodePath(".")
+StartXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00371663, 0.0592214, 0.0110642)
+EndXform = Transform3D(0.474457, -0.880279, 0, 0.880279, 0.474457, 0, 0, 0, 1, -0.00371663, 0.0592214, 0.0924277)
 GrabAction = "trigger_click"
 
 [node name="Bolt" type="MeshInstance3D" parent="FirearmRotatingBolt"]
@@ -498,7 +498,6 @@ shape = SubResource("SphereShape3D_4lby0")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0639857, -0.0344918)
 script = ExtResource("6_60hkw")
 _internal = true
-MaxAmmo = 10
 CurrentAmmo = 10
 
 [node name="FirearmRay" type="RayCast3D" parent="." node_paths=PackedStringArray("_firearm")]

@@ -104,9 +104,11 @@ public partial class InteractableGrabKinematic : Node
         Transform3D secondaryXform = Interactable.SecondaryInteractor.GlobalTransform;
         Vector3 up = Interactable.GlobalTransform.Basis.Y + GetUpVector();
         Vector3 lookDir = secondaryXform.Origin - Interactable.PrimaryInteractor.GlobalTransform.Origin;
+        Vector3 offset = Interactable.SecondaryGrabPoint.GlobalPosition - Interactable.PrimaryGrabPoint.GlobalPosition; 
+                
 
         Interactable._primaryGrabTransorm.Basis = Interactable.Basis;
-        lookXform.Basis = Basis.LookingAt(lookDir.Normalized(), up.Normalized());
+        lookXform.Basis = Basis.LookingAt(lookDir.Normalized(), up.Normalized()).Orthonormalized();
         return lookXform;
     }
 

@@ -2,7 +2,8 @@ using Godot;
 using NXR;
 using NXRFirearm;
 using NXRInteractable;
-using System;
+
+namespace NXRFirearm; 
 
 [GlobalClass]
 public partial class FirearmMagZone : InteractableSnapZone
@@ -13,7 +14,7 @@ public partial class FirearmMagZone : InteractableSnapZone
 
     
     [Export]
-    private string _dropAction = "ax_button"; 
+    private string _ejectAction = "ax_button"; 
 
     public override void _Ready()
     {
@@ -35,9 +36,9 @@ public partial class FirearmMagZone : InteractableSnapZone
         base._Process(delta);
 
         if (_firearm != null && _firearm.GetPrimaryInteractor() != null) { 
-            if (_dropAction != null && _firearm.GetPrimaryInteractor().Controller.ButtonOneShot(_dropAction)) { 
-                Unsnap(); 
-                _hoveredInteractable = null; 
+            if (_ejectAction != null && _firearm.GetPrimaryInteractor().Controller.ButtonOneShot(_ejectAction) && CurrentMag != null) { 
+                FirearmMag mag = CurrentMag; 
+                Eject(CurrentMag); 
             }
         }
     }
@@ -50,6 +51,12 @@ public partial class FirearmMagZone : InteractableSnapZone
 
     private void OnUnSnapped() { 
         CurrentMag = null; 
+    }
+
+
+    private void Eject(FirearmMag mag) { 
+        Unsnap(); 
+        mag.ApplyCentralImpulse(mag.GlobalTransform.Basis.Z); 
     }
 
     private void TryChamber() { 

@@ -1,21 +1,24 @@
-[gd_scene load_steps=23 format=3 uid="uid://cdv34g33mma75"]
+[gd_scene load_steps=24 format=3 uid="uid://ogwv7761rv6u"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_4s4rd"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="2_c0i7n"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="3_inb0u"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/FirearmPump.cs" id="4_maby4"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="5_7138h"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMag.cs" id="6_rnj4y"]
 [ext_resource type="PackedScene" uid="uid://b5s345q0wunft" path="res://addons/nxr/scenes/hands/nxr_player_hand.tscn" id="7_ynyk6"]
 [ext_resource type="AnimationLibrary" uid="uid://bvxp1d4s8s2h" path="res://assets/hands/poses/poses_default.res" id="8_d04wt"]
 [ext_resource type="AnimationLibrary" uid="uid://cfxiq30ri52j5" path="res://assets/hands/poses/poses_rifle.res" id="9_muq0j"]
 [ext_resource type="AnimationLibrary" uid="uid://h7sli6dulrsl" path="res://assets/hands/poses/poses_shotgun.res" id="10_10rhc"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRay.cs" id="11_1ciw0"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmBreakAction.cs" id="11_tfuoa"]
 [ext_resource type="PackedScene" uid="uid://c0osm0deelpuu" path="res://assets/models/guns/Double_Barrel_Shotgun/double_barrel_shotgun.glb" id="12_s4gr6"]
 [ext_resource type="Material" uid="uid://bjpmcolhgf2hf" path="res://assets/models/guns/Double_Barrel_Shotgun/double_barrel_shotgun.material" id="13_urljd"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMagZone.cs" id="14_xaqes"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_i000j"]
-size = Vector3(0.0572386, 0.201704, 0.679831)
+size = Vector3(0.0572386, 0.0884536, 0.439329)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_4fvoy"]
+radius = 0.0834341
 
 [sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_7e4af"]
 filter_enabled = true
@@ -431,35 +434,20 @@ _kickRecoverSpeed = 0.05
 _riseRecoverSpeed = 0.05
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.044656, -0.111079)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.000202769, -0.111079)
 shape = SubResource("BoxShape3D_i000j")
-
-[node name="InteractableGrabPoint" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0281097, 0.029022)
-script = ExtResource("2_c0i7n")
-
-[node name="InteractableGrabPoint2" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0281097, -0.447324)
-script = ExtResource("2_c0i7n")
-_grabType = 1
 
 [node name="InteractableGrabKinematic" type="Node" parent="."]
 script = ExtResource("3_inb0u")
 _twoHanded = true
 
-[node name="FirearmPump" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00109669, -0.0116358, -0.370474)
-freeze = true
-script = ExtResource("4_maby4")
-_startPosition = Vector3(-0.00109669, -0.0116358, -0.370474)
-_endPosition = Vector3(-0.00109669, -0.0116358, -0.234585)
+[node name="InteractableGrabPoint" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0331265, -0.230023)
+script = ExtResource("2_c0i7n")
+_grabType = 1
 
-[node name="SHandPose" type="RemoteTransform3D" parent="FirearmPump" node_paths=PackedStringArray("_interactable")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0240036, 0.0157242)
-script = ExtResource("5_7138h")
-_interactable = NodePath("../..")
-_pose = "poses_rifle/secondary"
-_grabPose = 1
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractableGrabPoint"]
+shape = SubResource("SphereShape3D_4fvoy")
 
 [node name="HandPose" type="RemoteTransform3D" parent="." node_paths=PackedStringArray("_customTree")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0219548, 0.10407)
@@ -534,6 +522,12 @@ bones/24/position = Vector3(3.72529e-09, 0.0197651, 4.65661e-09)
 bones/25/position = Vector3(-0.0307819, 0.0670555, -0.0420653)
 bones/25/rotation = Quaternion(0.706524, 6.47993e-06, 8.68672e-06, 0.707689)
 
+[node name="FirearmBreakAction" type="RigidBody3D" parent="." node_paths=PackedStringArray("Target")]
+script = ExtResource("11_tfuoa")
+Target = NodePath("../double_barrel_shotgun/Barrel")
+StartXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.82233e-05, 0, -0.174102)
+EndXform = Transform3D(1, 0, 0, 0, 0.849304, 0.527905, 0, -0.527905, 0.849304, 5.82233e-05, 0, -0.174102)
+
 [node name="Rays" type="Node3D" parent="."]
 
 [node name="FirearmRay" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
@@ -567,6 +561,7 @@ script = ExtResource("11_1ciw0")
 _firearm = NodePath("../..")
 
 [node name="double_barrel_shotgun" parent="." instance=ExtResource("12_s4gr6")]
+transform = Transform3D(0.738385, 0, 0, 0, 0.738385, 0, 0, 0, 0.738385, 0, 0, 0)
 
 [node name="DoubleBarrelShotgun" parent="double_barrel_shotgun" index="0"]
 surface_material_override/0 = ExtResource("13_urljd")
@@ -575,19 +570,22 @@ surface_material_override/0 = ExtResource("13_urljd")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.82233e-05, 0, -0.174102)
 surface_material_override/0 = ExtResource("13_urljd")
 
-[node name="FirearmMag" type="RigidBody3D" parent="double_barrel_shotgun/Barrel" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0150582, 0.0395843, 0.0945191)
-script = ExtResource("6_rnj4y")
-_internal = true
-MaxAmmo = 1
-CurrentAmmo = 1
+[node name="SHandPose" type="RemoteTransform3D" parent="double_barrel_shotgun/Barrel" index="0" node_paths=PackedStringArray("_interactable")]
+transform = Transform3D(1.35431, 0, 0, 0, 1.35431, 0, 0, 0, 1.35431, -0.00154348, -0.0302423, -0.163306)
+script = ExtResource("5_7138h")
+_interactable = NodePath("../../..")
+_pose = "poses_rifle/secondary"
+_grabPose = 1
 
-[node name="FirearmMag2" type="RigidBody3D" parent="double_barrel_shotgun/Barrel" index="1"]
+[node name="FirearmMagZoneLeft" type="Area3D" parent="double_barrel_shotgun/Barrel" index="1" node_paths=PackedStringArray("_firearm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0150582, 0.0395843, 0.0945191)
+script = ExtResource("14_xaqes")
+_firearm = NodePath("../../..")
+
+[node name="FirearmMagZoneRight" type="Area3D" parent="double_barrel_shotgun/Barrel" index="2" node_paths=PackedStringArray("_firearm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0149418, 0.0395843, 0.0945191)
-script = ExtResource("6_rnj4y")
-_internal = true
-MaxAmmo = 1
-CurrentAmmo = 1
+script = ExtResource("14_xaqes")
+_firearm = NodePath("../../..")
 
 [node name="Trigger2" parent="double_barrel_shotgun" index="2"]
 surface_material_override/0 = ExtResource("13_urljd")
