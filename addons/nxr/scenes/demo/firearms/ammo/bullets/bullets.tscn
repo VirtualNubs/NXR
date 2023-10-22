@@ -1,0 +1,78 @@
+[gd_scene load_steps=3 format=3 uid="uid://x7wm6bfpewpw"]
+
+[ext_resource type="PackedScene" uid="uid://by1xd6c3tkypm" path="res://assets/models/ammo/bullets/bullets.glb" id="1_cqold"]
+[ext_resource type="Material" uid="uid://dr1bhnahf7eyq" path="res://assets/models/ammo/bullets/bullets.material" id="2_ohyoe"]
+
+[node name="bullets" instance=ExtResource("1_cqold")]
+
+[node name="9x18" parent="." index="0"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="9x18_Tip" parent="9x18" index="0"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="338 Lapua" parent="." index="1"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="338 Lapua_Tip" parent="338 Lapua" index="0"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="5_45x39" parent="." index="2"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="5_45x39_Tip" parent="5_45x39" index="0"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="5_56x45" parent="." index="3"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="5_56x45_Tip" parent="5_56x45" index="0"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="7_62x39" parent="." index="4"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="7_62x39_Tip" parent="7_62x39" index="0"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="7_62x51" parent="." index="5"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="7_62x51_Tip" parent="7_62x51" index="0"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="7_62x54R" parent="." index="6"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="7_62x54R_Tip" parent="7_62x54R" index="0"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="9x19" parent="." index="7"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="9x19_Tip" parent="9x19" index="0"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="12_7x108" parent="." index="8"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="12_7x108_Tip" parent="12_7x108" index="0"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="12 Gauge" parent="." index="9"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="12 Gauge_Blue" parent="." index="10"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="44 Magnum" parent="." index="11"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="44 Magnum_Tip" parent="44 Magnum" index="0"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="50 BMG" parent="." index="12"]
+surface_material_override/0 = ExtResource("2_ohyoe")
+
+[node name="50 BMG_Tip" parent="50 BMG" index="0"]
+surface_material_override/0 = ExtResource("2_ohyoe")
