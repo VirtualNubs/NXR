@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://b2tbvp7qunl34"]
+
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmBullet.cs" id="1_y7wsr"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="2_bvktt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h8q34"]
+size = Vector3(0.0236022, 0.0223716, 0.0466176)
+
+[node name="FirearmBullet" type="RigidBody3D" groups=["44"]]
+collision_layer = 8
+script = ExtResource("1_y7wsr")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="." groups=["44"]]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 9.42917e-10, -0.0215714)
+radius = 0.00731275
+height = 0.037958
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_h8q34")
+
+[node name="InteractableGrabKinematic" type="Node" parent="."]
+script = ExtResource("2_bvktt")

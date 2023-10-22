@@ -26,20 +26,27 @@ public partial class FirearmMag : Interactable
         base._Ready(); 
         CurrentAmmo = MaxAmmo; 
 
-         if (_internal && Util.NodeIs((Node)GetParent(), typeof(Firearm)))
+        if (_internal && Util.NodeIs((Node)GetParent(), typeof(Firearm)))
         {
             _firearm = (Firearm)GetParent();
             _firearm.TryChamber += TryChamber; 
         }
     }
 
-    private void Eject() { 
-        
-    }
     private void TryChamber() { 
         if (CurrentAmmo <= 0) return; 
 
         _firearm.Chambered = true; 
         CurrentAmmo -= 1; 
+    }
+
+    public void RemoveBullet(int amount) { 
+        CurrentAmmo -= amount; 
+        CurrentAmmo = Mathf.Clamp(CurrentAmmo, 0, MaxAmmo); 
+    }
+
+    public void AddBullet(int amount) { 
+        CurrentAmmo += amount; 
+        CurrentAmmo = Mathf.Clamp(CurrentAmmo, 0, MaxAmmo); 
     }
 }

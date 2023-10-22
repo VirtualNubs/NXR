@@ -1,20 +1,16 @@
-[gd_scene load_steps=31 format=3 uid="uid://bfdatqjyb6fds"]
+[gd_scene load_steps=26 format=3 uid="uid://cpqiueokpvy2s"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_pmxkv"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="2_bis1m"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/FirearmPump.cs" id="3_lmc2n"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="4_nanfx"]
 [ext_resource type="PackedScene" uid="uid://b5s345q0wunft" path="res://addons/nxr/scenes/hands/nxr_player_hand.tscn" id="5_72nlt"]
 [ext_resource type="AnimationLibrary" uid="uid://bvxp1d4s8s2h" path="res://assets/hands/poses/poses_default.res" id="6_coa25"]
 [ext_resource type="AnimationLibrary" uid="uid://cfxiq30ri52j5" path="res://assets/hands/poses/poses_rifle.res" id="7_27y5d"]
 [ext_resource type="AnimationLibrary" uid="uid://h7sli6dulrsl" path="res://assets/hands/poses/poses_shotgun.res" id="8_2v307"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRay.cs" id="9_2lelw"]
 [ext_resource type="Texture2D" uid="uid://daigr38dvr8gw" path="res://assets/textures/puff.png" id="10_51i7d"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmParticlePlayer.cs" id="11_5hanj"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="12_8jt7j"]
 [ext_resource type="PackedScene" uid="uid://mdltwyayp70g" path="res://assets/models/guns/Flaregun/flaregun.glb" id="13_oj7mw"]
 [ext_resource type="Material" uid="uid://b1x6ecq7x8in8" path="res://assets/models/guns/Flaregun/flaregun.material" id="14_c371r"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMag.cs" id="15_3snmm"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_i000j"]
 size = Vector3(0.0298283, 0.151599, 0.257184)
@@ -452,9 +448,6 @@ particles_anim_loop = false
 [sub_resource type="QuadMesh" id="QuadMesh_0xluh"]
 material = SubResource("StandardMaterial3D_5iab6")
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_ywvdo"]
-radius = 0.0537363
-
 [node name="FlareGun" type="RigidBody3D"]
 collision_layer = 8
 script = ExtResource("1_pmxkv")
@@ -471,22 +464,7 @@ shape = SubResource("BoxShape3D_i000j")
 
 [node name="InteractableGrabKinematic" type="Node" parent="."]
 script = ExtResource("2_bis1m")
-_twoHanded = true
 _lookUpVector = 2
-
-[node name="FirearmPump" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00109669, 0.0309934, -0.0667639)
-freeze = true
-script = ExtResource("3_lmc2n")
-_startPosition = Vector3(-0.00109669, -0.0116358, -0.370474)
-_endPosition = Vector3(-0.00109669, -0.0116358, -0.234585)
-
-[node name="SHandPose" type="RemoteTransform3D" parent="FirearmPump" node_paths=PackedStringArray("_interactable")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0240036, 0.0157242)
-script = ExtResource("4_nanfx")
-_interactable = NodePath("../..")
-_pose = "poses_rifle/secondary"
-_grabPose = 1
 
 [node name="HandPose" type="RemoteTransform3D" parent="." node_paths=PackedStringArray("_customTree")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0219548, 0.0930734)
@@ -561,44 +539,6 @@ bones/24/position = Vector3(3.72529e-09, 0.0197651, 4.65661e-09)
 bones/25/position = Vector3(-0.0307819, 0.0670555, -0.0420653)
 bones/25/rotation = Quaternion(0.706524, 6.47993e-06, 8.68672e-06, 0.707689)
 
-[node name="Rays" type="Node3D" parent="."]
-
-[node name="FirearmRay" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(1, 0, 0, 0, 0.998681, 0.0513425, 0, -0.0513425, 0.998681, 0, 0.0329258, -0.130232)
-target_position = Vector3(0, 0, -100)
-script = ExtResource("9_2lelw")
-_firearm = NodePath("../..")
-
-[node name="FirearmRay2" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(0.998953, 0, -0.0457466, 0, 1, 0, 0.0457466, 0, 0.998953, 0, 0.0329258, -0.130232)
-target_position = Vector3(0, 0, -100)
-script = ExtResource("9_2lelw")
-_firearm = NodePath("../..")
-
-[node name="FirearmRay4" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(0.998953, 0, -0.0457466, -0.00479929, 0.994482, -0.1048, 0.0454941, 0.10491, 0.993441, 0, 0.0329258, -0.130232)
-target_position = Vector3(0, 0, -100)
-script = ExtResource("9_2lelw")
-_firearm = NodePath("../..")
-
-[node name="FirearmRay5" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(0.998953, 0, -0.0457466, 0.00135314, 0.999562, 0.029548, 0.0457266, -0.029579, 0.998516, 0, 0.0329258, -0.130232)
-target_position = Vector3(0, 0, -100)
-script = ExtResource("9_2lelw")
-_firearm = NodePath("../..")
-
-[node name="FirearmRay3" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(0.997094, 0, 0.0761796, 0, 1, 0, -0.0761796, 0, 0.997094, 0, 0.0329258, -0.130232)
-target_position = Vector3(0, 0, -100)
-script = ExtResource("9_2lelw")
-_firearm = NodePath("../..")
-
-[node name="FirearmRay6" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0329258, -0.130232)
-target_position = Vector3(0, 0, -100)
-script = ExtResource("9_2lelw")
-_firearm = NodePath("../..")
-
 [node name="FirearmParticlePlayer2" type="GPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0321364, -0.145744)
 emitting = false
@@ -611,16 +551,6 @@ draw_pass_1 = SubResource("QuadMesh_0xluh")
 script = ExtResource("11_5hanj")
 _restartOnFire = true
 
-[node name="GrabForegrip" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00215933, -0.0656786)
-collision_layer = 8
-freeze = true
-script = ExtResource("12_8jt7j")
-_grabType = 1
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="GrabForegrip"]
-shape = SubResource("SphereShape3D_ywvdo")
-
 [node name="flaregun" parent="." instance=ExtResource("13_oj7mw")]
 
 [node name="Trigger" parent="flaregun" index="0"]
@@ -631,13 +561,6 @@ surface_material_override/0 = ExtResource("14_c371r")
 
 [node name="Barrel" parent="flaregun" index="2"]
 surface_material_override/0 = ExtResource("14_c371r")
-
-[node name="FirearmMag" type="RigidBody3D" parent="flaregun/Barrel" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0322764, -0.0060899)
-script = ExtResource("15_3snmm")
-_internal = true
-MaxAmmo = 1
-CurrentAmmo = 1
 
 [node name="Body" parent="flaregun" index="3"]
 surface_material_override/0 = ExtResource("14_c371r")

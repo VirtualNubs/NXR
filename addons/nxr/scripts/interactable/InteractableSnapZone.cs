@@ -34,7 +34,7 @@ public partial class InteractableSnapZone : Area3D
     [Export]
     private float _breakDistance = 0.3f;
 
-    private Interactable _snappedInteractable = null;
+    protected Interactable _snappedInteractable = null;
     protected Interactable _hoveredInteractable;
 
     private Vector3 _snappedInitScale;
@@ -79,7 +79,7 @@ public partial class InteractableSnapZone : Area3D
         }
     }
 
-    public void Unsnap()
+    public virtual void Unsnap()
     {
         if (_snappedInteractable == null) return;
         Interactable interactable = _snappedInteractable;
@@ -94,7 +94,7 @@ public partial class InteractableSnapZone : Area3D
         EmitSignal("OnUnSnap");
     }
 
-    public void Snap(Interactable interactable)
+    public virtual void Snap(Interactable interactable)
     {
 
 

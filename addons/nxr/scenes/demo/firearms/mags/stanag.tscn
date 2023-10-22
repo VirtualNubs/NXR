@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bo3g10fj20ul3"]
+[gd_scene load_steps=16 format=3 uid="uid://bo3g10fj20ul3"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMag.cs" id="1_tjp0p"]
 [ext_resource type="Material" uid="uid://ckhn2nohm0vht" path="res://assets/models/guns/M4A1/mat_m4.tres" id="2_5kvyr"]
@@ -8,6 +8,7 @@
 [ext_resource type="AnimationLibrary" uid="uid://bvxp1d4s8s2h" path="res://assets/hands/poses/poses_default.res" id="7_5r0qk"]
 [ext_resource type="AnimationLibrary" uid="uid://cfxiq30ri52j5" path="res://assets/hands/poses/poses_rifle.res" id="8_0i0gj"]
 [ext_resource type="AnimationLibrary" uid="uid://h7sli6dulrsl" path="res://assets/hands/poses/poses_shotgun.res" id="9_lr6ll"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmBulletVisualizer.cs" id="9_vy8w2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_221b8"]
 
@@ -505,6 +506,160 @@ bones/23/rotation = Quaternion(-0.0213757, 0.000525877, 0.641994, 0.766411)
 bones/24/position = Vector3(3.72529e-09, 0.0197651, 4.65661e-09)
 bones/25/position = Vector3(-0.0307819, 0.0670555, -0.0420653)
 bones/25/rotation = Quaternion(0.706524, 6.47993e-06, 8.68672e-06, 0.707689)
+
+[node name="FirearmBulletVisualizer" type="Node3D" parent="." node_paths=PackedStringArray("_mag")]
+script = ExtResource("9_vy8w2")
+_mag = NodePath("..")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0287904)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00689442, 0, -0.0338957)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0212397)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D4" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00689442, 0, -0.026345)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D5" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0129453)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D6" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00689442, 0, -0.0180506)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D7" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.00485913)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D8" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00689442, 0, -0.00996445)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D9" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00372747)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D10" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00689442, 0, -0.00137785)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D11" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0114213)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D12" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00689442, 0, 0.00631594)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D13" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0184286)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D14" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00689442, 0, 0.0133233)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D15" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 0.999137, -0.0415443, 0, 0.0415443, 0.999137, 0, 0, 0.0271483)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D16" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 0.999137, -0.0415443, 0, 0.0415443, 0.999137, 0.00689442, 0, 0.022043)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D17" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 0.999137, -0.0415443, 0, 0.0415443, 0.999137, 0, -0.000371235, 0.0360765)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D18" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 0.999137, -0.0415443, 0, 0.0415443, 0.999137, 0.00689442, -0.000371235, 0.0309712)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D19" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 0.999137, -0.0415443, 0, 0.0415443, 0.999137, 0, -0.000647103, 0.0427111)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D20" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 0.999137, -0.0415443, 0, 0.0415443, 0.999137, 0.00689442, -0.000647103, 0.0376058)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D21" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 0.997881, -0.0650722, 0, 0.0650722, 0.997881, 0, -0.00100186, 0.0512429)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D22" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 0.997881, -0.0650722, 0, 0.0650722, 0.997881, 0.00689442, -0.00100186, 0.0461375)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D23" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 0.997035, -0.0769452, 0, 0.0769452, 0.997035, 0, -0.00144987, 0.0581131)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D24" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 0.997035, -0.0769452, 0, 0.0769452, 0.997035, 0.00689442, -0.00144987, 0.0530078)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D25" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 0.997035, -0.0769452, 0, 0.0769452, 0.997035, 0, -0.002158, 0.0672888)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D26" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 0.997035, -0.0769452, 0, 0.0769452, 0.997035, 0.00689442, -0.002158, 0.0621835)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D27" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 0.997035, -0.0769452, 0, 0.0769452, 0.997035, 0, -0.00292627, 0.0772439)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D28" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 0.997035, -0.0769452, 0, 0.0769452, 0.997035, 0.00689442, -0.00292627, 0.0721385)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D29" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 0.988343, -0.152244, 0, 0.152244, 0.988343, 0, -0.00339219, 0.0854122)
+radius = 0.00346396
+height = 0.0590195
+
+[node name="CSGCylinder3D30" type="CSGCylinder3D" parent="FirearmBulletVisualizer"]
+transform = Transform3D(1, 0, 0, 0, 0.988343, -0.152244, 0, 0.152244, 0.988343, 0.00689442, -0.00339219, 0.0803068)
+radius = 0.00346396
+height = 0.0590195
 
 [editable path="HandPose/NXRHandRight"]
 [editable path="HandPose/NXRHandRight/Hand_Glove_R"]

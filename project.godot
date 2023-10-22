@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 ZombieDemoManager="*res://demos/ZombieWaveShooter/scripts/zombie_demo_manager.gd"
 
+[display]
+
+window/size/mode=3
+
 [dotnet]
 
 project/assembly_name="NXR"

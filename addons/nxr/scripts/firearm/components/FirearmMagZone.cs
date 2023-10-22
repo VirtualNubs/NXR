@@ -53,7 +53,6 @@ public partial class FirearmMagZone : InteractableSnapZone
         CurrentMag = null; 
     }
 
-
     private void Eject(FirearmMag mag) { 
         Unsnap(); 
         mag.ApplyCentralImpulse(mag.GlobalTransform.Basis.Z); 
@@ -64,7 +63,7 @@ public partial class FirearmMagZone : InteractableSnapZone
 
         if (CurrentMag.CurrentAmmo > 0) { 
             _firearm.Chambered = true; 
-            CurrentMag.CurrentAmmo -= 1; 
+            CurrentMag.RemoveBullet(1); 
         }
     }
 }

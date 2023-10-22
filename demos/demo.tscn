@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://de5mtyewlytyu"]
+[gd_scene load_steps=31 format=3 uid="uid://de5mtyewlytyu"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/InteractableSnapZone.cs" id="2_w5q6s"]
 [ext_resource type="PackedScene" uid="uid://cicqk5srmto4a" path="res://addons/nxr/scenes/demo/firearms/mags/ak_mag.tscn" id="3_2q3cp"]
@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://dydxi0x7d4u7l" path="res://addons/nxr/scenes/demo/firearms/m4a1.tscn" id="5_7pwt6"]
 [ext_resource type="Texture2D" uid="uid://blji1mxlwcbg3" path="res://assets/textures/kloofendal_48d_partly_cloudy_puresky_1k.exr" id="7_yoxst"]
 [ext_resource type="Texture2D" uid="uid://crkprx4cy1tha" path="res://assets/textures/grid.svg" id="8_vfar5"]
-[ext_resource type="Material" uid="uid://bmmxg6i8pehbi" path="res://assets/materials/ambientcg/concrete_dirty/mat_concrete_dirty.tres" id="9_5cas6"]
 [ext_resource type="PackedScene" uid="uid://ctrtq0t2fqwtr" path="res://addons/nxr/scenes/player/nxr_player.tscn" id="9_sulpo"]
 [ext_resource type="PackedScene" uid="uid://dv28qodnevgfd" path="res://addons/nxr/scenes/demo/firearms/pump_shotgun.tscn" id="9_yb3sr"]
 [ext_resource type="PackedScene" uid="uid://dwerf83l8o8t6" path="res://addons/nxr/scenes/demo/firearms/attachments/LaserAttachment.tscn" id="11_3h5en"]
@@ -18,6 +17,9 @@
 [ext_resource type="PackedScene" uid="uid://b18gjqs5ilgv8" path="res://addons/nxr/scenes/demo/firearms/attachments/FlagAttachment.tscn" id="17_plhss"]
 [ext_resource type="PackedScene" uid="uid://dfl5qvof7chxv" path="res://addons/nxr/scenes/demo/firearms/sniper.tscn" id="18_2uk8a"]
 [ext_resource type="PackedScene" uid="uid://ogwv7761rv6u" path="res://addons/nxr/scenes/demo/firearms/double_barrel_shotgun.tscn" id="18_weicj"]
+[ext_resource type="PackedScene" uid="uid://dq6in8x7tjd4r" path="res://addons/nxr/scenes/demo/firearms/44_magnum.tscn" id="19_i4x43"]
+[ext_resource type="PackedScene" uid="uid://bmwt4unjh2gnq" path="res://addons/nxr/scenes/demo/firearms/ammo/12g.tscn" id="20_c5db0"]
+[ext_resource type="PackedScene" uid="uid://b2tbvp7qunl34" path="res://addons/nxr/scenes/demo/firearms/ammo/44.tscn" id="21_w66u6"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_t0bgk"]
 radius = 0.0776668
@@ -209,90 +211,6 @@ material_override = SubResource("StandardMaterial3D_r832g")
 use_collision = true
 size = Vector3(15, 1, 57.53)
 
-[node name="CSGBox3D7" type="CSGBox3D" parent="Geometry"]
-transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -13.6197, 0.48779, 13.083)
-material_override = ExtResource("9_5cas6")
-use_collision = true
-size = Vector3(9.97388, 11.0733, 30)
-
-[node name="CSGBox3D9" type="CSGBox3D" parent="Geometry"]
-transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -8.89659, 0.48779, 13.083)
-material_override = SubResource("StandardMaterial3D_424j4")
-use_collision = true
-size = Vector3(9.97388, 10.0093, 1.56876)
-
-[node name="CSGBox3D10" type="CSGBox3D" parent="Geometry"]
-transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -8.45308, 0.261996, 13.083)
-material_override = SubResource("StandardMaterial3D_424j4")
-use_collision = true
-size = Vector3(9.97388, 10.0093, 1.56876)
-
-[node name="CSGBox3D11" type="CSGBox3D" parent="Geometry"]
-transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -7.9832, 0.0532077, 13.083)
-material_override = SubResource("StandardMaterial3D_424j4")
-use_collision = true
-size = Vector3(9.97388, 10.0093, 1.56876)
-
-[node name="CSGBox3D12" type="CSGBox3D" parent="Geometry"]
-transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -7.5397, -0.172586, 13.083)
-material_override = SubResource("StandardMaterial3D_424j4")
-use_collision = true
-size = Vector3(9.97388, 10.0093, 1.56876)
-
-[node name="CSGBox3D13" type="CSGBox3D" parent="Geometry"]
-transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -7.08249, -0.403683, 13.083)
-material_override = SubResource("StandardMaterial3D_424j4")
-use_collision = true
-size = Vector3(9.97388, 10.0093, 1.56876)
-
-[node name="CSGBox3D14" type="CSGBox3D" parent="Geometry"]
-transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -6.63899, -0.629477, 13.083)
-material_override = SubResource("StandardMaterial3D_424j4")
-use_collision = true
-size = Vector3(9.97388, 10.0093, 1.56876)
-
-[node name="CSGBox3D15" type="CSGBox3D" parent="Geometry"]
-transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -6.14855, -0.774145, 13.083)
-material_override = SubResource("StandardMaterial3D_424j4")
-use_collision = true
-size = Vector3(9.97388, 10.0093, 1.56876)
-
-[node name="CSGBox3D16" type="CSGBox3D" parent="Geometry"]
-transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -5.70505, -0.999938, 13.083)
-material_override = SubResource("StandardMaterial3D_424j4")
-use_collision = true
-size = Vector3(9.97388, 10.0093, 1.56876)
-
-[node name="CSGBox3D17" type="CSGBox3D" parent="Geometry"]
-transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -5.2246, -1.15095, 13.083)
-material_override = SubResource("StandardMaterial3D_424j4")
-use_collision = true
-size = Vector3(9.97388, 10.0093, 1.56876)
-
-[node name="CSGBox3D18" type="CSGBox3D" parent="Geometry"]
-transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -4.78109, -1.37674, 13.083)
-material_override = SubResource("StandardMaterial3D_424j4")
-use_collision = true
-size = Vector3(9.97388, 10.0093, 1.56876)
-
-[node name="CSGBox3D19" type="CSGBox3D" parent="Geometry"]
-transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -4.31042, -1.53317, 13.083)
-material_override = SubResource("StandardMaterial3D_424j4")
-use_collision = true
-size = Vector3(9.97388, 10.0093, 1.56876)
-
-[node name="CSGBox3D20" type="CSGBox3D" parent="Geometry"]
-transform = Transform3D(5.69196e-16, -1.30217e-08, -0.297902, 2.60434e-08, -0.297902, 1.30217e-08, -0.297902, -2.60434e-08, 5.69196e-16, -3.86691, -1.75897, 13.083)
-material_override = SubResource("StandardMaterial3D_424j4")
-use_collision = true
-size = Vector3(9.97388, 10.0093, 1.56876)
-
-[node name="CSGBox3D8" type="CSGBox3D" parent="Geometry"]
-transform = Transform3D(8.23473e-16, -1.30217e-08, -0.297902, -0.210968, -0.259771, 1.13549e-08, -0.375817, 0.145824, -6.37417e-09, -13.6197, 0.47972, 8.92324)
-material_override = SubResource("StandardMaterial3D_424j4")
-use_collision = true
-size = Vector3(14.7021, 1, 30)
-
 [node name="Firearm2" parent="." instance=ExtResource("9_yb3sr")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 13.6271, 0.699837, 0.119998)
 
@@ -351,4 +269,58 @@ transform = Transform3D(2.98023e-08, 0, -1, 0, 1, 0, 1, 0, 2.98023e-08, 13.6898,
 transform = Transform3D(2.98023e-08, 0, -1, 0, 1, 0, 1, 0, 2.98023e-08, 13.6898, 0.622407, -0.504889)
 
 [node name="Firearm3" parent="." instance=ExtResource("18_2uk8a")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 13.6444, 0.559988, -1.17713)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 13.7999, 0.559988, -1.17713)
+
+[node name="FirearmBullet" parent="." instance=ExtResource("20_c5db0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6068, 0.514217, 0.256308)
+
+[node name="FirearmBullet2" parent="." instance=ExtResource("20_c5db0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6552, 0.514217, 0.256308)
+
+[node name="FirearmBullet3" parent="." instance=ExtResource("20_c5db0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.7011, 0.514217, 0.256308)
+
+[node name="FirearmBullet4" parent="." instance=ExtResource("20_c5db0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6068, 0.514217, 0.323147)
+
+[node name="FirearmBullet5" parent="." instance=ExtResource("20_c5db0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6552, 0.514217, 0.323147)
+
+[node name="FirearmBullet6" parent="." instance=ExtResource("20_c5db0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.7011, 0.514217, 0.323147)
+
+[node name="FirearmBullet7" parent="." instance=ExtResource("20_c5db0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6068, 0.514217, 0.390541)
+
+[node name="FirearmBullet8" parent="." instance=ExtResource("20_c5db0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6552, 0.514217, 0.390541)
+
+[node name="FirearmBullet9" parent="." instance=ExtResource("20_c5db0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.7011, 0.514217, 0.390541)
+
+[node name="44Magnum" parent="." instance=ExtResource("19_i4x43")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 13.6128, 0.62418, -0.695618)
+
+[node name="FirearmBullet10" parent="." instance=ExtResource("21_w66u6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5914, 0.505219, 0.563585)
+
+[node name="FirearmBullet11" parent="." instance=ExtResource("21_w66u6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5914, 0.505219, 0.623991)
+
+[node name="FirearmBullet12" parent="." instance=ExtResource("21_w66u6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5914, 0.505219, 0.685258)
+
+[node name="FirearmBullet13" parent="." instance=ExtResource("21_w66u6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5914, 0.505219, 0.765062)
+
+[node name="FirearmBullet14" parent="." instance=ExtResource("21_w66u6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6294, 0.505219, 0.765062)
+
+[node name="FirearmBullet15" parent="." instance=ExtResource("21_w66u6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6294, 0.505219, 0.684205)
+
+[node name="FirearmBullet16" parent="." instance=ExtResource("21_w66u6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6294, 0.505219, 0.616825)
+
+[node name="FirearmBullet17" parent="." instance=ExtResource("21_w66u6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6294, 0.505219, 0.553574)
