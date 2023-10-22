@@ -7,41 +7,12 @@ namespace NXRFirearm;
 
 [Tool]
 [GlobalClass]
-public partial class FirearmRotatingBolt : Interactable
+public partial class FirearmRotatingBolt : FirearmMovable
 {
-
-    [Export]
-    private Vector3 _startRotation = Vector3.Zero;
-    [Export]
-    private Vector3 _endRotation = Vector3.Zero;
-
-    [Export]
-    private Vector3 _startPosition = Vector3.Zero;
-    [Export]
-    private Vector3 _endPosition = Vector3.Zero;
 
     private Transform3D _initTransform = new();
 
     private Transform3D _initGrab = new(); 
-
-    // tool settings 
-    [ExportGroup("Tool Settings")]
-    [Export]
-    private bool _setStartRotation = false;
-    [Export]
-    private bool _setStartPosition = false;
-    [Export]
-    private bool _setEndRotation = false;
-    [Export]
-    private bool _setEndPosition = false;
-    [Export]
-    private bool _goStartRotation = false;
-    [Export]
-    private bool _goEndRotation = false;
-    [Export]
-    private bool _goStartPosition = false;
-    [Export]
-    private bool _goEndPosition = false;
 
     private Transform3D _relativeGrab = new(); 
 
@@ -66,56 +37,8 @@ public partial class FirearmRotatingBolt : Interactable
     public override void _Process(double delta)
     {
         base._Process(delta);
-
-        if (Engine.IsEditorHint())
-        {
-
-            if (_setStartRotation)
-            {
-                _startRotation = Rotation;
-                _setStartRotation = false;
-            }
-            if (_setEndRotation)
-            {
-                _endRotation = Rotation;
-                _setEndRotation = false;
-            }
-
-            if (_goStartRotation)
-            {
-                Rotation = _startRotation;
-                _goStartRotation = false;
-            }
-            if (_goEndRotation)
-            {
-                Rotation = _endRotation;
-                _goEndRotation = false;
-            }
-
-
-
-            if (_setStartPosition)
-            {
-                _startPosition = Position;
-                _setStartPosition = false;
-            }
-            if (_setEndPosition)
-            {
-                _endPosition = Position;
-                _setEndPosition = false;
-            }
-
-            if (_goStartPosition)
-            {
-                Position = _startPosition;
-                _goStartPosition = false;
-            }
-            if (_goEndPosition)
-            {
-                Position = _endPosition;
-                _goEndPosition = false;
-            }
-        }
+        
+        RunTool(); 
     }
 
     public override void _PhysicsProcess(double delta)
@@ -127,7 +50,7 @@ public partial class FirearmRotatingBolt : Interactable
         Transform3D newXform = GetPrimaryRelativeXform();
 
         // Don't rotate if position not at start 
-        if (Position.IsEqualApprox(_startPosition))
+        if (Position.IsEqualApprox(StartXform.Origin))
         {
             Transform3D xform = GlobalTransform * _relativeGrab; 
             Vector3 axis = Vector3.One; 
@@ -147,27 +70,30 @@ public partial class FirearmRotatingBolt : Interactable
         // Isues with clamp if not deconsturected 
         Vector3 newPos = Position;
         Vector3 newRot = Rotation;
-        newPos.X = _startPosition.X;
-        newPos.Y = _startPosition.Y;
+        newPos.X = StartXform.Origin.X;
+        newPos.Y = StartXform.Origin.Y;
         newPos.Z = parent.ToLocal(newXform.Origin).Z;
-        newPos.Z = Mathf.Clamp(newPos.Z, _startPosition.Z, _endPosition.Z);
+        newPos.Z = Mathf.Clamp(newPos.Z, StartXform.Origin.Z, EndXform.Origin.Z);
 
+
+        Vector3 startEuler = StartXform.Basis.GetEuler(); 
+        Vector3 endEuler = EndXform.Basis.GetEuler(); 
         newRot = new Vector3(newRot.X, newRot.Y, Rotation.Z);
-        newRot.Z = Mathf.Clamp(newRot.Z, _startRotation.Z, _endRotation.Z);
+        newRot.Z = Mathf.Clamp(newRot.Z, startEuler.Z, endEuler.Z);
 
-        if (!newRot.IsEqualApprox(_endRotation))
+        if (!newRot.IsEqualApprox(endEuler))
         {
-            newPos.Z = Mathf.Clamp(newPos.Z, _startPosition.Z, _startPosition.Z);
+            newPos.Z = Mathf.Clamp(newPos.Z, StartXform.Origin.Z, StartXform.Origin.Z);
         } 
         
         Rotation = newRot;
         Position = newPos;
 
-        if (Position.IsEqualApprox(_endPosition)) { 
+        if (Position.IsEqualApprox(EndXform.Origin)) { 
             _setBack = true; 
         }
 
-        if (Position.IsEqualApprox(_startPosition) && _setBack) { 
+        if (Position.IsEqualApprox(StartXform.Origin) && _setBack) { 
             _setBack = false; 
 
             _firearm?.EmitSignal("TryChamber"); 

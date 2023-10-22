@@ -32,7 +32,6 @@ background_mode = 2
 sky = SubResource("Sky_23i4c")
 tonemap_mode = 2
 ssil_enabled = true
-sdfgi_enabled = true
 glow_enabled = true
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_usygw"]
@@ -95,6 +94,24 @@ shape = SubResource("SphereShape3D_usygw")
 
 [node name="shotgun" parent="GunWall/PumpSpawner" instance=ExtResource("11_jowfi")]
 transform = Transform3D(0.782362, 2.11758e-22, 0, 2.11758e-22, 0.782362, 6.53419e-23, 0, 4.62812e-30, 0.782362, 4.76837e-07, -2.38419e-07, -0.206136)
+
+[node name="shotgun2" parent="GunWall/PumpSpawner" instance=ExtResource("11_jowfi")]
+transform = Transform3D(0.782362, 2.11758e-22, 0, 2.11758e-22, 0.782362, 6.53419e-23, 0, 9.25624e-30, 0.782362, 4.76837e-07, -3.57628e-07, -0.206136)
+
+[node name="PumpSpawner2" type="RigidBody3D" parent="GunWall"]
+transform = Transform3D(1, -4.37114e-08, 4.37114e-08, 4.37114e-08, -4.37114e-08, -1, 4.37114e-08, 1, -4.37114e-08, 7.15256e-07, 0.336533, -0.888523)
+freeze = true
+script = ExtResource("6_7x8e7")
+_scene = ExtResource("10_dpaa8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GunWall/PumpSpawner2"]
+shape = SubResource("SphereShape3D_usygw")
+
+[node name="shotgun" parent="GunWall/PumpSpawner2" instance=ExtResource("11_jowfi")]
+transform = Transform3D(0.782362, 2.11758e-22, 0, 2.11758e-22, 0.782362, 6.53419e-23, 0, 4.62812e-30, 0.782362, 4.76837e-07, -2.38419e-07, -0.206136)
+
+[node name="shotgun2" parent="GunWall/PumpSpawner2" instance=ExtResource("11_jowfi")]
+transform = Transform3D(0.782362, 2.11758e-22, 0, 2.11758e-22, 0.782362, 6.53419e-23, 0, 9.25624e-30, 0.782362, 4.76837e-07, -3.57628e-07, -0.206136)
 
 [node name="SniperSpawner" type="RigidBody3D" parent="GunWall"]
 transform = Transform3D(1, -4.37114e-08, 4.37114e-08, 4.37114e-08, -4.37114e-08, -1, 4.37114e-08, 1, -4.37114e-08, 8.34465e-07, 0.336533, -1.41393)

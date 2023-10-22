@@ -47,6 +47,9 @@ public partial class Firearm : Interactable
     [Export]
     private float _hapticStrength = 0.5f; 
 
+
+    public bool BlockFire; 
+
     [Signal]
     public delegate void OnFireEventHandler(); 
 
@@ -87,6 +90,8 @@ public partial class Firearm : Interactable
     }
     public void Fire()
     {   
+        if (BlockFire) return; 
+        
         _shotCount += 1; 
         Chambered = false; 
         _fireTimer.Start();

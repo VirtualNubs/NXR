@@ -27,6 +27,7 @@ sync = true
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_6sady"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_fuvam"]
+graph_offset = Vector2(-1345.33, -37.9467)
 nodes/Add2/node = SubResource("AnimationNodeAdd2_o3iwq")
 nodes/Add2/position = Vector2(67.9509, 134.583)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_nceky")

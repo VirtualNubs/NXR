@@ -1,4 +1,5 @@
 using Godot;
+using NXR;
 using System;
 
 
@@ -13,15 +14,22 @@ public partial class FirearmRail : InteractableSnapZone
 	[Export]
 	private float _maxZPosition = 0; 
 
+	private Vector3 _initPosition; 
+
     public override void _Ready()
     {
         base._Ready();
+
+		_initPosition = Position; 
+		OnUnSnap += UnSnapped; 
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
 	{
+		
 		if (_hoveredInteractable != null) { 
+
 			Node3D parent = (Node3D)GetParent(); 
 			Transform3D newXform = _hoveredInteractable.GlobalTransform; 
 			Transform3D railXform = GlobalTransform;
@@ -40,6 +48,14 @@ public partial class FirearmRail : InteractableSnapZone
 			}
 
 			_hoveredInteractable.GlobalTransform = newXform; 
+
 		}
+
+		DistanceBreak(); 
+	}
+
+	private void UnSnapped() { 
+		Position = _initPosition; 
+		GD.Print("unsnapped"); 	
 	}
 }

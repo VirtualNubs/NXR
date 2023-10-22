@@ -3,6 +3,7 @@ using Godot;
 
 namespace NXR;
 
+
 [GlobalClass]
 public partial class Hand : Node3D
 {
