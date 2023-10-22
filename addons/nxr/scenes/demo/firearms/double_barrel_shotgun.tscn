@@ -581,7 +581,7 @@ script = ExtResource("13_g5scg")
 _firearm = NodePath("../../..")
 
 [node name="FirearmBulletZoneLeft" type="Area3D" parent="double_barrel_shotgun/Barrel/FirearmBulletZoneQueue"]
-transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, -0.0150582, 0.0395843, 0.0700183)
+transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, -0.0150582, 0.0395843, 0.0940909)
 script = ExtResource("13_13ou0")
 AllowedGroups = PackedStringArray("12g")
 
@@ -589,7 +589,7 @@ AllowedGroups = PackedStringArray("12g")
 shape = SubResource("SphereShape3D_urj1p")
 
 [node name="FirearmBulletZoneRight" type="Area3D" parent="double_barrel_shotgun/Barrel/FirearmBulletZoneQueue"]
-transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, 0.0149418, 0.0395843, 0.0792276)
+transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, 0.0149418, 0.0395843, 0.0936791)
 script = ExtResource("13_13ou0")
 AllowedGroups = PackedStringArray("12g")
 

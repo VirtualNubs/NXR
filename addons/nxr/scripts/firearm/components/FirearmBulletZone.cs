@@ -35,7 +35,7 @@ public partial class FirearmBulletZone : InteractableSnapZone
 	public void Eject(Vector3 velocity, Vector3 torque) { 
 		if (Bullet == null) return; 
 		Unsnap(); 
+		Bullet.ApplyTorqueImpulse(torque * 1000); 
 		Bullet.ApplyCentralImpulse(velocity); 
-		Bullet.ApplyTorqueImpulse(torque); 
 	}
 }

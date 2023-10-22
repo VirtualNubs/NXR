@@ -25,5 +25,14 @@ public partial class FirearmSpawner : Node3D
         
         _firearm.GetParent().AddChild(inst); 
         inst.GlobalPosition = GlobalPosition; 
+
+        float rand = GD.Randf(); 
+        inst.Rotation = new Vector3(rand, rand, rand); 
+
+        if (Util.NodeIs(inst, typeof(RigidBody3D))) { 
+            RigidBody3D body = (RigidBody3D)inst; 
+            GD.Print("force"); 
+            body.ApplyCentralForce(GlobalTransform.Basis.X * 30); 
+        }
     }
 }

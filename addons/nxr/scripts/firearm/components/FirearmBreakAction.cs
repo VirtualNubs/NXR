@@ -82,7 +82,8 @@ public partial class FirearmBreakAction : FirearmMovable
 		if (Util.NodeIs(_bulletQueue, typeof(FirearmBulletZoneQueue)))
 		{
 			FirearmBulletZoneQueue queue = (FirearmBulletZoneQueue)_bulletQueue;
-			queue.EjectAll(GlobalTransform.Basis.Z * 2, Vector3.One * GD.Randf() * 1000f); 
+
+			queue.EjectAll(Target.GlobalTransform.Basis.Z * 2, Vector3.Right * 100000, true); 
 		}
 	}
 
