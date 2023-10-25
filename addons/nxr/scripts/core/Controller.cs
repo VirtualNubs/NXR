@@ -12,14 +12,17 @@ namespace NXR;
 public partial class Controller : XRController3D
 {
 
-	private List<String> _buttonStates = new List<String>();
 
+	[Export]
+	private float _linearVelocityStrength = 20f; 
+	private float _angulerVelocityStrength = 20f; 
+	private List<String> _buttonStates = new List<String>();
 	private Array<Vector3> _localVels = new Array<Vector3>(); 
 	private Array<Vector3> _globalVels = new Array<Vector3>(); 
 	private Array<Vector3> _angularVels = new Array<Vector3>(); 
 	private Vector3 _globalVelocity; 
-	private Vector3 _localVelocity; 
-	private Vector3 _angulerVelocity; 
+
+	private List<Transform3D> velocityXforms = new(); 
 
     public override void _Ready()
     {
@@ -27,9 +30,6 @@ public partial class Controller : XRController3D
 
     public override void _PhysicsProcess(double delta)
     {
-		_localVelocity = GetXformVelocityAverage(_localVels, Transform, delta); 
-		_globalVelocity = GetXformVelocityAverage(_globalVels, GlobalTransform, delta); 
-		_angulerVelocity = GetAngulerVelocity(_angularVels, GlobalRotation, delta); 
     }
 
     public void Pulse(double freq, double amp, double time)
@@ -60,70 +60,58 @@ public partial class Controller : XRController3D
 		return false; 
 	}
 
-	public Vector3 GetXformVelocityAverage(Array<Vector3> vels, Transform3D xform, double delta) { 
-		Vector3 o = xform.Origin; 
-		vels.Add(o); 
 
-		int vMult = 3; 
+	public Transform3D GetTransformVelocity()
+    {
+        // Get the current transform
+        Transform3D currentTransform = GlobalTransform;
 
-		if (vels.Count() > vMult) { 
-			vels.RemoveAt(0); 
+
+		velocityXforms.Add(currentTransform);
+
+		if (velocityXforms.Count < 10) { 
+			return currentTransform; 
 		}
 
-		if (vels.Count() < vMult) { 
-			return Vector3.Zero;  
+		if (velocityXforms.Count > 10) { 
+			velocityXforms.RemoveAt(0); 
 		}
 
-		var vel = Vector3.Zero; 
-		foreach ( Vector3 v in vels) { 
-			vel += v; 
-		}
-		vel /= vels.Count(); 
-
-		var dir = o - vel; 
-		vel = dir / (float)delta; 
-
-		return vel; 
-	}
+        // Calculate the time interval since the last frame
+        int ticks = Engine.PhysicsTicksPerSecond; 
 	
-	public Vector3 GetAngulerVelocity(Array<Vector3> vels, Vector3 rotation, double delta) { 
-		Vector3 r = rotation; 
-		vels.Add(r); 
+        // Calculate the linear velocity (change in position)
+        Vector3 linearVelocity = (velocityXforms.Last().Origin - velocityXforms.First().Origin);
 
-		int vMult = 10; 
+        // Calculate the angular velocity (change in rotation)
+        Quaternion currentRotation = velocityXforms.Last().Basis.GetRotationQuaternion();
+        Quaternion previousRotation = velocityXforms.First().Basis.GetRotationQuaternion();
+        Quaternion rotationChange = currentRotation * previousRotation.Inverse();
+        Vector3 angularVelocity = rotationChange.GetEuler();
 
-		if (vels.Count() > vMult) { 
-			vels.RemoveAt(0); 
-		}
+        // Create a new transform to represent the velocity
+        Transform3D velocityTransform = new Transform3D();
+        velocityTransform.Origin = linearVelocity;
+        velocityTransform.Basis = Basis.FromEuler(angularVelocity);
 
-		if (vels.Count() < vMult) { 
-			return Vector3.Zero;  
-		}
-
-		
-		var vel = Vector3.Zero; 
-		foreach ( Vector3 v in _angularVels) { 
-			vel += v; 
-		}
-
-		vel *= (float)delta; 
-
-		return vel * vMult; 
-	}
+        return velocityTransform;
+    }
 
 	public Vector3 GetLocalVelocity() { 
-		return _localVelocity; 
+		Node3D parent = (Node3D)GetParent(); 
+		return  parent.ToLocal(GetTransformVelocity().Origin); 
 	}
 	public Vector3 GetGlobalVelocity() { 
-		return _globalVelocity; 
+		return GetTransformVelocity().Origin * _linearVelocityStrength; 
 	}
 	public Vector3 GetAngularVelocity() { 
-		return _angulerVelocity; 
+		return GetTransformVelocity().Basis.GetEuler() * _angulerVelocityStrength; 
 	}
 
 	public bool LocalVelMatches(Vector3 dir, float threshold) { 
 		Node3D parent = (Node3D)GetParent(); 
-		return GetLocalVelocity().Dot(parent.ToLocal(dir)) > threshold; 
+		float dot = GetGlobalVelocity().Normalized().Dot(dir.Normalized()); 
+		return dot > threshold; 
 	}
 }
 

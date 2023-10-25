@@ -23,6 +23,9 @@ public partial class HandPose : RemoteTransform3D
 
     private NodePath _lastPath;
     private Vector3 _initScale; 
+
+    
+
     public override void _Ready()
     {
 
@@ -36,14 +39,15 @@ public partial class HandPose : RemoteTransform3D
 
         _interactable.OnGrabbed += OnGrab;
         _interactable.OnDropped += OnDrop;
+        
 
     }
 
     private void OnGrab(Interactable interactable, Interactor interactor)
     {
-        if (interactor.GetNode("NXRHand") == null) return;
+        if (GetHand(interactor) == null) return; 
 
-        Hand hand = (Hand)interactor.GetNode("NXRHand");
+        Hand hand = GetHand(interactor); 
 
         if (_grabPose == GrabPose.Primary)
         {
@@ -66,18 +70,17 @@ public partial class HandPose : RemoteTransform3D
     {
 
 
-        if (!IsInstanceValid(interactor) || interactor.GetNode("NXRHand") == null)  return;
-
-        Hand hand = (Hand)interactor.GetNode("NXRHand");
+        if (GetHand(interactor) == null) return; 
         
+        Hand hand = GetHand(interactor); 
 
-        if (hand.GetPath() == RemotePath)
+        if (hand.HandNode.GetPath() == RemotePath)
         {
             RemotePath = "";
             hand.ResetHand(); 
         }
 
-        if (hand.GetPath() == _lastPath)
+        if (hand.HandNode.GetPath() == _lastPath)
         {
             _lastPath = "";
             hand.ResetHand();
@@ -87,7 +90,7 @@ public partial class HandPose : RemoteTransform3D
     private void Pose(Hand hand)
     {
         
-        if (hand.Scale.X < 0) { 
+        if (hand.HandNode.Scale.X < 0) { 
             Scale = new Vector3(-1, 1, 1); 
         } else { 
             Scale = _initScale; 
@@ -104,9 +107,29 @@ public partial class HandPose : RemoteTransform3D
         }
 
         // set RT vars
-        _lastPath = hand.GetPath();
-        RemotePath = hand.GetPath(); 
 
+        _lastPath = hand.HandNode.GetPath();
+        RemotePath = hand.HandNode.GetPath(); 
+    
+
+    }
+
+    private Hand GetHand(Interactor interactor) { 
+
+        Hand hand = null;
+
+        if(interactor.GetParent().HasMethod("IsHand")) { 
+            hand = (Hand)interactor.GetParent();
+            GD.Print("found hand"); 
+        } else { 
+            foreach (Node3D child in interactor.GetChildren()) { 
+                if (child.HasMethod("IsHand")) { 
+                    hand = (Hand)child; 
+                } 
+            }
+        }
+        
+        return hand; 
     }
 
     private void Reset()
@@ -116,5 +139,4 @@ public partial class HandPose : RemoteTransform3D
         RemotePath = "";
         hand.ResetHand(); 
     }
-
 }

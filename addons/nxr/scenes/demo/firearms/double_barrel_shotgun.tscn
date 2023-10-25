@@ -1,8 +1,7 @@
-[gd_scene load_steps=27 format=3 uid="uid://ogwv7761rv6u"]
+[gd_scene load_steps=33 format=3 uid="uid://ogwv7761rv6u"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_4s4rd"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="2_c0i7n"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="3_inb0u"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="5_7138h"]
 [ext_resource type="PackedScene" uid="uid://b5s345q0wunft" path="res://addons/nxr/scenes/hands/nxr_player_hand.tscn" id="7_ynyk6"]
 [ext_resource type="AnimationLibrary" uid="uid://bvxp1d4s8s2h" path="res://assets/hands/poses/poses_default.res" id="8_d04wt"]
@@ -14,13 +13,48 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmBulletZone.cs" id="13_13ou0"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmBulletZoneQueue.cs" id="13_g5scg"]
 [ext_resource type="Material" uid="uid://bjpmcolhgf2hf" path="res://assets/models/guns/Double_Barrel_Shotgun/double_barrel_shotgun.material" id="13_urljd"]
-[ext_resource type="PackedScene" uid="uid://bmwt4unjh2gnq" path="res://addons/nxr/scenes/demo/firearms/ammo/12g.tscn" id="14_luri6"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="16_3cd4p"]
+[ext_resource type="Texture2D" uid="uid://daigr38dvr8gw" path="res://assets/textures/puff.png" id="16_b7dhx"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmParticlePlayer.cs" id="17_f3snt"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_i000j"]
 size = Vector3(0.0572386, 0.0884536, 0.439329)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_4fvoy"]
 radius = 0.0834341
+
+[sub_resource type="Curve" id="Curve_1go0a"]
+_data = [Vector2(0, 0.189474), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_fvjtg"]
+curve = SubResource("Curve_1go0a")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_nbghf"]
+direction = Vector3(0, 0, -1)
+spread = 23.76
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 3.0
+initial_velocity_max = 3.0
+scale_curve = SubResource("CurveTexture_fvjtg")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hkdht"]
+transparency = 1
+shading_mode = 0
+vertex_color_is_srgb = true
+albedo_color = Color(1, 1, 1, 0.0156863)
+albedo_texture = ExtResource("16_b7dhx")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_v1ydc"]
+material = SubResource("StandardMaterial3D_hkdht")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_urj1p"]
+radius = 0.0156749
 
 [sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_7e4af"]
 filter_enabled = true
@@ -425,9 +459,6 @@ _data = {
 "RESET": SubResource("Animation_45whe")
 }
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_urj1p"]
-radius = 0.0156749
-
 [node name="DoubleBarrelShotgun" type="RigidBody3D"]
 collision_layer = 8
 script = ExtResource("1_4s4rd")
@@ -436,9 +467,7 @@ _recoilKick = Vector3(0, 0, 0.5)
 _recoilRise = Vector3(45, 0, 0)
 _kickRecoverSpeed = 0.05
 _riseRecoverSpeed = 0.05
-
-[node name="InteractableGrabKinematic" type="Node" parent="."]
-script = ExtResource("3_inb0u")
+_switchOnDrop = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.000202769, -0.111079)
@@ -452,6 +481,103 @@ _grabType = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractableGrabPoint"]
 shape = SubResource("SphereShape3D_4fvoy")
+
+[node name="FirearmBreakAction" type="RigidBody3D" parent="." node_paths=PackedStringArray("_bulletQueue", "Target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.29912e-05, 0, -0.128554)
+script = ExtResource("11_tfuoa")
+_bulletQueue = NodePath("../double_barrel_shotgun/Barrel/FirearmBulletZoneQueue")
+Target = NodePath("../double_barrel_shotgun/Barrel")
+StartXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.82233e-05, 0, -0.174102)
+EndXform = Transform3D(1, 0, 0, 0, 0.923626, 0.383296, 0, -0.383296, 0.923626, 5.82233e-05, 0, -0.174102)
+
+[node name="FirearmParticlePlayer" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0345446, -0.381121)
+emitting = false
+lifetime = 0.32
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_nbghf")
+draw_pass_1 = SubResource("QuadMesh_v1ydc")
+script = ExtResource("17_f3snt")
+_restartOnFire = true
+
+[node name="Rays" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0979972)
+
+[node name="FirearmRay" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
+transform = Transform3D(1, 0, 0, 0, 0.998681, 0.0513425, 0, -0.0513425, 0.998681, 0, 0.0256179, -0.448217)
+target_position = Vector3(0, 0, -100)
+script = ExtResource("11_1ciw0")
+_firearm = NodePath("../..")
+
+[node name="FirearmRay2" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
+transform = Transform3D(0.998953, 0, -0.0457466, 0, 1, 0, 0.0457466, 0, 0.998953, 0, 0.0256179, -0.448217)
+target_position = Vector3(0, 0, -100)
+script = ExtResource("11_1ciw0")
+_firearm = NodePath("../..")
+
+[node name="FirearmRay4" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
+transform = Transform3D(0.998953, 0, -0.0457466, -0.00479929, 0.994482, -0.1048, 0.0454941, 0.10491, 0.993441, 0, 0.0256179, -0.448217)
+target_position = Vector3(0, 0, -100)
+script = ExtResource("11_1ciw0")
+_firearm = NodePath("../..")
+
+[node name="FirearmRay5" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
+transform = Transform3D(0.998953, 0, -0.0457466, 0.00135314, 0.999562, 0.029548, 0.0457266, -0.029579, 0.998516, 0, 0.0256179, -0.448217)
+target_position = Vector3(0, 0, -100)
+script = ExtResource("11_1ciw0")
+_firearm = NodePath("../..")
+
+[node name="FirearmRay3" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
+transform = Transform3D(0.997094, 0, 0.0761796, 0, 1, 0, -0.0761796, 0, 0.997094, 0, 0.0256179, -0.448217)
+target_position = Vector3(0, 0, -100)
+script = ExtResource("11_1ciw0")
+_firearm = NodePath("../..")
+
+[node name="double_barrel_shotgun" parent="." instance=ExtResource("12_s4gr6")]
+transform = Transform3D(0.738385, 0, 0, 0, 0.738385, 0, 0, 0, 0.738385, 0, 0, 0)
+
+[node name="DoubleBarrelShotgun" parent="double_barrel_shotgun" index="0"]
+surface_material_override/0 = ExtResource("13_urljd")
+
+[node name="Barrel" parent="double_barrel_shotgun" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.82233e-05, 0, -0.174102)
+surface_material_override/0 = ExtResource("13_urljd")
+
+[node name="FirearmBulletZoneQueue" type="Node3D" parent="double_barrel_shotgun/Barrel" index="0" node_paths=PackedStringArray("_firearm")]
+transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, 0, 0, 0)
+script = ExtResource("13_g5scg")
+_firearm = NodePath("../../..")
+
+[node name="FirearmBulletZoneLeft" type="Area3D" parent="double_barrel_shotgun/Barrel/FirearmBulletZoneQueue"]
+transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, -0.0150582, 0.0395843, 0.0940909)
+script = ExtResource("13_13ou0")
+AllowedGroups = PackedStringArray("12g")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="double_barrel_shotgun/Barrel/FirearmBulletZoneQueue/FirearmBulletZoneLeft"]
+shape = SubResource("SphereShape3D_urj1p")
+
+[node name="FirearmBulletZoneRight" type="Area3D" parent="double_barrel_shotgun/Barrel/FirearmBulletZoneQueue"]
+transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, 0.0149418, 0.0395843, 0.0936791)
+script = ExtResource("13_13ou0")
+AllowedGroups = PackedStringArray("12g")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="double_barrel_shotgun/Barrel/FirearmBulletZoneQueue/FirearmBulletZoneRight"]
+transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, 0, 0, -0.00774557)
+shape = SubResource("SphereShape3D_urj1p")
+
+[node name="SHandPose" type="RemoteTransform3D" parent="double_barrel_shotgun/Barrel" index="1" node_paths=PackedStringArray("_interactable")]
+transform = Transform3D(1.35431, 0, 0, 0, 1.35431, 0, 0, 0, 1.35431, -0.00154348, -0.0302423, -0.163306)
+script = ExtResource("5_7138h")
+_interactable = NodePath("../../..")
+_pose = "poses_rifle/secondary"
+_grabPose = 1
+
+[node name="Trigger2" parent="double_barrel_shotgun" index="2"]
+surface_material_override/0 = ExtResource("13_urljd")
+
+[node name="Trigger" parent="double_barrel_shotgun" index="3"]
+surface_material_override/0 = ExtResource("13_urljd")
 
 [node name="HandPose" type="RemoteTransform3D" parent="." node_paths=PackedStringArray("_customTree")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0219548, 0.10407)
@@ -476,9 +602,6 @@ libraries = {
 "poses_rifle": ExtResource("9_muq0j"),
 "poses_shotgun": ExtResource("10_10rhc")
 }
-
-[node name="AnimationTree" parent="HandPose/NXRHandRight" index="1"]
-active = false
 
 [node name="Skeleton3D" parent="HandPose/NXRHandRight/Hand_Glove_R/Armature" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00395735, 0, 0)
@@ -526,92 +649,10 @@ bones/24/position = Vector3(3.72529e-09, 0.0197651, 4.65661e-09)
 bones/25/position = Vector3(-0.0307819, 0.0670555, -0.0420653)
 bones/25/rotation = Quaternion(0.706524, 6.47993e-06, 8.68672e-06, 0.707689)
 
-[node name="FirearmBreakAction" type="RigidBody3D" parent="." node_paths=PackedStringArray("_bulletQueue", "Target")]
-script = ExtResource("11_tfuoa")
-_bulletQueue = NodePath("../double_barrel_shotgun/Barrel/FirearmBulletZoneQueue")
-Target = NodePath("../double_barrel_shotgun/Barrel")
-StartXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.82233e-05, 0, -0.174102)
-EndXform = Transform3D(1, 0, 0, 0, 0.849304, 0.527905, 0, -0.527905, 0.849304, 5.82233e-05, 0, -0.174102)
+[node name="InteractableGrabKinematic" type="Node" parent="."]
+script = ExtResource("16_3cd4p")
+_usePhysics = true
 
-[node name="Rays" type="Node3D" parent="."]
-
-[node name="FirearmRay" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(1, 0, 0, 0, 0.998681, 0.0513425, 0, -0.0513425, 0.998681, 0, 0.0256179, -0.448217)
-target_position = Vector3(0, 0, -100)
-script = ExtResource("11_1ciw0")
-_firearm = NodePath("../..")
-
-[node name="FirearmRay2" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(0.998953, 0, -0.0457466, 0, 1, 0, 0.0457466, 0, 0.998953, 0, 0.0256179, -0.448217)
-target_position = Vector3(0, 0, -100)
-script = ExtResource("11_1ciw0")
-_firearm = NodePath("../..")
-
-[node name="FirearmRay4" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(0.998953, 0, -0.0457466, -0.00479929, 0.994482, -0.1048, 0.0454941, 0.10491, 0.993441, 0, 0.0256179, -0.448217)
-target_position = Vector3(0, 0, -100)
-script = ExtResource("11_1ciw0")
-_firearm = NodePath("../..")
-
-[node name="FirearmRay5" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(0.998953, 0, -0.0457466, 0.00135314, 0.999562, 0.029548, 0.0457266, -0.029579, 0.998516, 0, 0.0256179, -0.448217)
-target_position = Vector3(0, 0, -100)
-script = ExtResource("11_1ciw0")
-_firearm = NodePath("../..")
-
-[node name="FirearmRay3" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(0.997094, 0, 0.0761796, 0, 1, 0, -0.0761796, 0, 0.997094, 0, 0.0256179, -0.448217)
-target_position = Vector3(0, 0, -100)
-script = ExtResource("11_1ciw0")
-_firearm = NodePath("../..")
-
-[node name="double_barrel_shotgun" parent="." instance=ExtResource("12_s4gr6")]
-transform = Transform3D(0.738385, 0, 0, 0, 0.738385, 0, 0, 0, 0.738385, 0, 0, 0)
-
-[node name="DoubleBarrelShotgun" parent="double_barrel_shotgun" index="0"]
-surface_material_override/0 = ExtResource("13_urljd")
-
-[node name="Barrel" parent="double_barrel_shotgun" index="1"]
-transform = Transform3D(1, 0, 0, 0, 0.849304, 0.527905, 0, -0.527905, 0.849304, 5.82233e-05, 0, -0.174102)
-surface_material_override/0 = ExtResource("13_urljd")
-
-[node name="FirearmBulletZoneQueue" type="Node3D" parent="double_barrel_shotgun/Barrel" index="0" node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, 0, 0, 0)
-script = ExtResource("13_g5scg")
-_firearm = NodePath("../../..")
-
-[node name="FirearmBulletZoneLeft" type="Area3D" parent="double_barrel_shotgun/Barrel/FirearmBulletZoneQueue"]
-transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, -0.0150582, 0.0395843, 0.0940909)
-script = ExtResource("13_13ou0")
-AllowedGroups = PackedStringArray("12g")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="double_barrel_shotgun/Barrel/FirearmBulletZoneQueue/FirearmBulletZoneLeft"]
-shape = SubResource("SphereShape3D_urj1p")
-
-[node name="FirearmBulletZoneRight" type="Area3D" parent="double_barrel_shotgun/Barrel/FirearmBulletZoneQueue"]
-transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, 0.0149418, 0.0395843, 0.0936791)
-script = ExtResource("13_13ou0")
-AllowedGroups = PackedStringArray("12g")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="double_barrel_shotgun/Barrel/FirearmBulletZoneQueue/FirearmBulletZoneRight"]
-transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, 0, 0, -0.00774557)
-shape = SubResource("SphereShape3D_urj1p")
-
-[node name="SHandPose" type="RemoteTransform3D" parent="double_barrel_shotgun/Barrel" index="1" node_paths=PackedStringArray("_interactable")]
-transform = Transform3D(1.35431, 0, 0, 0, 1.35431, 0, 0, 0, 1.35431, -0.00154348, -0.0302423, -0.163306)
-script = ExtResource("5_7138h")
-_interactable = NodePath("../../..")
-_pose = "poses_rifle/secondary"
-_grabPose = 1
-
-[node name="Trigger2" parent="double_barrel_shotgun" index="2"]
-surface_material_override/0 = ExtResource("13_urljd")
-
-[node name="Trigger" parent="double_barrel_shotgun" index="3"]
-surface_material_override/0 = ExtResource("13_urljd")
-
-[node name="CSGCylinder3D" parent="." instance=ExtResource("14_luri6")]
-
+[editable path="double_barrel_shotgun"]
 [editable path="HandPose/NXRHandRight"]
 [editable path="HandPose/NXRHandRight/Hand_Glove_R"]
-[editable path="double_barrel_shotgun"]

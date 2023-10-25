@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://c2wmc4a15hpgm"]
 
-[ext_resource type="Script" path="res://demos/Killhouse/scripts/target.gd" id="1_0jde8"]
+[ext_resource type="Script" path="res://demo/scripts/target.gd" id="1_0jde8"]
 [ext_resource type="PackedScene" uid="uid://b7senwbmb76o3" path="res://assets/models/target/target.glb" id="2_0gh75"]
 [ext_resource type="Material" path="res://assets/materials/target_base.material" id="3_7nxg2"]
 

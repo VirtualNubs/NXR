@@ -17,7 +17,14 @@ public partial class SignalAudioPlayer : AudioStreamPlayer3D
 	public override void _Ready()
 	{
 		if (GetParent().HasSignal(_signal)) { 
+			foreach (Dictionary item in GetParent().GetSignalList()) {
+				if (item["name"].ToString() ==  _signal) {
+					GD.Print(item["args"].AsGodotArray().Count); 
+
+				}
+			}
 			Action signalAction = OnSignal; 
+
 			GetParent().Connect(_signal, Callable.From(signalAction)); 
 		}
 	}

@@ -15,6 +15,7 @@ public partial class FirearmMagZone : InteractableSnapZone
     
     [Export]
     private string _ejectAction = "ax_button"; 
+    public bool MagIn = false; 
 
     public override void _Ready()
     {
@@ -61,6 +62,8 @@ public partial class FirearmMagZone : InteractableSnapZone
     private void TryChamber() { 
         if (CurrentMag == null) return; 
 
+        if (!CurrentMag.CanChamber) return; 
+        
         if (CurrentMag.CurrentAmmo > 0) { 
             _firearm.Chambered = true; 
             CurrentMag.RemoveBullet(1); 

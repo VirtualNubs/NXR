@@ -96,12 +96,13 @@ public partial class Firearm : Interactable
         Chambered = false; 
         _fireTimer.Start();
         Recoil(); 
-        EmitSignal("OnFire"); 
 
-        if (_chamberOnFire) { EmitSignal("TryChamber"); }
         
         GetPrimaryInteractor()?.Controller.Pulse(_hapticStrength, 1.0, 0.1);
         GetSecondaryInteractor()?.Controller.Pulse(_hapticStrength, 1.0, 0.1);
+
+        if (_chamberOnFire) { EmitSignal("TryChamber"); }
+        EmitSignal("OnFire"); 
     }
 
     private bool CanFire()
@@ -152,6 +153,8 @@ public partial class Firearm : Interactable
 
         riseTween.TweenProperty(this, "RotationOffset", RotationOffset + _recoilRise * recoilMultiplier, 0.1);
         PositionOffset += _recoilKick * _recoilMultiplier; 
+        ApplyCentralImpulse(GlobalTransform.Basis.Z); 
+        ApplyTorqueImpulse(Basis.X); 
     }
 
     public async void BurstFire()

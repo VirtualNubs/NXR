@@ -1,14 +1,17 @@
 using Godot;
+using Godot.NativeInterop;
 using NXR;
 using NXRInteractable;
 
 [GlobalClass]
-public partial class InteractableGrabKinematic : Node
+public partial class InteractableGrab : Node
 {
+    [Export]
+    private bool _usePhysics = false; 
+
 
     [Export]
     private bool _percise = false;
-
 
     [ExportGroup("TwoHandSettings")]
     [Export]
@@ -19,19 +22,22 @@ public partial class InteractableGrabKinematic : Node
     private bool invert = false; 
 
 
-    [ExportGroup("SmoothingSettings")]
-    [Export(PropertyHint.Range, "0.0, 1")]
-    public float PositionSmoothing = 1f;
-    [Export(PropertyHint.Range, "0.0, 1")]
-    public float RotationSmoothing = 1f;
+    [ExportGroup("Physics Grab Settings")]
+
+    private float _initLinearDamp = 0.0f; 
+    private float _initAngularDamp = 0.0f; 
+
 
 
     private Vector3 _perciseOffset = new();
-
     private bool _initFreezeState = false;
 
     public Interactable Interactable;
     private Transform3D _primaryXform = new(); 
+
+
+	private Vector3 lVelocity = Vector3.Zero; 
+	private Vector3 aVelocity = Vector3.Zero; 
     public override void _Ready()
     {
         if (Interactable == null && Util.NodeIs((Node3D)GetParent(), typeof(Interactable)))
@@ -41,40 +47,18 @@ public partial class InteractableGrabKinematic : Node
             Interactable.OnDropped += OnDrop;
             Interactable.OnFullDropped += OnFullDrop;
             _initFreezeState = Interactable.Freeze;
+            _initLinearDamp = Interactable.LinearDamp; 
+            _initAngularDamp = Interactable.AngularDamp; 
         }
+
     }
 
     public override void _PhysicsProcess(double delta)
     {   
-        if (Interactable.IsGrabbed()) { Interactable.LinearVelocity = Vector3.Zero; }
-
-        if (IsInstanceValid(Interactable.PrimaryInteractor))
-        {
-            _primaryXform = Interactable.PrimaryInteractor.GlobalTransform;
-            _primaryXform.Basis = _primaryXform.Basis.Slerp(_primaryXform.Basis, RotationSmoothing);
-            _primaryXform.Origin = Interactable.GlobalTransform.Origin.Lerp(_primaryXform.Origin, PositionSmoothing);
-
-            if (_percise) { _primaryXform = Interactable.GetPrimaryRelativeXform(); }
-            
-            if (!_twoHanded)
-            {
-                Interactable.GlobalTransform = _primaryXform * Interactable.GetOffsetXform();
-            }
-            else
-            {
-                if (Interactable.IsTwoHanded())
-                {
-                    Interactable.GlobalTransform = TwoHandXform() * Interactable.GetOffsetXform();
-                }
-                else
-                {
-                    Interactable.GlobalTransform = _primaryXform * Interactable.GetOffsetXform();
-                }
-            }
-        }
-
-        if (IsInstanceValid(Interactable.SecondaryInteractor) && !IsInstanceValid(Interactable.PrimaryInteractor)) { 
-            Interactable.GlobalTransform = Interactable.GetSecondaryRelativeXform(); 
+        if (_usePhysics) { 
+            PhysicsGrab(); 
+        } else { 
+            KinematicGrab(); 
         }
     }
 
@@ -82,7 +66,7 @@ public partial class InteractableGrabKinematic : Node
     {
         if (interactor == Interactable.PrimaryInteractor)
         {
-            Interactable.Freeze = true;
+            Interactable.Freeze = !_usePhysics;
             Interactable.LinearVelocity = Vector3.Zero;
         }
     }
@@ -95,16 +79,17 @@ public partial class InteractableGrabKinematic : Node
     public void OnFullDrop() { 
 
         Interactable.Freeze = _initFreezeState;
+        Interactable.LinearDamp = _initLinearDamp; 
+        Interactable.AngularDamp = _initAngularDamp; 
     }
 
     public Transform3D TwoHandXform()
     {
 
-        Transform3D lookXform = _primaryXform;
-        Transform3D secondaryXform = Interactable.SecondaryInteractor.GlobalTransform;
+        Transform3D lookXform = Interactable.PrimaryInteractor.Controller.GlobalTransform;
+        Transform3D secondaryXform = Interactable.SecondaryInteractor.Controller.GlobalTransform;
         Vector3 up = Interactable.GlobalTransform.Basis.Y + GetUpVector();
         Vector3 lookDir = secondaryXform.Origin - Interactable.PrimaryInteractor.GlobalTransform.Origin;
-        Vector3 offset = Interactable.SecondaryGrabPoint.GlobalPosition - Interactable.PrimaryGrabPoint.GlobalPosition; 
                 
 
         Interactable._primaryGrabTransorm.Basis = Interactable.Basis;
@@ -125,6 +110,62 @@ public partial class InteractableGrabKinematic : Node
         }
 
         return Vector3.Up;
+    }
+
+    private void PhysicsGrab() { 
+
+        if (Interactable.GetPrimaryInteractor() == null) return; 
+
+        Interactor interactor = Interactable.GetPrimaryInteractor(); 
+
+		float distSqr = interactor.Controller.GlobalPosition.DistanceSquaredTo(Interactable.GlobalPosition);
+		Vector3 dir = interactor.Controller.GlobalPosition - Interactable.GlobalPosition;
+		Quaternion currentRotation = Interactable.GlobalTransform.Basis.GetRotationQuaternion();
+		Quaternion previousRotation = interactor.Controller.GlobalTransform.Basis.GetRotationQuaternion();
+		Quaternion rotationChange = currentRotation * previousRotation.Inverse();
+		Vector3 angularVelocity = rotationChange.Inverse().GetEuler();
+
+        if (_percise) { 
+            dir = Interactable.GetPrimaryRelativeXform().Origin - Interactable.GlobalPosition; 
+        }
+
+        if (Interactable.IsTwoHanded()) { 
+            Quaternion current = TwoHandXform().Basis.GetRotationQuaternion(); 
+            Quaternion prev = Interactable.GlobalTransform.Basis.GetRotationQuaternion(); 
+            Quaternion change = current * prev.Inverse();
+            angularVelocity = change.GetEuler(); 
+        }
+
+		Interactable.LinearDamp = 30;
+		Interactable.AngularDamp = 20;
+		Interactable.ApplyCentralForce(dir * 10000);
+		Interactable.ApplyTorque(angularVelocity * 30);
+
+    }
+
+    private void KinematicGrab() { 
+         if (IsInstanceValid(Interactable.PrimaryInteractor))
+        {
+            _primaryXform = Interactable.PrimaryInteractor.Controller.GlobalTransform;
+            _primaryXform.Basis = _primaryXform.Basis;
+            _primaryXform.Origin = _primaryXform.Origin;
+
+            if (_percise) { _primaryXform = Interactable.GetPrimaryRelativeXform(); }
+            
+            if (!_twoHanded)
+            {
+                Interactable.GlobalTransform = _primaryXform * Interactable.GetOffsetXform();
+            }
+            
+            if (Interactable.IsTwoHanded())
+            {
+                Interactable.GlobalTransform = TwoHandXform() * Interactable.GetOffsetXform();
+            }
+        }
+
+        if (IsInstanceValid(Interactable.SecondaryInteractor) && !IsInstanceValid(Interactable.PrimaryInteractor)) { 
+            Interactable.GlobalTransform = Interactable.GetSecondaryRelativeXform(); 
+        }
     }
 }
 

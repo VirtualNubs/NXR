@@ -19,6 +19,7 @@ public partial class FirearmMag : Interactable
     [Export]
     public int CurrentAmmo;
 
+    public bool CanChamber = true; 
     private Firearm _firearm; 
 
     public override void _Ready()
@@ -34,6 +35,10 @@ public partial class FirearmMag : Interactable
     }
 
     private void TryChamber() { 
+        if (!CanChamber) return; 
+
+
+        
         if (CurrentAmmo <= 0) return; 
 
         _firearm.Chambered = true; 

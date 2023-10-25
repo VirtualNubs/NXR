@@ -13,13 +13,21 @@ public partial class FirearmCylinder : FirearmMovable
 	[Export]
 	private Node3D _bulletQueue; 
 
+	[Export]
+	private Node3D _cylinderMesh; 
+
+	[Export]
+	private float _step; 
+	private Vector3 newRotation; 
+
     public override void _Ready()
     {
-
         if (Util.NodeIs((Node)GetParent(), typeof(Firearm)))
         {
             _firearm = (Firearm)GetParent();
         }
+
+		newRotation = _cylinderMesh.RotationDegrees; 
     }
 
     public override void _Process(double delta) { 
@@ -44,12 +52,17 @@ public partial class FirearmCylinder : FirearmMovable
 			_firearm.BlockFire = false; 
 		}
 
+
+		// bullet eject
 		if(_bulletQueue != null) { 
 			if (!IsClosed() && -GlobalTransform.Basis.Z.Dot(Vector3.Up) > 0.8) { 
 				FirearmBulletZoneQueue queue = (FirearmBulletZoneQueue)_bulletQueue; 
 				queue.EjectAll(Vector3.Zero,  Vector3.Zero, true); 
 			}
 		}
+
+		float triggerValue = _firearm.GetTriggerValue(); 
+		
 	}
 
 	private bool IsClosed() { 
@@ -80,6 +93,6 @@ public partial class FirearmCylinder : FirearmMovable
 		
 		Controller controller = _firearm.GetPrimaryInteractor().Controller; 
 
-		return controller.LocalVelMatches(GlobalTransform.Basis.X, 30); 
+		return controller.LocalVelMatches(GlobalTransform.Basis.X, 2); 
 	}
 }

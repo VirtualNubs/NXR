@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://b5s345q0wunft"]
+[gd_scene load_steps=16 format=3 uid="uid://b5s345q0wunft"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/Hand.cs" id="1_lqjae"]
 [ext_resource type="AnimationLibrary" uid="uid://bvxp1d4s8s2h" path="res://assets/hands/poses/poses_default.res" id="2_pec5k"]
@@ -27,7 +27,7 @@ sync = true
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_6sady"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_fuvam"]
-graph_offset = Vector2(-1345.33, -37.9467)
+graph_offset = Vector2(-1305.68, -11.1826)
 nodes/Add2/node = SubResource("AnimationNodeAdd2_o3iwq")
 nodes/Add2/position = Vector2(67.9509, 134.583)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_nceky")
@@ -44,12 +44,19 @@ nodes/trigger/node = SubResource("AnimationNodeBlend2_6sady")
 nodes/trigger/position = Vector2(-320, 20)
 node_connections = [&"output", 0, &"Add2", &"Add2", 0, &"trigger", &"Add2", 1, &"grip", &"grip", 0, &"Animation 3", &"grip", 1, &"Animation 4", &"trigger", 0, &"Animation", &"trigger", 1, &"Animation 2"]
 
-[node name="NXRHandRight" type="Node3D" node_paths=PackedStringArray("_animPlayer", "_animTree")]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wmnqf"]
+radius = 0.0514719
+height = 0.247362
+
+[node name="PhysicsHand" type="RigidBody3D" node_paths=PackedStringArray("_animPlayer", "_animTree", "_collider", "HandNode")]
+collision_layer = 32
+mass = 5.0
 script = ExtResource("1_lqjae")
-_idleAnimation = "poses_default/idle"
-_blendTime = 0.0
 _animPlayer = NodePath("AnimationPlayer")
 _animTree = NodePath("AnimationTree")
+_physicsHand = true
+_collider = NodePath("CollisionShape3D")
+HandNode = NodePath("Hand_Glove_R")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -67,6 +74,7 @@ parameters/grip/blend_amount = 0.0
 parameters/trigger/blend_amount = 0.0
 
 [node name="Hand_Glove_R" parent="." instance=ExtResource("3_pnv6c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.160566)
 
 [node name="Skeleton3D" parent="Hand_Glove_R/Armature" index="0"]
 bones/0/rotation = Quaternion(-0.706517, -6.47275e-06, -6.47275e-06, 0.707696)
@@ -105,5 +113,9 @@ bones/24/rotation = Quaternion(0.0158363, 0.0193397, -0.153777, 0.987789)
 
 [node name="mesh_Glove_R" parent="Hand_Glove_R/Armature/Skeleton3D" index="0"]
 material_override = ExtResource("4_a8fot")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0.108269)
+shape = SubResource("CapsuleShape3D_wmnqf")
 
 [editable path="Hand_Glove_R"]

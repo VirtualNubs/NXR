@@ -3,6 +3,7 @@ using Godot.Collections;
 using NXR;
 using NXRInteractable;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 
@@ -34,9 +35,10 @@ public partial class InteractableSnapZone : Area3D
     [Export]
     private float _breakDistance = 0.3f;
 
-    protected Interactable _snappedInteractable = null;
-    protected Interactable _hoveredInteractable;
+    public Interactable _snappedInteractable = null;
+    public Interactable _hoveredInteractable;
 
+    public bool CanUnsnap = true; 
     private Vector3 _snappedInitScale;
     private Interactor _lastInteractor;
 
@@ -67,10 +69,12 @@ public partial class InteractableSnapZone : Area3D
 
     public override void _Process(double delta)
     {
+
+        
         if (_sticky && _hoveredInteractable != null)
         {
-            _hoveredInteractable.GlobalTransform = GlobalTransform;
             _snappedInteractable = _hoveredInteractable;
+            _snappedInteractable.GlobalTransform = GlobalTransform;
         }
 
         if (_snappedInteractable != null)
@@ -79,13 +83,16 @@ public partial class InteractableSnapZone : Area3D
         }
     }
 
-    public virtual void Unsnap()
+    public virtual void Unsnap(bool force=true)
     {
         if (_snappedInteractable == null) return;
+        
+        if (CanUnsnap == false  && !force) return; 
+
         Interactable interactable = _snappedInteractable;
 
-        _snappedInteractable = null;
         _hoveredInteractable = null;
+        _snappedInteractable = null;
 
         interactable.Freeze = interactable.InitFreeze;
         interactable.Reparent(interactable.InitParent, true);
@@ -96,8 +103,6 @@ public partial class InteractableSnapZone : Area3D
 
     public virtual void Snap(Interactable interactable)
     {
-
-
 
         Connect(interactable);
 
@@ -177,7 +182,6 @@ public partial class InteractableSnapZone : Area3D
         if (!_snappedInteractable.IsGrabbed()) return;
 
         Interactor interactor = null;
-
         if (_snappedInteractable.GetPrimaryInteractor() != null)
         {
             interactor = _snappedInteractable.GetPrimaryInteractor();
@@ -188,7 +192,6 @@ public partial class InteractableSnapZone : Area3D
         }
 
         float distance = interactor.GlobalPosition.DistanceTo(GlobalPosition);
-
         if (distance > _breakDistance)
         {
             Unsnap();
@@ -196,18 +199,12 @@ public partial class InteractableSnapZone : Area3D
     }
     public void Exited(Node3D area)
     {
-        if (_hoveredInteractable == null) return;
+        if (_hoveredInteractable == null || !CanUnsnap) return;
 
-
-        if (area == _hoveredInteractable.PrimaryInteractor || area == _hoveredInteractable.SecondaryInteractor)
-        {
-            Disconnect((Interactable)_hoveredInteractable);
-        }
+        Disconnect((Interactable)_hoveredInteractable);
 
         if (area == _hoveredInteractable.PrimaryInteractor)
         {
-            _hoveredInteractable = null;
-
             if (_sticky && _snappedInteractable != null)
             {
                 Unsnap();
@@ -246,6 +243,28 @@ public partial class InteractableSnapZone : Area3D
             Disconnect(interactable);
         }
     }
+
+
+    private List<Interactable> Hovered()
+	{
+		Array<Node3D> bodies = GetOverlappingBodies();
+		List<Interactable> interactables = new List<Interactable>();
+
+		foreach (Node3D node in bodies)
+		{
+			if (Util.NodeIs(node, typeof(Interactable)))
+			{
+				interactables.Add((Interactable)node);
+			}
+		}
+		
+
+		// sort closest hovered interactable 
+		interactables = interactables.OrderBy(x => x.GlobalPosition.DistanceTo(GlobalPosition)).ToList();
+
+		return interactables;
+
+	}
 
     private void Connect(Interactable interactable)
     {

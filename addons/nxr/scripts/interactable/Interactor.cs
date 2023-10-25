@@ -18,6 +18,9 @@ public partial class Interactor : Area3D
 	private float _smoothing = 0.5f; 
 	public Interactable _grabbedInteractable;
 
+	[Export]
+	private bool _updateTransform = true; 
+
 	public RigidBody3D PhysicsGrabBody = new(); 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -34,7 +37,9 @@ public partial class Interactor : Area3D
 	public override void _PhysicsProcess(double delta)
 	{
 		// follow controller transform 
-		GlobalTransform = GlobalTransform.InterpolateWith(Controller.GlobalTransform, _smoothing);
+		if (_updateTransform) { 
+			GlobalTransform = GlobalTransform.InterpolateWith(Controller.GlobalTransform, _smoothing);
+		}
 
 		if (_grabbedInteractable != null) {
 			Interactable interactable = _grabbedInteractable; 

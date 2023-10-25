@@ -66,7 +66,6 @@ public partial class Interactable : RigidBody3D
 	public delegate void OnFullDroppedEventHandler();
 
 
- 
     public override void _Ready()
     {
 		PrimaryGrabPoint  ??= this;
@@ -102,7 +101,6 @@ public partial class Interactable : RigidBody3D
 
 	public void SecondaryGrab(Interactor interactor)
 	{
-
 
 		if (!IsInstanceValid(SecondaryInteractor))
 		{
@@ -148,6 +146,7 @@ public partial class Interactable : RigidBody3D
 		if (!IsGrabbed()) { 
 			EmitSignal("OnFullDropped"); 
 			LinearVelocity = interactor.Controller.GetGlobalVelocity();
+			AngularVelocity = interactor.Controller.GetAngularVelocity();
 		}
 	}
 

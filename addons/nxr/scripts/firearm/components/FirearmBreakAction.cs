@@ -38,7 +38,6 @@ public partial class FirearmBreakAction : FirearmMovable
 		if (_firearm.GetPrimaryInteractor() != null && _firearm.GetPrimaryInteractor().Controller.ButtonOneShot("ax_button"))
 		{
 			Open();
-
 		}
 
 		if (!IsClosed() && GetCloseInput())
@@ -49,9 +48,9 @@ public partial class FirearmBreakAction : FirearmMovable
 		if (!IsClosed() && _firearm.GetSecondaryInteractor() != null)
 		{
 			Vector3 dir = _firearm.GetSecondaryInteractor().GlobalPosition - Target.GlobalPosition;
-			float angle = -Target.GlobalTransform.Basis.Y.SignedAngleTo(dir.Normalized(), Vector3.Forward);
-			GD.Print(angle);
-			angle = Mathf.Clamp(angle, -1, 1);
+			float angle = Target.GlobalTransform.Basis.Y.Dot(dir.Normalized());
+			angle = Mathf.Clamp(angle * 1.5f, -1, 1);
+
 			Target.Transform = EndXform.InterpolateWith(StartXform, angle);
 		}
 
@@ -75,7 +74,7 @@ public partial class FirearmBreakAction : FirearmMovable
 	public async void Open()
 	{
 		Tween tween = GetTree().CreateTween();
-		tween.TweenProperty(Target, "transform", EndXform, 0.1f);
+		tween.TweenProperty(Target, "transform", EndXform.Orthonormalized(), 0.1f);
 
 		await ToSignal(tween, "finished");
 
@@ -83,14 +82,14 @@ public partial class FirearmBreakAction : FirearmMovable
 		{
 			FirearmBulletZoneQueue queue = (FirearmBulletZoneQueue)_bulletQueue;
 
-			queue.EjectAll(Target.GlobalTransform.Basis.Z * 2, Vector3.Right * 100000, true); 
+			queue.EjectAll(Target.GlobalTransform.Basis.Z, Vector3.Right, true); 
 		}
 	}
 
 	public void Close()
 	{
 		Tween tween = GetTree().CreateTween();
-		tween.TweenProperty(Target, "transform", StartXform, 0.1f);
+		tween.TweenProperty(Target, "transform", StartXform.Orthonormalized(), 0.1f);
 	}
 
 	private bool GetCloseInput()
@@ -99,6 +98,8 @@ public partial class FirearmBreakAction : FirearmMovable
 
 		Controller controller = _firearm.GetPrimaryInteractor().Controller;
 
-		return controller.LocalVelMatches(GlobalTransform.Basis.Y, 30);
+		Vector3 dir = GlobalTransform.Basis.Y; 
+				
+		return controller.LocalVelMatches(dir, 0.8f);
 	}
 }

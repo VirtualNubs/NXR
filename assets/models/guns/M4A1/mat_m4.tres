@@ -1,6 +1,6 @@
 [gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://ckhn2nohm0vht"]
 
-[ext_resource type="Texture2D" uid="uid://c1meo8ebbhnbr" path="res://assets/models/guns/M4A1_Base_Color.png" id="1_rnpe6"]
+[ext_resource type="Texture2D" uid="uid://c1meo8ebbhnbr" path="res://assets/models/guns/M4A1_Base_Color.png" id="1_8qmhn"]
 
 [resource]
-albedo_texture = ExtResource("1_rnpe6")
+albedo_texture = ExtResource("1_8qmhn")

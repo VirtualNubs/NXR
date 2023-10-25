@@ -5,31 +5,20 @@ using NXR;
 
 [Tool]
 [GlobalClass]
-public partial class FirearmSlide : Interactable
+public partial class FirearmSlide : FirearmMovable
 {
-
     [Export]
-    protected Vector3 _startPosition;
+    private bool _setBackOnFire = false; 
     [Export]
-    protected Vector3 _endPosition;
-
-    [Export]
-    private bool _setBackOnFire;
-
-    [ExportGroup("Tool Settings")]
-    [Export]
-    private bool _setStart;
-    [Export]
-    private bool _setEnd;
-    [Export]
-    private bool _goStart;
-    [Export]
-    private bool _goEnd;
+    private bool _setBackOnEmpty = false; 
 
     protected Firearm _firearm = null; 
     protected bool back = false; 
     private Transform3D _relativeGrabXform; 
-    
+
+    protected Transform3D _relativeXform = new(); 
+
+
     public override void _Ready()
     {
         base._Ready(); 
@@ -42,35 +31,15 @@ public partial class FirearmSlide : Interactable
         if (_firearm == null) return; 
 
         _firearm.OnFire += OnFire;
+        _firearm.TryChamber += TriedChamber;
+
         this.OnDropped += OnDrop;
+        this.OnGrabbed += Grabbed;
     }
 
     public override void _Process(double delta)
     {
-        if (Engine.IsEditorHint())
-        {
-            if (_setStart)
-            {
-                _startPosition = Position;
-                _setStart = false;
-            }
-            if (_setEnd)
-            {
-                _endPosition = Position;
-                _setEnd = false;
-            }
-
-            if (_goStart)
-            {
-                Position = _startPosition;
-                _goStart = false;
-            }
-            if (_goEnd)
-            {
-                Position = _endPosition;
-                _goEnd = false;
-            }
-        }
+        RunTool(); 
 
         if (_firearm == null) return;
         
@@ -90,31 +59,34 @@ public partial class FirearmSlide : Interactable
 
         if (IsGrabbed())
         {
-            Node3D parent = (Node3D)GetParent();
-            Transform3D grabXform = GetPrimaryRelativeXform(); 
-            Vector3 newPos = parent.ToLocal(grabXform.Origin);
+            Node3D parent = (Node3D)Target.GetParent();
+            Transform3D newXform = GetPrimaryInteractor().GlobalTransform * _relativeXform; 
+            Vector3 newPos = parent.ToLocal(newXform.Origin);
 
-            newPos= newPos.Clamp(_startPosition, _endPosition);
-            Position =  newPos;
+            newPos= newPos.Clamp(StartXform.Origin, EndXform.Origin);
+            Target.Position = newPos;
         } 
     }
 
     public bool IsBack() { 
-        return Position.IsEqualApprox(_endPosition); 
+        return Target.Position.IsEqualApprox(EndXform.Origin); 
     }
 
     public bool IsForward() { 
-        return Position.IsEqualApprox(_startPosition); 
+        return Target.Position.IsEqualApprox(StartXform.Origin); 
     }
 
     public void OnFire()
     {
         if (_setBackOnFire)
         {
-            Position = _endPosition;
+            Target.Position = EndXform.Origin;
         }
 
-        if (Position.IsEqualApprox(_endPosition))
+
+        if (_setBackOnEmpty && _firearm.Chambered == false) return; 
+
+        if (Target.Position.IsEqualApprox(EndXform.Origin))
         {
             ReturnTween();
         }
@@ -124,12 +96,22 @@ public partial class FirearmSlide : Interactable
     {
         ReturnTween();
     }
- 
+    
+    private void Grabbed(Interactable interactable, Interactor interactor) { 
 
+        if (interactor == GetPrimaryInteractor()) {
+            _relativeXform = interactor.GlobalTransform.AffineInverse() * Target.GlobalTransform; 
+        }
+    }
+
+    private void TriedChamber() { 
+        ReturnTween(); 
+    }
+    
     private void ReturnTween()
     {
         Tween returnTween = GetTree().CreateTween();
-        returnTween.TweenProperty(this, "position", _startPosition, 0.1f);
+        returnTween.TweenProperty(Target, "position", StartXform.Origin, 0.1f);
     }
 
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ctrtq0t2fqwtr"]
+[gd_scene load_steps=13 format=3 uid="uid://ctrtq0t2fqwtr"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/player/Player.cs" id="1_rc1uy"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/core/Origin.cs" id="2_3x8s4"]
@@ -9,8 +9,20 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/player/components/PlayerTurn.cs" id="6_ias0r"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/player/components/PlayerWalk.cs" id="7_tckao"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t7fgb"]
+no_depth_test = true
+shading_mode = 0
+albedo_color = Color(0.152941, 1, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4w0p3"]
+albedo_color = Color(0.423529, 0.403922, 0.717647, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t6337"]
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_oscbt"]
-radius = 0.0935412
+radius = 0.0546566
 
 [node name="NXRPlayer" type="CharacterBody3D" node_paths=PackedStringArray("_leftController", "_rightController", "_xrOrigin")]
 collision_layer = 2
@@ -23,6 +35,14 @@ _rightController = NodePath("XROrigin3D/RightController")
 _xrOrigin = NodePath("XROrigin3D")
 _stepHeight = 0.66
 _stepSmoothing = 0.4
+
+[node name="PlayerTurn" type="Node" parent="."]
+script = ExtResource("6_ias0r")
+_rotationMode = 1
+_smoothTurnSpeed = 180.0
+
+[node name="PlayerWalk" type="Node" parent="."]
+script = ExtResource("7_tckao")
 
 [node name="XROrigin3D" type="XROrigin3D" parent="."]
 current = true
@@ -44,40 +64,93 @@ script = ExtResource("3_ub7va")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0218715, -0.0386385)
 _controller = NodePath("..")
 
-[node name="LeftInteractor" type="Area3D" parent="XROrigin3D" node_paths=PackedStringArray("Controller")]
-collision_mask = 9
-script = ExtResource("4_480fq")
-Controller = NodePath("../LeftController")
-_smoothing = 0.2
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/LeftInteractor"]
-shape = SubResource("SphereShape3D_oscbt")
-
-[node name="NXRHand" parent="XROrigin3D/LeftInteractor" node_paths=PackedStringArray("Controller") instance=ExtResource("5_utiyv")]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0228407, 0.135899)
-Controller = NodePath("../../LeftController")
-
-[node name="RightInteractor" type="Area3D" parent="XROrigin3D" node_paths=PackedStringArray("Controller")]
-collision_mask = 9
-script = ExtResource("4_480fq")
-Controller = NodePath("../RightController")
-_smoothing = 0.2
-metadata/_edit_group_ = true
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/RightInteractor"]
-shape = SubResource("SphereShape3D_oscbt")
-
-[node name="NXRHand" parent="XROrigin3D/RightInteractor" node_paths=PackedStringArray("Controller") instance=ExtResource("5_utiyv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0228407, 0.135899)
-Controller = NodePath("../../RightController")
+[node name="CSGSphere3D" type="CSGSphere3D" parent="XROrigin3D/RightController"]
+material_override = SubResource("StandardMaterial3D_t7fgb")
+radius = 0.0232934
 
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+cull_mask = 1048559
 current = true
 
-[node name="PlayerTurn" type="Node" parent="."]
-script = ExtResource("6_ias0r")
-_rotationMode = 1
-_smoothTurnSpeed = 180.0
+[node name="Head" type="CSGSphere3D" parent="XROrigin3D/XRCamera3D"]
+transform = Transform3D(1.42413, 0, 0, 0, 1.42413, 0, 0, 0, 1.42413, 5.71335e-05, -0.00425699, 0.0161382)
+visible = false
+layers = 16
+material_override = SubResource("StandardMaterial3D_4w0p3")
+radius = 0.0865781
 
-[node name="PlayerWalk" type="Node" parent="."]
-script = ExtResource("7_tckao")
+[node name="CSGSphere3D2" type="CSGSphere3D" parent="XROrigin3D/XRCamera3D/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0294042, 0.0151108, -0.0571497)
+layers = 16
+material_override = SubResource("StandardMaterial3D_t6337")
+radius = 0.0224133
+
+[node name="CSGSphere3D3" type="CSGSphere3D" parent="XROrigin3D/XRCamera3D/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0290001, 0.015, -0.0570001)
+layers = 16
+material_override = SubResource("StandardMaterial3D_t6337")
+radius = 0.0224133
+
+[node name="HandRight" parent="." node_paths=PackedStringArray("Controller") instance=ExtResource("5_utiyv")]
+Controller = NodePath("../XROrigin3D/RightController")
+_blendTime = 0.0
+
+[node name="RightInteractor" type="Area3D" parent="HandRight" node_paths=PackedStringArray("Controller")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.119421)
+collision_mask = 9
+script = ExtResource("4_480fq")
+Controller = NodePath("../../XROrigin3D/RightController")
+_smoothing = 0.2
+_updateTransform = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HandRight/RightInteractor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0885606)
+shape = SubResource("SphereShape3D_oscbt")
+
+[node name="HandLeft" parent="." node_paths=PackedStringArray("Controller") instance=ExtResource("5_utiyv")]
+Controller = NodePath("../XROrigin3D/LeftController")
+_blendTime = 0.0
+
+[node name="Hand_Glove_R" parent="HandLeft" index="2"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.160566)
+
+[node name="Skeleton3D" parent="HandLeft/Hand_Glove_R/Armature" index="0"]
+bones/0/rotation = Quaternion(-0.706517, -6.47275e-06, -6.47275e-06, 0.707696)
+bones/1/rotation = Quaternion(0.323537, 2.56579e-05, 0.0272204, 0.945824)
+bones/2/rotation = Quaternion(-0.0459503, 0.0271357, 0.0752572, 0.995735)
+bones/3/rotation = Quaternion(0.0556407, -0.0103261, -0.0139847, 0.9983)
+bones/4/rotation = Quaternion(-0.0757687, 0.019257, 0.0337124, 0.996369)
+bones/6/rotation = Quaternion(0.111223, 0.00277812, -0.117574, 0.986812)
+bones/7/rotation = Quaternion(-0.0136832, 0.0246682, 0.235071, 0.971569)
+bones/8/rotation = Quaternion(0.014226, 0.0119908, 0.134541, 0.990733)
+bones/9/rotation = Quaternion(-0.0522884, 0.000557213, -0.103621, 0.993241)
+bones/10/rotation = Quaternion(-0.0358546, -4.20049e-05, -0.0499776, 0.998107)
+bones/11/rotation = Quaternion(-0.0119466, -0.000966737, 0.0105008, 0.999873)
+bones/12/rotation = Quaternion(0.0394554, -0.00492874, 0.137827, 0.989658)
+bones/13/rotation = Quaternion(-0.0139315, 0.000142422, 0.168612, 0.985584)
+bones/14/rotation = Quaternion(0.0136882, -7.99245e-05, -0.168411, 0.985622)
+bones/15/rotation = Quaternion(-0.0711949, -1.57334e-05, -0.0180856, 0.997298)
+bones/16/rotation = Quaternion(-0.0510567, 0.00202299, -0.0418045, 0.997818)
+bones/17/rotation = Quaternion(0.0173263, -0.0186085, 0.160829, 0.986655)
+bones/18/rotation = Quaternion(-0.0113518, -0.0126214, 0.131984, 0.991107)
+bones/19/rotation = Quaternion(0.0330517, 0.00671975, -0.126351, 0.991412)
+bones/20/rotation = Quaternion(-0.0917696, -2.45619e-05, -0.0284477, 0.995374)
+bones/21/rotation = Quaternion(-0.089286, -0.00316807, 0.00673912, 0.995978)
+bones/22/rotation = Quaternion(0.0449258, -0.032808, 0.185059, 0.981152)
+bones/23/rotation = Quaternion(-0.0180548, -0.0114553, 0.107075, 0.994021)
+bones/24/rotation = Quaternion(0.0158363, 0.0193397, -0.153777, 0.987789)
+
+[node name="LeftInteractor" type="Area3D" parent="HandLeft" node_paths=PackedStringArray("Controller")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.123348)
+collision_mask = 9
+script = ExtResource("4_480fq")
+Controller = NodePath("../../XROrigin3D/LeftController")
+_smoothing = 0.2
+_updateTransform = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HandLeft/LeftInteractor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0885606)
+shape = SubResource("SphereShape3D_oscbt")
+
+[editable path="HandLeft"]
+[editable path="HandLeft/Hand_Glove_R"]

@@ -5,7 +5,7 @@ namespace NXRPlayer;
 public partial class PlayerBehaviour : Node
 {
 
-    public Player _player;
+    protected Player _player;
 
     public override void _Ready()
     {

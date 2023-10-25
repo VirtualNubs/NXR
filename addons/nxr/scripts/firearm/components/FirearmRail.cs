@@ -8,6 +8,10 @@ public partial class FirearmRail : InteractableSnapZone
 {
 	[Export]
 	private float _snap = 0.01f; 
+
+	[Export]
+	private float _railLength = 0.2f;  
+
 	[Export]
 	private float _minZPosition = 0; 
 
@@ -16,6 +20,7 @@ public partial class FirearmRail : InteractableSnapZone
 
 	private Vector3 _initPosition; 
 
+	
     public override void _Ready()
     {
         base._Ready();
@@ -38,11 +43,13 @@ public partial class FirearmRail : InteractableSnapZone
 			newXform.Origin = railXform.Origin; 
 
 			if (_hoveredInteractable.GetPrimaryInteractor() != null) { 
-				Vector3 newPos = parent.ToLocal(_hoveredInteractable.GetPrimaryInteractor().GlobalPosition); 
+				Vector3 newPos = parent.ToLocal(_hoveredInteractable.GetPrimaryInteractor().Controller.GlobalPosition); 
+				float halfLength = _railLength / 2; 
+
 				newPos.X = Position.X; 
 				newPos.Y = Position.Y;
 				newPos.Z = Mathf.Snapped(newPos.Z, _snap); 
-				newPos.Z = Mathf.Clamp(newPos.Z, _minZPosition, _maxZPosition); 
+				newPos.Z = Mathf.Clamp(newPos.Z, _initPosition.Z - halfLength, _initPosition.Z + halfLength); 
 
 				Position = newPos; 
 			}
@@ -56,6 +63,5 @@ public partial class FirearmRail : InteractableSnapZone
 
 	private void UnSnapped() { 
 		Position = _initPosition; 
-		GD.Print("unsnapped"); 	
 	}
 }

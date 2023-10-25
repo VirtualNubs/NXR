@@ -34,6 +34,10 @@ public partial class FirearmMovable : Interactable
 			Target = this; 
 		}
 
+		if (Target != this) { 
+			GlobalPosition = Target.GlobalPosition; 
+		}
+
 		if (_setStartXform) { 
 			StartXform = Target.Transform.Orthonormalized(); 
 			_setStartXform = false;
@@ -44,21 +48,37 @@ public partial class FirearmMovable : Interactable
 		}
 
 		if(_goStart) { 
-			Target.Transform = StartXform.Orthonormalized(); 
+			Target.Transform = StartXform; 
 			_goStart = false; 
 		}
 
 		if (_goEnd) { 
-			Target.Transform = EndXform.Orthonormalized();
+			Target.Transform = EndXform;
 			_goEnd = false; 
 		}
 	}
 
 	public void GoStart() { 
-		Target.Transform = StartXform; 
+		Target.Transform = StartXform.Orthonormalized(); 
 	}
 
 	public void GoEnd() { 
-		Target.Transform = EndXform; 
+		Target.Transform = EndXform.Orthonormalized(); 
+	}
+
+	public Vector3 GetMinOrigin() { 
+		float x = StartXform.Origin.X < EndXform.Origin.X ? StartXform.Origin.X : EndXform.Origin.X; 
+		float y = StartXform.Origin.Y < EndXform.Origin.Y ? StartXform.Origin.Y : EndXform.Origin.Y; 
+		float z = StartXform.Origin.Z < EndXform.Origin.Z ? StartXform.Origin.Z : EndXform.Origin.Z; 
+
+		return new Vector3(x, y, z); 
+	}
+
+	public Vector3 GetMaxOrigin() { 
+		float x = StartXform.Origin.X > EndXform.Origin.X ? StartXform.Origin.X : EndXform.Origin.X; 
+		float y = StartXform.Origin.Y > EndXform.Origin.Y ? StartXform.Origin.Y : EndXform.Origin.Y; 
+		float z = StartXform.Origin.Z > EndXform.Origin.Z ? StartXform.Origin.Z : EndXform.Origin.Z; 
+
+		return new Vector3(x, y, z); 
 	}
 }

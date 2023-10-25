@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="NXR"
-run/main_scene="res://demos/demo.tscn"
+run/main_scene="res://demo/demo.tscn"
 config/features=PackedStringArray("4.1", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -39,10 +39,16 @@ enabled=PackedStringArray("res://addons/nxr/plugin.cfg")
 
 common/physics_ticks_per_second=90
 3d/solver/contact_max_allowed_penetration=0.001
+common/sleep/enabled=true
+common/collisions/areas_detect_static_bodies=false
+jolt_3d/sleep/enabled=false
+jolt_3d/collisions/areas_detect_static_bodies=true
 
 [rendering]
 
 lights_and_shadows/directional_shadow/soft_shadow_filter_quality=5
+environment/ssao/quality=3
+environment/ssao/half_size=false
 anti_aliasing/quality/msaa_3d=2
 
 [xr]

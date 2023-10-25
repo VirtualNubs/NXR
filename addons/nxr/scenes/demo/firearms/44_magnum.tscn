@@ -30,7 +30,6 @@ filter_enabled = true
 filters = ["Hand_Glove_R/Armature/Skeleton3D:Index_Distal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Intermediate_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Metacarpal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Proximal_R", "Hand_Glove_R/Armature/Skeleton3D:Index_Tip_R"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_i6mxa"]
-graph_offset = Vector2(-594.835, -3.07315)
 nodes/Add2/node = SubResource("AnimationNodeAdd2_7e4af")
 nodes/Add2/position = Vector2(80.7675, 127.27)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_6qmxw")
@@ -85,16 +84,18 @@ material_override = ExtResource("5_r6oe6")
 material_override = ExtResource("5_r6oe6")
 
 [node name="Rotator" parent="44_magnum" index="2"]
-transform = Transform3D(0.251613, -0.967828, 0, 0.967828, 0.251613, 0, 0, 0, 1, 8.30771e-06, -0.019172, -0.0381961)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.30771e-06, -0.019172, -0.0381961)
 material_override = ExtResource("5_r6oe6")
 
 [node name="Connector" parent="44_magnum/Rotator" index="0"]
 material_override = ExtResource("5_r6oe6")
 
 [node name="Connector_Child" parent="44_magnum/Rotator/Connector" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0222619, 7.47666e-06)
 material_override = ExtResource("5_r6oe6")
 
 [node name="Drum" parent="44_magnum/Rotator/Connector/Connector_Child" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.85315e-05, 1.33887e-05, -9.25194e-05)
 material_override = ExtResource("5_r6oe6")
 
 [node name="FirearmBulletZoneQueue" type="Node3D" parent="44_magnum/Rotator" index="1" node_paths=PackedStringArray("_firearm")]
@@ -154,12 +155,16 @@ shape = SubResource("SphereShape3D_i8hxm")
 material_override = ExtResource("5_r6oe6")
 
 [node name="Hammer" parent="44_magnum/Trigger" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00517058, 0.0343934)
 material_override = ExtResource("5_r6oe6")
 
-[node name="FirearmCylinder" type="RigidBody3D" parent="." node_paths=PackedStringArray("_bulletQueue", "Target")]
+[node name="FirearmCylinder" type="RigidBody3D" parent="." node_paths=PackedStringArray("_bulletQueue", "_cylinderMesh", "Target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.30771e-06, -0.019172, -0.0381961)
 freeze = true
 script = ExtResource("6_yitu7")
 _bulletQueue = NodePath("../44_magnum/Rotator/FirearmBulletZoneQueue")
+_cylinderMesh = NodePath("../44_magnum/Rotator/Connector/Connector_Child")
+_step = 60.0
 Target = NodePath("../44_magnum/Rotator")
 StartXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.30771e-06, -0.019172, -0.0381961)
 EndXform = Transform3D(0.251613, -0.967828, 0, 0.967828, 0.251613, 0, 0, 0, 1, 8.30771e-06, -0.019172, -0.0381961)
