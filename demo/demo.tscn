@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=3 uid="uid://de5mtyewlytyu"]
+[gd_scene load_steps=74 format=3 uid="uid://de5mtyewlytyu"]
 
 [ext_resource type="Texture2D" uid="uid://5oork2oun5d4" path="res://assets/textures/EveningSkyHDRI017B_4K-HDR.exr" id="2_ub05x"]
 [ext_resource type="PackedScene" uid="uid://sfgdm1jksecs" path="res://addons/nxr/scenes/demo/firearms/ak.tscn" id="4_ckwcl"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://dv28qodnevgfd" path="res://addons/nxr/scenes/demo/firearms/pump_shotgun.tscn" id="9_yb3sr"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/InteractableGrabSpawn.cs" id="10_8x156"]
 [ext_resource type="PackedScene" uid="uid://c08ixmk7nultq" path="res://assets/scenes/target_black.tscn" id="10_ahl4l"]
-[ext_resource type="PackedScene" uid="uid://v1rhebabtib2" path="res://addons/nxr/scenes/demo/firearms/mags/glock_mag.tscn" id="11_wv8ab"]
 [ext_resource type="PackedScene" uid="uid://b0l5qbqtfnr1n" path="res://assets/models/guns/M4A1/m4a1.glb" id="12_7xkl2"]
 [ext_resource type="PackedScene" uid="uid://chjoix6pn330p" path="res://assets/models/hesco/hesco.glb" id="13_7lmpb"]
 [ext_resource type="Texture2D" uid="uid://c1meo8ebbhnbr" path="res://assets/models/guns/M4A1_Base_Color.png" id="13_dlma3"]
@@ -27,7 +26,7 @@
 [ext_resource type="Texture2D" uid="uid://4qoa2di5t4sd" path="res://assets/textures/reticles/scope.png" id="24_oswfd"]
 [ext_resource type="PackedScene" uid="uid://bn7d5v2rgh874" path="res://assets/models/enviroment/terrain.glb" id="24_r8rkg"]
 [ext_resource type="Material" uid="uid://cl0kc6qfwi88s" path="res://assets/materials/ambientcg/gravel/mat_gravel.tres" id="25_s6yju"]
-[ext_resource type="PackedScene" uid="uid://cm6r7rvjnm8jp" path="res://addons/nxr/scenes/demo/firearms/glock_17.tscn" id="25_t48vp"]
+[ext_resource type="PackedScene" uid="uid://dxk7v53lt5thq" path="res://addons/nxr/scenes/demo/firearms/glock_17.tscn" id="25_t48vp"]
 [ext_resource type="Texture2D" uid="uid://daigr38dvr8gw" path="res://assets/textures/puff.png" id="27_tck6v"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_fohs8"]
@@ -535,6 +534,9 @@ transform = Transform3D(0.863385, 0.373225, -0.339512, 7.45058e-09, 0.672908, 0.
 light_color = Color(1, 0.913725, 0.831373, 1)
 light_energy = 0.491
 shadow_enabled = true
+directional_shadow_split_1 = 0.3
+directional_shadow_split_2 = 0.5
+directional_shadow_split_3 = 1.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Enviroment"]
 environment = SubResource("Environment_greij")
@@ -905,24 +907,23 @@ lifetime = 2.0
 process_material = SubResource("ParticleProcessMaterial_wss86")
 draw_pass_1 = SubResource("QuadMesh_ojt44")
 
-[node name="Target" parent="." instance=ExtResource("18_ytwgt")]
-transform = Transform3D(-0.999828, 0, -0.0184992, 0, 1, 0, 0.0184992, 0, -0.999828, -1.32604, -0.0120988, 3.73194)
+[node name="Killhouse" type="Node3D" parent="Geometry"]
+
+[node name="Target" parent="Geometry/Killhouse" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(-0.999828, 0, -0.0184992, 0, 1, 0, 0.0184992, 0, -0.999828, -14.9457, -0.0120988, 3.73194)
 one_shot = true
 
-[node name="Target2" parent="." instance=ExtResource("18_ytwgt")]
-transform = Transform3D(-0.924026, 0, -0.382329, 0, 1, 0, 0.382329, 0, -0.924026, -4.69769, 0.777797, 0.0614505)
+[node name="Target2" parent="Geometry/Killhouse" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(-0.924026, 0, -0.382329, 0, 1, 0, 0.382329, 0, -0.924026, -18.3174, 0.777797, 0.0614505)
 one_shot = true
 
-[node name="Target3" parent="." instance=ExtResource("18_ytwgt")]
-transform = Transform3D(0.969076, 0, 0.246762, 0, 1, 0, -0.246762, 0, 0.969076, 4.7716, -0.0120993, 13.5713)
+[node name="Target3" parent="Geometry/Killhouse" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(0.969076, 0, 0.246762, 0, 1, 0, -0.246762, 0, 0.969076, -8.8481, -0.0120993, 13.5713)
 one_shot = true
 
-[node name="Target4" parent="." instance=ExtResource("18_ytwgt")]
-transform = Transform3D(0.988329, 0, -0.152331, 0, 1, 0, 0.152331, 0, 0.988329, 0.493433, -0.0120993, 11.9979)
+[node name="Target4" parent="Geometry/Killhouse" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(0.988329, 0, -0.152331, 0, 1, 0, 0.152331, 0, 0.988329, -13.1263, -0.0120993, 11.9979)
 one_shot = true
-
-[node name="FirearmMag" parent="." instance=ExtResource("11_wv8ab")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.0527, 0.955647, -1.93559)
 
 [node name="LightmapGI" type="LightmapGI" parent="."]
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://cm6r7rvjnm8jp"]
+[gd_scene load_steps=33 format=3 uid="uid://dxk7v53lt5thq"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_a2525"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="2_0hb8b"]
@@ -13,10 +13,11 @@
 [ext_resource type="PackedScene" uid="uid://deki1ee327fx" path="res://assets/models/guns/Glock_17/glock_17.glb" id="10_mpamh"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmSpawner.cs" id="11_gpl0r"]
 [ext_resource type="Material" uid="uid://byrg4ncwr4jt6" path="res://assets/models/guns/Glock_17/glock_17.material" id="11_ir7yb"]
+[ext_resource type="PackedScene" uid="uid://c0w1ensns0w85" path="res://addons/nxr/scenes/demo/firearms/mags/glock_mag.tscn" id="11_jyaim"]
 [ext_resource type="PackedScene" uid="uid://b2w3jidu8sxgl" path="res://addons/nxr/scenes/demo/firearms/ammo/spent_casings/556_spent.tscn" id="12_egxgu"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRay.cs" id="15_sch43"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRayHitSpawner.cs" id="16_551d1"]
-[ext_resource type="PackedScene" uid="uid://cqjm6xwud5l50" path="res://demo/scenes/part_hit.tscn" id="17_ger5f"]
+[ext_resource type="PackedScene" uid="uid://cmvybwirj715t" path="res://demo/scenes/part_hit.tscn" id="17_ger5f"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_i000j"]
 size = Vector3(0.0298283, 0.11559, 0.232056)
@@ -214,6 +215,8 @@ script = ExtResource("8_l5mrm")
 _firearm = NodePath("../..")
 AllowedGroups = PackedStringArray("glock_mag")
 _sticky = true
+
+[node name="FirearmMag" parent="FirearmMagZoneTrack/FirearmMagZone" instance=ExtResource("11_jyaim")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FirearmMagZoneTrack/FirearmMagZone"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0688798, -0.0353615)

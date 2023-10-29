@@ -13,7 +13,7 @@
 [ext_resource type="Material" uid="uid://dr1bhnahf7eyq" path="res://assets/models/ammo/bullets/bullets.material" id="10_uh6la"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRayHitSpawner.cs" id="11_7v8ug"]
 [ext_resource type="Texture2D" uid="uid://daigr38dvr8gw" path="res://assets/textures/puff.png" id="11_tiy7n"]
-[ext_resource type="PackedScene" uid="uid://cqjm6xwud5l50" path="res://demo/scenes/part_hit.tscn" id="12_txgea"]
+[ext_resource type="PackedScene" uid="uid://cmvybwirj715t" path="res://demo/scenes/part_hit.tscn" id="12_txgea"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmParticlePlayer.cs" id="12_v80tt"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmSpawner.cs" id="14_qy2vl"]
 [ext_resource type="PackedScene" uid="uid://b2w3jidu8sxgl" path="res://addons/nxr/scenes/demo/firearms/ammo/spent_casings/556_spent.tscn" id="15_robx0"]
@@ -180,7 +180,7 @@ albedo_texture = ExtResource("16_o3a8l")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bimab"]
 albedo_texture = ExtResource("16_o3a8l")
 
-[node name="Firearm" type="RigidBody3D"]
+[node name="Firearm2" type="RigidBody3D"]
 collision_layer = 8
 freeze_mode = 1
 script = ExtResource("1_12tsm")

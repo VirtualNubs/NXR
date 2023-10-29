@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://v1rhebabtib2"]
+[gd_scene load_steps=16 format=3 uid="uid://c0w1ensns0w85"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMag.cs" id="1_noc5w"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="2_1celn"]

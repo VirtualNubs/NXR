@@ -11,7 +11,7 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="6_s1008"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmChamberVisualizer.cs" id="6_vygvn"]
 [ext_resource type="PackedScene" uid="uid://bmwt4unjh2gnq" path="res://addons/nxr/scenes/demo/firearms/ammo/12g.tscn" id="7_0inuq"]
-[ext_resource type="PackedScene" uid="uid://cqjm6xwud5l50" path="res://demo/scenes/part_hit.tscn" id="7_nray2"]
+[ext_resource type="PackedScene" uid="uid://cmvybwirj715t" path="res://demo/scenes/part_hit.tscn" id="7_nray2"]
 [ext_resource type="Material" uid="uid://dr1bhnahf7eyq" path="res://assets/models/ammo/bullets/bullets.material" id="7_x1p2l"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRay.cs" id="12_ap1x4"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmSpawner.cs" id="13_jlngw"]

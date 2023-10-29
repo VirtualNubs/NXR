@@ -14,9 +14,20 @@ public partial class FirearmMagZoneTrack : FirearmMovable
 
 	[Export]
 	private float pullStrength = 2.0f; 
-	float t = 0.0f; 
-	
-	public override void _Process(double delta)
+	float t = 0.0f;
+
+
+    public override void _Ready()
+    {
+        if (!Util.NodeIs(GetChild(0), typeof(FirearmMagZone))) return;
+
+		FirearmMagZone zone = (FirearmMagZone)GetChild(0);
+
+		if (zone.CurrentMag != null) { 
+			Transform = StartXform; 
+		}
+    }
+    public override void _Process(double delta)
 	{
 		RunTool();
 

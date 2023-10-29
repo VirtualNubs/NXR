@@ -4,7 +4,7 @@
 [ext_resource type="AnimationLibrary" uid="uid://bvxp1d4s8s2h" path="res://assets/hands/poses/poses_default.res" id="2_pec5k"]
 [ext_resource type="AnimationLibrary" uid="uid://cfxiq30ri52j5" path="res://assets/hands/poses/poses_rifle.res" id="3_6o8r8"]
 [ext_resource type="PackedScene" uid="uid://w7th3d2hl7b5" path="res://assets/hands/model/Hand_Glove_R.gltf" id="3_pnv6c"]
-[ext_resource type="AnimationLibrary" uid="uid://ot4gwudinqxw" path="res://assets/hands/poses/poses_pistol.tres" id="3_qpgow"]
+[ext_resource type="AnimationLibrary" uid="uid://ot4gwudinqxw" path="res://assets/hands/poses/poses_pistol.tres" id="3_x5u8i"]
 [ext_resource type="Material" uid="uid://p0q2df2dmy62" path="res://assets/hands/materials/ghost_hand.tres" id="4_a8fot"]
 [ext_resource type="AnimationLibrary" uid="uid://h7sli6dulrsl" path="res://assets/hands/poses/poses_shotgun.res" id="4_fdhxg"]
 
@@ -28,6 +28,7 @@ sync = true
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_6sady"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_fuvam"]
+graph_offset = Vector2(-157.428, -51.7556)
 nodes/Add2/node = SubResource("AnimationNodeAdd2_o3iwq")
 nodes/Add2/position = Vector2(67.9509, 134.583)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_nceky")
@@ -48,7 +49,7 @@ node_connections = [&"output", 0, &"Add2", &"Add2", 0, &"trigger", &"Add2", 1, &
 radius = 0.0514719
 height = 0.247362
 
-[node name="PlayerHand" type="RigidBody3D" node_paths=PackedStringArray("_animPlayer", "_animTree", "_collider", "HandNode")]
+[node name="PhysicsHand" type="RigidBody3D" node_paths=PackedStringArray("_animPlayer", "_animTree", "_collider", "HandNode")]
 collision_layer = 32
 mass = 5.0
 script = ExtResource("1_lqjae")
@@ -61,7 +62,7 @@ HandNode = NodePath("Hand_Glove_R")
 root_node = NodePath("../Hand_Glove_R")
 libraries = {
 "poses_default": ExtResource("2_pec5k"),
-"poses_pistol": ExtResource("3_qpgow"),
+"poses_pistol": ExtResource("3_x5u8i"),
 "poses_rifle": ExtResource("3_6o8r8"),
 "poses_shotgun": ExtResource("4_fdhxg")
 }
@@ -75,7 +76,7 @@ parameters/grip/blend_amount = 0.0
 parameters/trigger/blend_amount = 0.0
 
 [node name="Hand_Glove_R" parent="." instance=ExtResource("3_pnv6c")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0459446, 0.168095)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.160566)
 
 [node name="Skeleton3D" parent="Hand_Glove_R/Armature" index="0"]
 bones/0/rotation = Quaternion(-0.706517, -6.47275e-06, -6.47275e-06, 0.707696)
@@ -116,7 +117,7 @@ bones/24/rotation = Quaternion(0.0158363, 0.0193397, -0.153777, 0.987789)
 material_override = ExtResource("4_a8fot")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -0.0459446, 0.115798)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0.108269)
 shape = SubResource("CapsuleShape3D_wmnqf")
 
 [editable path="Hand_Glove_R"]
