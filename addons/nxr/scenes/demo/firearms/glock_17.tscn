@@ -13,7 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://deki1ee327fx" path="res://assets/models/guns/Glock_17/glock_17.glb" id="10_mpamh"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmSpawner.cs" id="11_gpl0r"]
 [ext_resource type="Material" uid="uid://byrg4ncwr4jt6" path="res://assets/models/guns/Glock_17/glock_17.material" id="11_ir7yb"]
-[ext_resource type="PackedScene" uid="uid://c0w1ensns0w85" path="res://addons/nxr/scenes/demo/firearms/mags/glock_mag.tscn" id="11_jyaim"]
+[ext_resource type="PackedScene" uid="uid://bpwjjw7h7gl8s" path="res://addons/nxr/scenes/demo/firearms/mags/glock_mag.tscn" id="11_jyaim"]
 [ext_resource type="PackedScene" uid="uid://b2w3jidu8sxgl" path="res://addons/nxr/scenes/demo/firearms/ammo/spent_casings/556_spent.tscn" id="12_egxgu"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRay.cs" id="15_sch43"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRayHitSpawner.cs" id="16_551d1"]

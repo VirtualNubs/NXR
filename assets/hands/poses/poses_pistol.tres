@@ -1,4 +1,4 @@
-[gd_resource type="AnimationLibrary" load_steps=5 format=3 uid="uid://ot4gwudinqxw"]
+[gd_resource type="AnimationLibrary" load_steps=5 format=3 uid="uid://k5gxr45s6bgc"]
 
 [sub_resource type="Animation" id="Animation_t0ep5"]
 tracks/0/type = "position_3d"

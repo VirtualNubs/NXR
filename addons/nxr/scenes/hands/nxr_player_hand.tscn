@@ -4,7 +4,7 @@
 [ext_resource type="AnimationLibrary" uid="uid://bvxp1d4s8s2h" path="res://assets/hands/poses/poses_default.res" id="2_pec5k"]
 [ext_resource type="AnimationLibrary" uid="uid://cfxiq30ri52j5" path="res://assets/hands/poses/poses_rifle.res" id="3_6o8r8"]
 [ext_resource type="PackedScene" uid="uid://w7th3d2hl7b5" path="res://assets/hands/model/Hand_Glove_R.gltf" id="3_pnv6c"]
-[ext_resource type="AnimationLibrary" uid="uid://ot4gwudinqxw" path="res://assets/hands/poses/poses_pistol.tres" id="3_x5u8i"]
+[ext_resource type="AnimationLibrary" uid="uid://k5gxr45s6bgc" path="res://assets/hands/poses/poses_pistol.tres" id="3_x5u8i"]
 [ext_resource type="Material" uid="uid://p0q2df2dmy62" path="res://assets/hands/materials/ghost_hand.tres" id="4_a8fot"]
 [ext_resource type="AnimationLibrary" uid="uid://h7sli6dulrsl" path="res://assets/hands/poses/poses_shotgun.res" id="4_fdhxg"]
 

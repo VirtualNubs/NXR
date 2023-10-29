@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://c0w1ensns0w85"]
+[gd_scene load_steps=16 format=3 uid="uid://bpwjjw7h7gl8s"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMag.cs" id="1_noc5w"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="2_1celn"]
@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="4_k60ut"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="5_vbbhe"]
 [ext_resource type="AnimationLibrary" uid="uid://bvxp1d4s8s2h" path="res://assets/hands/poses/poses_default.res" id="7_dwy58"]
-[ext_resource type="AnimationLibrary" uid="uid://ot4gwudinqxw" path="res://assets/hands/poses/poses_pistol.tres" id="8_wi2jc"]
+[ext_resource type="AnimationLibrary" uid="uid://k5gxr45s6bgc" path="res://assets/hands/poses/poses_pistol.tres" id="8_wi2jc"]
 [ext_resource type="AnimationLibrary" uid="uid://cfxiq30ri52j5" path="res://assets/hands/poses/poses_rifle.res" id="9_82deg"]
 [ext_resource type="AnimationLibrary" uid="uid://h7sli6dulrsl" path="res://assets/hands/poses/poses_shotgun.res" id="10_2kyje"]
 
