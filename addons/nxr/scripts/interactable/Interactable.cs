@@ -47,8 +47,12 @@ public partial class Interactable : RigidBody3D
 	public Interactor PrimaryInteractor { set; get; }
 	public Interactor SecondaryInteractor { set; get; }
 
+	// grab point
 	public Node3D PrimaryGrabPoint;
-	public Node3D SecondaryGrabPoint;
+	public Node3D SecondaryGrabPoint;	
+	public Transform3D PrimaryGrabPointOffset = new(); 
+	public Transform3D SecondaryGrabPointOffset = new(); 
+
 	public Node3D InitParent = null; 
 
 	private Transform3D _secondaryRelativeTransorm = new Transform3D();
@@ -102,6 +106,7 @@ public partial class Interactable : RigidBody3D
 	public void SecondaryGrab(Interactor interactor)
 	{
 
+
 		if (!IsInstanceValid(SecondaryInteractor))
 		{
 			interactor._grabbedInteractable = this; 
@@ -146,7 +151,6 @@ public partial class Interactable : RigidBody3D
 		if (!IsGrabbed()) { 
 			EmitSignal("OnFullDropped"); 
 			LinearVelocity = interactor.Controller.GetGlobalVelocity();
-			AngularVelocity = interactor.Controller.GetAngularVelocity();
 		}
 	}
 

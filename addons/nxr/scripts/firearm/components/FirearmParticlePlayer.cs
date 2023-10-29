@@ -16,10 +16,16 @@ public partial class FirearmParticlePlayer : GpuParticles3D
         {
             _firearm = (Firearm)GetParent();
             _firearm.OnFire += OnFire; 
+           
         }
     }
 
     private void OnFire() { 
+		Emitting = true; 
+
+		if (_restartOnFire) Restart(); 
+    }
+    private void OnEject() { 
 		Emitting = true; 
 
 		if (_restartOnFire) Restart(); 

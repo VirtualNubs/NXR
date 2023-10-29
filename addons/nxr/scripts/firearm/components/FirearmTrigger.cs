@@ -6,7 +6,7 @@ using NXRFirearm;
 
 [Tool]
 [GlobalClass]
-public partial class FirearmTrigger : InputRotator
+public partial class FirearmTrigger : FirearmMovable
 {
 
     private Firearm _firearm = null;
@@ -23,18 +23,10 @@ public partial class FirearmTrigger : InputRotator
 
     public override void _PhysicsProcess(double delta)
     {
-        
-        if (_firearm == null) return;
-
-        base._PhysicsProcess(delta);
+        RunTool(); 
 
         if (Engine.IsEditorHint()) return; 
-        if (_firearm.PrimaryInteractor == null) return;
-
-        if (Target == null) { 
-            Target = (Node3D)this; 
-        }
-
-        rotationDelta = _firearm.GetTriggerValue(); 
+         
+        StartToEnd(_firearm.GetTriggerValue());
     }
 }

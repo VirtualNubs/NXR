@@ -17,6 +17,7 @@ public partial class FirearmSpawner : Node3D
         {
             _firearm = (Firearm)GetParent();
             _firearm.OnFire += OnFire; 
+            _firearm.TryEject += OnFire; 
         }
     }
 

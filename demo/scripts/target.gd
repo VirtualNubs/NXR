@@ -4,6 +4,9 @@ extends RigidBody3D
 var is_hit = false
 
 func hit(col, at):
+	if is_hit: 
+		return
+	
 	if one_shot: 
 		$CollisionShape3D.disabled = true 
 	else: 

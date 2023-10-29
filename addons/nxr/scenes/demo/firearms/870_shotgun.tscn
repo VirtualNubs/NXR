@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_cwh8f"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="2_kmueb"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="3_wd0pt"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="3_wd0pt"]
 [ext_resource type="PackedScene" uid="uid://dr7dmikyhvtbo" path="res://assets/models/guns/870_Shotgun/870_shotgun.glb" id="4_edacp"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/FirearmPump.cs" id="6_oji0p"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="7_0cv7t"]
@@ -147,6 +147,7 @@ shape = SubResource("BoxShape3D_gyrwn")
 material_override = ExtResource("14_olsd1")
 
 [node name="Fore_Stock" parent="870_shotgun" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00346932, -0.0236971, -0.38272)
 material_override = ExtResource("14_olsd1")
 
 [editable path="870_shotgun"]

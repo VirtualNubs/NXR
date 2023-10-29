@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/Interactable.cs" id="1_y6soa"]
 [ext_resource type="Shader" path="res://assets/shaders/optic.gdshader" id="2_or6wn"]
 [ext_resource type="Texture2D" uid="uid://b5be0w0vw3rv6" path="res://assets/textures/reticles/holo_reticle.png" id="3_c47dl"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="4_waxjh"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="4_waxjh"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_koxwj"]
 

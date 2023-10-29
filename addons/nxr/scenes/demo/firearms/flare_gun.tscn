@@ -1,7 +1,7 @@
 [gd_scene load_steps=26 format=3 uid="uid://cpqiueokpvy2s"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_pmxkv"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="2_bis1m"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="2_bis1m"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="4_nanfx"]
 [ext_resource type="PackedScene" uid="uid://b5s345q0wunft" path="res://addons/nxr/scenes/hands/nxr_player_hand.tscn" id="5_72nlt"]
 [ext_resource type="AnimationLibrary" uid="uid://bvxp1d4s8s2h" path="res://assets/hands/poses/poses_default.res" id="6_coa25"]

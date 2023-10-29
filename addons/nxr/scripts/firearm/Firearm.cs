@@ -54,10 +54,14 @@ public partial class Firearm : Interactable
     public delegate void OnFireEventHandler(); 
 
     [Signal]
-    public delegate void TryChamberEventHandler(); 
+    public delegate void OnChamberedEventHandler(); 
 
     [Signal]
-    public delegate void OnChamberdEventHandler(); 
+    public delegate void TryChamberEventHandler(); 
+    
+    [Signal]
+    public delegate void TryEjectEventHandler(); 
+
 
 
     public override void _Ready() {

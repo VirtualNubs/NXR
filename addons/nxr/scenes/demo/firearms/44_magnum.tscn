@@ -1,7 +1,7 @@
 [gd_scene load_steps=17 format=3 uid="uid://dq6in8x7tjd4r"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_rl6gl"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="2_wajd7"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="2_wajd7"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="3_0yvsy"]
 [ext_resource type="PackedScene" uid="uid://dfvibeh7vv12t" path="res://assets/models/guns/44_Magnum/44_magnum.glb" id="4_rrtpu"]
 [ext_resource type="Material" uid="uid://1tuacq4locuc" path="res://assets/models/guns/44_Magnum/44_magnum.material" id="5_r6oe6"]

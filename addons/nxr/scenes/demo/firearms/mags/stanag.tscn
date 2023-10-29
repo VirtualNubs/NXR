@@ -1,8 +1,9 @@
-[gd_scene load_steps=18 format=3 uid="uid://bo3g10fj20ul3"]
+[gd_scene load_steps=19 format=3 uid="uid://bo3g10fj20ul3"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMag.cs" id="1_tjp0p"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="2_q2evs"]
 [ext_resource type="Texture2D" uid="uid://c1meo8ebbhnbr" path="res://assets/models/guns/M4A1_Base_Color.png" id="2_utpb4"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="4_mtw8e"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="3_8th2w"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="5_gnqtu"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmBulletVisualizer.cs" id="9_vy8w2"]
 [ext_resource type="Material" uid="uid://dr1bhnahf7eyq" path="res://assets/models/ammo/bullets/bullets.material" id="10_oymf2"]
@@ -113,11 +114,19 @@ shadow_mesh = SubResource("ArrayMesh_jum46")
 
 [node name="FirearmMag" type="RigidBody3D" groups=["stanag"]]
 collision_layer = 8
+collision_mask = 9
 mass = 0.1
 script = ExtResource("1_tjp0p")
 CurrentAmmo = 30
 _switchOnDrop = true
-RotationOffset = Vector3(43.15, 0, 0)
+
+[node name="InteractableGrabPoint2" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.320448, -0.947266, 0, 0.947266, 0.320448, 0, 0, 0.0230644)
+freeze = true
+script = ExtResource("2_q2evs")
+
+[node name="InteractableGrabKinematic" type="Node" parent="."]
+script = ExtResource("3_8th2w")
 
 [node name="Magazine" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
@@ -128,10 +137,6 @@ skeleton = NodePath("")
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
 shape = SubResource("ConvexPolygonShape3D_cyow2")
-
-[node name="InteractableGrabKinematic" type="Node" parent="."]
-script = ExtResource("4_mtw8e")
-_usePhysics = true
 
 [node name="HandPose" type="RemoteTransform3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0264157, 0)

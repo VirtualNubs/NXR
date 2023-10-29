@@ -140,25 +140,10 @@ public partial class InteractableSnapZone : Area3D
         // return if no grab or parent is the grabbed interatable
         if (interactor._grabbedInteractable == null || GetParent() == interactor._grabbedInteractable) return;
 
+        // set hovered interactable
         Interactable hovered = (Interactable)interactor._grabbedInteractable;
 
-        bool allowed = false;
-        if (AllowedGroups != null)
-        {
-            foreach (String group in hovered.GetGroups())
-            {
-                if (AllowedGroups.Contains(group))
-                {
-                    allowed = true;
-                }
-            }
-
-        }
-        else
-        {
-            allowed = true;
-        }
-        if (!allowed) return;
+        if (!InGroup(hovered)) return; 
 
         _hoveredInteractable = (Interactable)interactor._grabbedInteractable;
 
@@ -177,7 +162,7 @@ public partial class InteractableSnapZone : Area3D
 
     protected void DistanceBreak()
     {
-        if (_snappedInteractable == null) return;
+        if (_snappedInteractable == null || !CanUnsnap) return;
 
         if (!_snappedInteractable.IsGrabbed()) return;
 
@@ -254,17 +239,38 @@ public partial class InteractableSnapZone : Area3D
 		{
 			if (Util.NodeIs(node, typeof(Interactable)))
 			{
-				interactables.Add((Interactable)node);
+                if (InGroup(node)) {
+				    interactables.Add((Interactable)node);
+                }
 			}
 		}
 		
-
 		// sort closest hovered interactable 
 		interactables = interactables.OrderBy(x => x.GlobalPosition.DistanceTo(GlobalPosition)).ToList();
 
 		return interactables;
 
 	}
+
+    private bool InGroup(Node3D interactable) { 
+        bool allowed = false; 
+        if (AllowedGroups != null)
+        {
+            foreach (String group in interactable.GetGroups())
+            {
+                if (AllowedGroups.Contains(group))
+                {
+                    allowed = true;
+                }
+            }
+        }
+        else
+        {
+            allowed = true;
+        }
+        
+        return allowed; 
+    }
 
     private void Connect(Interactable interactable)
     {

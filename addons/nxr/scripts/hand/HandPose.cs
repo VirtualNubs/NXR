@@ -89,6 +89,7 @@ public partial class HandPose : RemoteTransform3D
 
     private void Pose(Hand hand)
     {
+
         
         if (hand.HandNode.Scale.X < 0) { 
             Scale = new Vector3(-1, 1, 1); 
@@ -111,7 +112,7 @@ public partial class HandPose : RemoteTransform3D
         _lastPath = hand.HandNode.GetPath();
         RemotePath = hand.HandNode.GetPath(); 
     
-
+        
     }
 
     private Hand GetHand(Interactor interactor) { 
@@ -120,7 +121,6 @@ public partial class HandPose : RemoteTransform3D
 
         if(interactor.GetParent().HasMethod("IsHand")) { 
             hand = (Hand)interactor.GetParent();
-            GD.Print("found hand"); 
         } else { 
             foreach (Node3D child in interactor.GetChildren()) { 
                 if (child.HasMethod("IsHand")) { 

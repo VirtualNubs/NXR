@@ -29,7 +29,10 @@ public partial class FirearmMagZone : InteractableSnapZone
             _firearm = (Firearm)GetParent();
         }
 
-        _firearm.TryChamber += TryChamber; 
+        if (_firearm != null) 
+        {
+            _firearm.TryChamber += TryChamber; 
+        }
     }
 
     public override void _Process(double delta)
@@ -67,6 +70,7 @@ public partial class FirearmMagZone : InteractableSnapZone
         if (CurrentMag.CurrentAmmo > 0) { 
             _firearm.Chambered = true; 
             CurrentMag.RemoveBullet(1); 
+            _firearm.EmitSignal("OnChambered"); 
         }
     }
 }

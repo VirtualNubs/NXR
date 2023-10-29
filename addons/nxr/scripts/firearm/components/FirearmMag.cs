@@ -36,13 +36,13 @@ public partial class FirearmMag : Interactable
 
     private void TryChamber() { 
         if (!CanChamber) return; 
-
-
         
         if (CurrentAmmo <= 0) return; 
 
         _firearm.Chambered = true; 
         CurrentAmmo -= 1; 
+        _firearm.EmitSignal("OnChambered"); 
+
     }
 
     public void RemoveBullet(int amount) { 

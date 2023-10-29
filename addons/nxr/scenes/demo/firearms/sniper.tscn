@@ -1,20 +1,15 @@
-[gd_scene load_steps=46 format=3 uid="uid://dfl5qvof7chxv"]
+[gd_scene load_steps=42 format=3 uid="uid://dfl5qvof7chxv"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_hrx52"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="2_yg4sk"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="2_yg4sk"]
 [ext_resource type="Material" uid="uid://cqyydsr8wxrs7" path="res://assets/models/guns/Sniper/mat_sniper.tres" id="3_rgx54"]
 [ext_resource type="Shader" path="res://assets/shaders/optic.gdshader" id="4_qjvgk"]
 [ext_resource type="PackedScene" uid="uid://cinmh5mwq557y" path="res://assets/models/scope/glass.glb" id="4_u5hcn"]
-[ext_resource type="Texture2D" uid="uid://cu4ilugwmnsgd" path="res://assets/textures/reticles/scope_reticle.png" id="5_bjjmi"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRotatingBolt.cs" id="5_obog8"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMag.cs" id="6_60hkw"]
-[ext_resource type="Texture2D" uid="uid://4qoa2di5t4sd" path="res://assets/textures/reticles/scope.png" id="6_sxysh"]
+[ext_resource type="Texture2D" uid="uid://hjc1q0he70c2" path="res://assets/textures/reticles/sniper_reticle.png" id="6_rwlkd"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRay.cs" id="7_8wr27"]
-[ext_resource type="Texture2D" uid="uid://c3kq2wpdv8510" path="res://assets/models/guns/Sniper/Sniper_Roughness.png" id="8_rcjg5"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="12_m8880"]
-
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_gmehx"]
-points = PackedVector3Array(0.734928, 10.7152, 7.29222, 1.20744, 10.7152, 7.10993, -0.73522, 10.7152, 7.29061, -0.73522, 6.00495, 7.29222, 0.734928, 6.00495, 7.29222, 1.39183, 10.7152, 6.95506, 1.20744, 6.00495, 7.10993, -1.20774, 10.7152, 7.10993, -1.20774, 6.00495, 7.10993, -1.15806, -19.4379, 3.02202, -0.70483, -19.5537, 3.1543, 0.704537, -19.5537, 3.1543, 1.15777, -19.4379, 3.02202, 1.49265, 10.7152, 6.77115, 1.39183, 6.00495, 6.95506, 1.33456, -19.3453, 2.91071, -1.39213, 10.7152, 6.95506, -1.39213, 6.00495, 6.95506, -1.33485, -19.3453, 2.91071, -1.33485, -67.096, -5.62002, -1.15806, -67.1346, -5.51032, -0.70483, -67.1887, -5.37965, 0.704537, -67.1887, -5.37965, 1.15777, -67.1346, -5.51032, 1.33456, -67.096, -5.62002, 1.49265, 10.7152, -6.28144, 1.49265, 6.00495, 6.77115, 1.43099, -19.2294, 2.77681, 1.43099, -67.042, -5.7523, -1.49265, 10.7152, 6.77115, -1.49265, 6.00495, 6.77115, -1.43128, -19.2294, 2.77681, -1.43128, -67.042, -5.7523, -1.33485, -67.4667, -5.99751, -1.15806, -67.5593, -5.92653, -0.70483, -67.6597, -5.84426, 0.704537, -67.6597, -5.84426, 1.15777, -67.5593, -5.92653, 1.33456, -67.4667, -5.99751, 1.39183, 10.7152, -6.41695, 1.49265, 6.00495, -6.28144, 1.43099, -67.042, -8.80936, 1.43099, -24.6346, -8.48672, 1.33456, -24.6114, -8.62062, 1.43099, -67.3586, -6.0814, 1.43099, -67.5284, -6.52665, 1.43099, -67.7832, -7.26067, 1.43099, -67.845, -7.935, -1.49265, 10.7152, -6.28144, -1.49265, 6.00495, -6.28144, -1.43128, -67.845, -7.935, -1.43128, -67.7832, -7.26067, -1.43128, -67.5284, -6.52665, -1.43128, -67.3586, -6.0814, -1.33485, -67.652, -6.47987, -1.15806, -67.7601, -6.44276, -0.70483, -67.8836, -6.39598, 0.704537, -67.8836, -6.39598, 1.15777, -67.7601, -6.44276, 1.33456, -67.652, -6.47987, 1.20744, 10.7152, -6.52988, 1.15777, -24.5883, -8.73354, 1.43099, -67.652, -8.48026, 1.43099, -67.4358, -8.62062, 1.33456, -67.0729, -8.94487, 1.33456, -67.9145, -7.24292, 1.33456, -67.984, -7.9721, -1.39213, 10.7152, -6.41695, -1.33485, -24.6114, -8.62062, -1.43128, -24.6346, -8.48672, -1.43128, -67.042, -8.80936, -1.43128, -67.4358, -8.62062, -1.43128, -67.652, -8.48026, -1.33485, -67.984, -7.9721, -1.33485, -67.9145, -7.24292, -1.15806, -68.0303, -7.23002, -0.70483, -68.1616, -7.21388, 0.704537, -68.1616, -7.21388, 1.15777, -68.0303, -7.23002, 0.734928, 10.7152, -6.66216, 0.704537, -24.5651, -8.86582, 1.15777, -67.096, -9.05619, 1.33456, -67.7446, -8.57706, 1.33456, -67.4976, -8.73838, 1.15777, -67.5516, -8.83517, 1.15777, -68.0921, -8.00436, -1.20774, 10.7152, -6.52988, -1.15806, -24.5883, -8.73354, -1.33485, -67.0729, -8.94487, -1.33485, -67.4976, -8.73838, -1.33485, -67.7446, -8.57706, -1.15806, -68.0921, -8.00436, -0.70483, -68.1616, -8.04308, 0.704537, -68.1616, -8.04308, -0.73522, 10.7152, -6.66216, -0.70483, -24.5651, -8.86582, 0.704537, -67.1269, -9.18847, 0.704537, -67.6211, -8.95133, 1.15777, -67.8296, -8.65772, 0.704537, -67.9222, -8.7529, -1.15806, -67.096, -9.05619, -1.15806, -67.5516, -8.83517, -1.15806, -67.8296, -8.65772, -0.70483, -67.9222, -8.7529, -0.70483, -67.1269, -9.18847, -0.70483, -67.6211, -8.95133)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o6ybv"]
 resource_name = "Mat.1"
@@ -184,24 +179,18 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_1xcjx")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_q23sb"]
-viewport_path = NodePath("sniper/Sniper_Rifle/Scope/SubViewport")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_opv84"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pu4lj"]
+resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("4_qjvgk")
-shader_parameter/dist = 0.001
-shader_parameter/scale = 0.305
-shader_parameter/glow = 0.43
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/dist = -6.044
+shader_parameter/scale = 1.0
+shader_parameter/glow = 1.0
 shader_parameter/reticle_color = Color(1, 0, 0, 1)
-shader_parameter/glass_color = Color(0, 0, 0, 0)
-shader_parameter/reticle_texture = ExtResource("5_bjjmi")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8pm8a"]
-resource_local_to_scene = true
-next_pass = SubResource("ShaderMaterial_opv84")
-albedo_texture = SubResource("ViewportTexture_q23sb")
-albedo_texture_force_srgb = true
+shader_parameter/glass_color = null
+shader_parameter/reticle_texture = ExtResource("6_rwlkd")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qejp1"]
 
@@ -235,22 +224,21 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_an8im")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_i62p3"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_wcclu"]
+viewport_path = NodePath("sniper/Sniper_Rifle/Scope/SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a2msv"]
+resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("4_qjvgk")
-shader_parameter/dist = 0.001
-shader_parameter/scale = 0.345
+shader_parameter/flip_x = true
+shader_parameter/flip_y = false
+shader_parameter/dist = 1.0
+shader_parameter/scale = 1.0
 shader_parameter/glow = 1.0
-shader_parameter/reticle_color = null
+shader_parameter/reticle_color = Color(1, 1, 1, 1)
 shader_parameter/glass_color = null
-shader_parameter/reticle_texture = ExtResource("6_sxysh")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r7m1w"]
-next_pass = SubResource("ShaderMaterial_i62p3")
-transparency = 1
-albedo_color = Color(1, 1, 1, 0.0196078)
-roughness = 0.29
-roughness_texture = ExtResource("8_rcjg5")
+shader_parameter/reticle_texture = SubResource("ViewportTexture_wcclu")
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_gpyip"]
 _surfaces = [{
@@ -382,17 +370,17 @@ nodes/trigger/node = SubResource("AnimationNodeBlend2_2cf5b")
 nodes/trigger/position = Vector2(-260, 280)
 node_connections = [&"output", 0, &"Add2", &"Add2", 0, &"Animation", &"Add2", 1, &"trigger", &"trigger", 0, &"Animation 2", &"trigger", 1, &"Animation 3"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_m2dys"]
+size = Vector3(0.0488889, 0.180868, 1)
+
 [node name="Firearm" type="RigidBody3D"]
+transform = Transform3D(0.99983, 0, 0.0184471, 0, 1, 0, -0.0184471, 0, 0.99983, 0, 0, 0)
 collision_layer = 8
 script = ExtResource("1_hrx52")
 _startChambered = true
 _chamberOnFire = false
 _recoilRise = Vector3(40, 0, 0)
 _riseRecoverSpeed = 0.05
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.01, 4.08457e-07, -1.4081e-06, -1.41065e-06, 6.32104e-05, -0.0099998, -3.99548e-07, 0.0099998, 6.32103e-05, -0.00371698, -0.0315297, 0.322658)
-shape = SubResource("ConvexPolygonShape3D_gmehx")
 
 [node name="InteractableGrabKinematic" type="Node" parent="."]
 script = ExtResource("2_yg4sk")
@@ -430,36 +418,39 @@ mesh = SubResource("ArrayMesh_wffnh")
 skeleton = NodePath("")
 
 [node name="Scope" type="MeshInstance3D" parent="sniper/Sniper_Rifle"]
-transform = Transform3D(1, 4.08457e-05, -0.00014081, -6.57314e-05, 0.983381, -0.181554, 0.000131054, 0.181554, 0.983381, 0.630155, 12.4273, -4.46936)
+transform = Transform3D(1, 0, 0, 0, 0.984808, -0.173648, 0, 0.173648, 0.984808, 0.630155, 12.4273, -4.46936)
 material_override = ExtResource("3_rgx54")
 mesh = SubResource("ArrayMesh_mxsio")
 skeleton = NodePath("")
 
-[node name="RemoteTransform3D" type="RemoteTransform3D" parent="sniper/Sniper_Rifle/Scope"]
-transform = Transform3D(1, -9.99643e-05, -0.000181656, 0.000181656, -3.95812e-08, 1, -9.99643e-05, -1, -2.18861e-08, -0.37429, -16.7193, -0.684833)
-remote_path = NodePath("../SubViewport/Camera3D")
-
 [node name="SubViewport" type="SubViewport" parent="sniper/Sniper_Rifle/Scope"]
+size = Vector2i(1500, 1500)
 render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="sniper/Sniper_Rifle/Scope/SubViewport"]
-transform = Transform3D(0.01, 4.08457e-07, -1.4081e-06, -3.99547e-07, 0.0099998, 6.32067e-05, 1.41066e-06, -6.32065e-05, 0.0099998, -4.42378e-09, 0.0995567, -0.196502)
-fov = 2.8
+transform = Transform3D(0.999832, -2.29425e-05, 0.0183062, -4.03583e-05, 0.999994, 0.00345751, -0.0183062, -0.00345767, 0.999826, -0.00362562, 0.0982665, -0.196508)
+fov = 13.0
 
-[node name="glass2" parent="sniper/Sniper_Rifle/Scope" instance=ExtResource("4_u5hcn")]
-transform = Transform3D(47.205, -0.00471881, -0.00857507, 0.00857507, -9.23872e-07, 47.205, -0.00471883, -47.205, -5.36442e-07, -0.88803, 15.9773, 0.0579519)
+[node name="glassCam2" parent="sniper/Sniper_Rifle/Scope" instance=ExtResource("4_u5hcn")]
+transform = Transform3D(32.5242, -0.00325125, -0.00590795, 0.00590789, -4.47035e-07, 32.5242, -0.00325125, -32.5242, -1.07288e-06, -0.740144, 16.9101, -0.478553)
 
-[node name="Plane" parent="sniper/Sniper_Rifle/Scope/glass2" index="0"]
-transform = Transform3D(0.684042, 7.95808e-12, -3.63798e-11, 1.06297e-11, 0.684041, 1.39698e-09, -6.54836e-11, 7.45058e-09, 0.684041, 0.00179107, 0.0105376, 0.0110746)
-material_override = SubResource("StandardMaterial3D_8pm8a")
+[node name="Plane" parent="sniper/Sniper_Rifle/Scope/glassCam2" index="0"]
+transform = Transform3D(0.938802, 5.82077e-11, -1.86265e-09, 2.91038e-11, 0.938803, -9.31323e-10, 0, 1.86265e-09, 0.938802, 0.000239745, 0.000188351, -0.0131211)
+material_override = SubResource("ShaderMaterial_pu4lj")
 mesh = SubResource("ArrayMesh_obs7t")
 
-[node name="glass" parent="sniper/Sniper_Rifle/Scope" instance=ExtResource("4_u5hcn")]
-transform = Transform3D(47.205, -0.00471881, -0.00857506, 0.00857506, -1.2517e-06, 47.205, -0.00471882, -47.205, -7.15256e-07, -0.888035, 16.1103, 0.0587921)
+[node name="glassCam3" parent="sniper/Sniper_Rifle/Scope" instance=ExtResource("4_u5hcn")]
+transform = Transform3D(27.7056, -0.00276955, -0.00503266, 0.00503254, -3.57628e-07, 27.7056, -0.00276955, -27.7055, -9.23872e-07, -0.379266, 16.9168, -0.478457)
 
-[node name="Plane" parent="sniper/Sniper_Rifle/Scope/glass" index="0"]
-transform = Transform3D(0.684042, 7.95808e-12, -3.63798e-11, 1.06297e-11, 0.684041, 1.39698e-09, -6.54836e-11, 7.45058e-09, 0.684041, 0.00179107, 0.0105376, 0.0110746)
-material_override = SubResource("StandardMaterial3D_r7m1w")
+[node name="Plane" parent="sniper/Sniper_Rifle/Scope/glassCam3" index="0"]
+transform = Transform3D(1, 1.16415e-10, -1.86265e-09, -2.91038e-11, 1, -3.72529e-09, 2.04891e-08, 1.76951e-08, 1, -0.00930317, 0.00044021, -0.0305974)
+material_override = SubResource("ShaderMaterial_a2msv")
+mesh = SubResource("ArrayMesh_obs7t")
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="sniper/Sniper_Rifle"]
+transform = Transform3D(1, 4.08457e-05, -0.00014081, 0.000130866, 0.184369, 0.982858, 6.61062e-05, -0.982858, 0.184369, 0.255279, -3.9179, -8.05234)
+remote_path = NodePath("../Scope/SubViewport/Camera3D")
+update_scale = false
 
 [node name="Stock" type="MeshInstance3D" parent="sniper/Sniper_Rifle"]
 transform = Transform3D(1, 4.08457e-05, -0.00014081, -6.57314e-05, 0.983381, -0.181554, 0.000131054, 0.181554, 0.983381, -0.116419, 44.6415, 14.4452)
@@ -481,7 +472,7 @@ freeze = true
 script = ExtResource("5_obog8")
 Target = NodePath(".")
 StartXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00371663, 0.0592214, 0.0110642)
-EndXform = Transform3D(0.474457, -0.880279, 0, 0.880279, 0.474457, 0, 0, 0, 1, -0.00371663, 0.0592214, 0.0924277)
+EndXform = Transform3D(0.287728, -0.957712, 0, 0.957712, 0.287728, 0, 0, 0, 1, -0.00371663, 0.0592214, 0.0938898)
 GrabAction = "trigger_click"
 
 [node name="Bolt" type="MeshInstance3D" parent="FirearmRotatingBolt"]
@@ -501,8 +492,8 @@ _internal = true
 CurrentAmmo = 10
 
 [node name="FirearmRay" type="RayCast3D" parent="." node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0602699, -0.729414)
-target_position = Vector3(0, 0, -100)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, -0.729)
+target_position = Vector3(0, 0, -200)
 script = ExtResource("7_8wr27")
 _firearm = NodePath("..")
 
@@ -524,5 +515,9 @@ script = ExtResource("12_m8880")
 _pose = "poses_rifle/secondary"
 _grabPose = 1
 
-[editable path="sniper/Sniper_Rifle/Scope/glass2"]
-[editable path="sniper/Sniper_Rifle/Scope/glass"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0761718)
+shape = SubResource("BoxShape3D_m2dys")
+
+[editable path="sniper/Sniper_Rifle/Scope/glassCam2"]
+[editable path="sniper/Sniper_Rifle/Scope/glassCam3"]

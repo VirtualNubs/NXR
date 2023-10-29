@@ -23,7 +23,6 @@ public partial class InteractableFloatArea : Area3D
 		foreach (Node child in GetChildren()) { 
 			if (Util.NodeIs(child, typeof(Interactable))) { 
 				_bodies.Add((Interactable)child); 
-				GD.Print(child.Name); 
 			}
 		}
 	}
@@ -47,9 +46,7 @@ public partial class InteractableFloatArea : Area3D
 
 		if (interactor._grabbedInteractable == null) return;
 
-		_bodies.Add(interactor._grabbedInteractable); 
-		interactor._grabbedInteractable.Reparent(this);
-		interactor._grabbedInteractable.Owner = GetParent();  
+		Connect(interactor._grabbedInteractable); 
 		EmitSignal("OnItemAdded"); 
 	}
 
@@ -62,8 +59,63 @@ public partial class InteractableFloatArea : Area3D
 
 		if (interactor._grabbedInteractable == null) return;
 
-		interactor._grabbedInteractable.Reparent(GetTree().CurrentScene); 
-		_bodies.Remove(interactor._grabbedInteractable); 
+		Disconnect(interactor._grabbedInteractable); 
 		EmitSignal("OnItemRemoved"); 
 	}
+	
+	private void OnDropped(Interactable interactable, Interactor interactor) { 
+		Transform3D xform = interactable.GlobalTransform; 
+
+		_bodies.Add(interactable); 
+		interactable.Freeze = true;
+		interactable.Reparent(this);
+		interactable.Owner = GetParent(); 
+
+		interactable.SetDeferred("global_transform", xform); 
+	}
+
+	private void OnGrabbed(Interactable interactable, Interactor interactor) { 
+
+		_bodies.Remove(interactable); 
+		interactable.Freeze = interactable.InitFreeze;
+		interactable.Reparent(interactable.InitParent);
+		interactable.Owner = interactable.InitParent;  
+
+	}
+
+	 private void Connect(Interactable interactable)
+    {
+        Action<Interactable, Interactor> dropAction = OnDropped;
+        Action<Interactable, Interactor> grabAction = OnGrabbed;
+        bool dropConnected = interactable.IsConnected("OnDropped", Callable.From(dropAction));
+        bool grabConnected = interactable.IsConnected("OnGrabbed", Callable.From(grabAction));
+
+        if (!dropConnected)
+        {
+            interactable.Connect("OnDropped", Callable.From(dropAction));
+        }
+        if (!grabConnected)
+        {
+            interactable.Connect("OnGrabbed", Callable.From(grabAction));
+        }
+    }
+
+    private void Disconnect(Interactable interactable)
+    {
+        if (interactable == null) return;
+
+        Action<Interactable, Interactor> dropAction = OnDropped;
+        Action<Interactable, Interactor> grabAction = OnGrabbed;
+        bool dropConnected = interactable.IsConnected("OnDropped", Callable.From(dropAction));
+        bool grabConnected = interactable.IsConnected("OnGrabbed", Callable.From(grabAction));
+
+        if (dropConnected)
+        {
+            interactable.Disconnect("OnDropped", Callable.From(dropAction));
+        }
+        if (grabConnected)
+        {
+            interactable.Disconnect("OnGrabbed", Callable.From(grabAction));
+        }
+    }
 }

@@ -1,9 +1,9 @@
 [gd_scene load_steps=9 format=3 uid="uid://pkqns3n458ob"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/Interactable.cs" id="1_y6soa"]
-[ext_resource type="Shader" path="res://assets/shaders/optic.gdshader" id="2_or6wn"]
-[ext_resource type="Texture2D" uid="uid://b5be0w0vw3rv6" path="res://assets/textures/reticles/holo_reticle.png" id="3_c47dl"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="4_waxjh"]
+[ext_resource type="Shader" path="res://assets/shaders/optic.gdshader" id="3_8lg1j"]
+[ext_resource type="Texture2D" uid="uid://b5be0w0vw3rv6" path="res://assets/textures/reticles/holo_reticle.png" id="4_gtkv5"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="4_waxjh"]
 
 [sub_resource type="TorusMesh" id="TorusMesh_r5etg"]
 inner_radius = 0.634
@@ -12,17 +12,19 @@ rings = 4
 [sub_resource type="SphereShape3D" id="SphereShape3D_wn6tl"]
 radius = 0.0982442
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5ynnm"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s0dvj"]
 render_priority = 0
-shader = ExtResource("2_or6wn")
-shader_parameter/dist = 250.0
+shader = ExtResource("3_8lg1j")
+shader_parameter/flip_x = true
+shader_parameter/flip_y = false
+shader_parameter/dist = 550.0
 shader_parameter/scale = 1.0
 shader_parameter/glow = 1.0
 shader_parameter/reticle_color = Color(1, 0, 0, 1)
-shader_parameter/glass_color = null
-shader_parameter/reticle_texture = ExtResource("3_c47dl")
+shader_parameter/glass_color = Color(0, 0.533333, 0.741176, 0)
+shader_parameter/reticle_texture = ExtResource("4_gtkv5")
 
-[sub_resource type="QuadMesh" id="QuadMesh_k73gh"]
+[sub_resource type="QuadMesh" id="QuadMesh_1iaji"]
 
 [node name="OpticHolo" type="RigidBody3D" groups=["attachment"]]
 collision_layer = 8
@@ -40,9 +42,9 @@ transform = Transform3D(0.420606, 0, 0, 0, 0.420606, 0, 0, 0, 0.420606, 0, 0.022
 shape = SubResource("SphereShape3D_wn6tl")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.0345416, 0, 0, 0, 0.0345416, 0, 0, 0, 0.0345416, 0, 0.0183776, 0)
-material_override = SubResource("ShaderMaterial_5ynnm")
-mesh = SubResource("QuadMesh_k73gh")
+transform = Transform3D(0.0329792, 0, 0, 0, 0.0329792, 0, 0, 0, 0.0329792, 0, 0.018481, 0)
+material_override = SubResource("ShaderMaterial_s0dvj")
+mesh = SubResource("QuadMesh_1iaji")
 
 [node name="InteractableGrabKinematic" type="Node" parent="."]
 script = ExtResource("4_waxjh")

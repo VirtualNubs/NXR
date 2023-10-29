@@ -1,10 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://cicqk5srmto4a"]
+[gd_scene load_steps=9 format=3 uid="uid://cicqk5srmto4a"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMag.cs" id="1_1dbia"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="2_ja2qw"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="2_ja2qw"]
 [ext_resource type="Texture2D" uid="uid://c1gf38f0limd3" path="res://assets/models/guns/AK-47/ak_AK47_Base_Color.png" id="3_ysu2p"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="5_v5u03"]
-[ext_resource type="PackedScene" uid="uid://b5s345q0wunft" path="res://addons/nxr/scenes/hands/nxr_player_hand.tscn" id="6_dm0of"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sd2in"]
 resource_name = "Mat"
@@ -72,34 +71,3 @@ shape = SubResource("BoxShape3D_1y36l")
 transform = Transform3D(1, 0, 0, 0, 0.924566, -0.381022, 0, 0.381022, 0.924566, 0, 0.017062, 0.0080215)
 script = ExtResource("5_v5u03")
 _pose = "poses_rifle/mag"
-
-[node name="NXRHandRight" parent="HandPose" instance=ExtResource("6_dm0of")]
-visible = false
-
-[node name="AnimationTree" parent="HandPose/NXRHandRight" index="1"]
-active = false
-
-[node name="Skeleton3D" parent="HandPose/NXRHandRight/Hand_Glove_R/Armature" index="0"]
-bones/0/position = Vector3(0.0242774, 0.0100604, 0.145277)
-bones/0/rotation = Quaternion(-0.884716, -0.00114745, -0.0234347, 0.46554)
-bones/0/scale = Vector3(1, 1, 1)
-bones/2/rotation = Quaternion(0.00200652, 0.0307248, 0.0738646, 0.996793)
-bones/2/scale = Vector3(1, 1, 1)
-bones/6/position = Vector3(0.00067604, 0.0799962, -0.00220785)
-bones/6/rotation = Quaternion(-0.0969781, -0.136277, 0.114266, 0.979269)
-bones/6/scale = Vector3(1, 1, 1)
-bones/7/rotation = Quaternion(-0.00454844, 0.02784, 0.549378, 0.835098)
-bones/8/rotation = Quaternion(0.0158497, 0.00974397, 0.280249, 0.959747)
-bones/11/rotation = Quaternion(-0.114457, -0.0294395, 0.295069, 0.948139)
-bones/12/rotation = Quaternion(0.0325315, -0.0228631, 0.586014, 0.809325)
-bones/13/rotation = Quaternion(-0.0120435, 0.00700452, 0.633381, 0.773714)
-bones/14/scale = Vector3(1, 1, 1)
-bones/16/rotation = Quaternion(-0.0549945, 0.0315283, 0.34591, 0.936124)
-bones/17/rotation = Quaternion(0.0108258, -0.023006, 0.45407, 0.890603)
-bones/18/rotation = Quaternion(-0.0168985, -0.00161302, 0.767775, 0.640495)
-bones/21/rotation = Quaternion(-0.097104, 0.142519, 0.515347, 0.83945)
-bones/22/rotation = Quaternion(0.0347301, -0.0434568, 0.436287, 0.898086)
-bones/23/rotation = Quaternion(-0.0213757, 0.000525877, 0.641994, 0.766411)
-
-[editable path="HandPose/NXRHandRight"]
-[editable path="HandPose/NXRHandRight/Hand_Glove_R"]

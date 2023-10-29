@@ -38,7 +38,7 @@ public partial class Interactor : Area3D
 	{
 		// follow controller transform 
 		if (_updateTransform) { 
-			GlobalTransform = GlobalTransform.InterpolateWith(Controller.GlobalTransform, _smoothing);
+			GlobalTransform = GlobalTransform.InterpolateWith(Controller.GlobalTransform, _smoothing * (float)delta);
 		}
 
 		if (_grabbedInteractable != null) {

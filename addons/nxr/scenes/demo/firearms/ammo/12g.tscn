@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://bmwt4unjh2gnq"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmBullet.cs" id="1_fmevu"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabKinematic.cs" id="2_5e0oh"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="2_5e0oh"]
 [ext_resource type="Material" uid="uid://dr1bhnahf7eyq" path="res://assets/models/ammo/bullets/bullets.material" id="3_p6lhh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h8q34"]

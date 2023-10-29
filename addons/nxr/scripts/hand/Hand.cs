@@ -30,17 +30,17 @@ public partial class Hand : RigidBody3D
 
 	[ExportGroup("Physics Hand Settings")]
 	[Export]
-    bool _physicsHand = false; 
+    bool _physicsEnabled = false; 
 
 	[Export]
 	float linearStrength = 20.0f; 
 	float angularStrength = 20.0f; 
+	private Vector3 lVelocity = Vector3.Zero; 
+	private Vector3 aVelocity = Vector3.Zero; 
 
 	[Export]
 	private CollisionShape3D _collider; 
 
-	private Vector3 lVelocity = Vector3.Zero; 
-	private Vector3 aVelocity = Vector3.Zero; 
 
     [Export]
     public Node3D HandNode = null; 
@@ -64,7 +64,7 @@ public partial class Hand : RigidBody3D
 			Controller.InputVector2Changed += InputVec;
 		}
 
-        if (!_physicsHand) { 
+        if (!_physicsEnabled) { 
             Freeze = true; 
         }
 
@@ -82,13 +82,13 @@ public partial class Hand : RigidBody3D
 			_collider.GlobalPosition = HandNode.GlobalPosition;
 		}
 
-		if (!_physicsHand && Controller != null) { 
-			GlobalTransform = Controller.GlobalTransform;  
+		if (!_physicsEnabled && Controller != null) { 
+			//GlobalTransform = Controller.GlobalTransform;  
 		}
     }
     public override void _IntegrateForces(PhysicsDirectBodyState3D state)
 	{
-        if (!_physicsHand) return; 
+        if (!_physicsEnabled) return; 
 
         if (Controller == null) return; 
 
@@ -125,7 +125,11 @@ public partial class Hand : RigidBody3D
 			return;
 		}
 
-		_animPlayer.Play(_idleAnimation);
+		if (!_animPlayer.HasAnimation(pose)) { 
+			GD.PushWarning("No animation with that name fuond!");
+			return; 
+		}
+
 		_animPlayer.Advance(0);
 		_animPlayer.Play(pose, _blendTime);
 	}
@@ -188,8 +192,6 @@ public partial class Hand : RigidBody3D
 	}
 
     public bool IsPhysicsHand() { 
-        return _physicsHand;
+        return _physicsEnabled;
     }
-
-
 }

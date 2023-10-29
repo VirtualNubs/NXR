@@ -12,18 +12,27 @@ public partial class FirearmSlide : FirearmMovable
     [Export]
     private bool _setBackOnEmpty = false; 
 
+    [Export]
+    private Node3D  _firearmNode; 
     protected Firearm _firearm = null; 
     protected bool back = false; 
     private Transform3D _relativeGrabXform; 
 
     protected Transform3D _relativeXform = new(); 
 
+    private bool lockedBack = false; 
 
     public override void _Ready()
     {
         base._Ready(); 
         
-        if (Util.NodeIs(GetParent(), typeof(Firearm)))
+        if (Util.NodeIs(_firearmNode, typeof(Firearm)))
+        {
+            _firearm = (Firearm)_firearmNode;
+        }
+
+
+         if (Util.NodeIs(GetParent(), typeof(Firearm)))
         {
             _firearm = (Firearm)GetParent();
         }
@@ -31,7 +40,8 @@ public partial class FirearmSlide : FirearmMovable
         if (_firearm == null) return; 
 
         _firearm.OnFire += OnFire;
-        _firearm.TryChamber += TriedChamber;
+        _firearm.OnChambered += Chambered; 
+        _firearm.TryChamber += TryChambered; 
 
         this.OnDropped += OnDrop;
         this.OnGrabbed += Grabbed;
@@ -40,55 +50,53 @@ public partial class FirearmSlide : FirearmMovable
     public override void _Process(double delta)
     {
         RunTool(); 
-
+      
         if (_firearm == null) return;
         
-        if (IsBack() && !back && IsGrabbed()) {
+        if (AtEnd() && !back && IsGrabbed()) {
+            
+            if (_firearm.Chambered) { 
+                _firearm.EmitSignal("TryEject"); 
+                _firearm.Chambered = false; 
+            } 
             back = true;  
         }
 
-        if (IsForward() && back) { 
-            back = false; 
+        if (!AtEnd() && back) { 
             _firearm.EmitSignal("TryChamber"); 
+            back = false; 
         }
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        if (Engine.IsEditorHint()) return; 
 
+        base._PhysicsProcess(delta); 
+        
         if (IsGrabbed())
         {
-            Node3D parent = (Node3D)Target.GetParent();
+            Node3D parent = (Node3D)GetParent();
             Transform3D newXform = GetPrimaryInteractor().GlobalTransform * _relativeXform; 
             Vector3 newPos = parent.ToLocal(newXform.Origin);
-
             newPos= newPos.Clamp(StartXform.Origin, EndXform.Origin);
-            Target.Position = newPos;
+            Position = newPos;
         } 
+
     }
 
     public bool IsBack() { 
-        return Target.Position.IsEqualApprox(EndXform.Origin); 
+        return Position.IsEqualApprox(EndXform.Origin); 
     }
 
     public bool IsForward() { 
-        return Target.Position.IsEqualApprox(StartXform.Origin); 
+        return Position.IsEqualApprox(StartXform.Origin); 
     }
 
     public void OnFire()
     {
         if (_setBackOnFire)
         {
-            Target.Position = EndXform.Origin;
-        }
-
-
-        if (_setBackOnEmpty && _firearm.Chambered == false) return; 
-
-        if (Target.Position.IsEqualApprox(EndXform.Origin))
-        {
-            ReturnTween();
+            Position = EndXform.Origin;
         }
     }
 
@@ -100,18 +108,24 @@ public partial class FirearmSlide : FirearmMovable
     private void Grabbed(Interactable interactable, Interactor interactor) { 
 
         if (interactor == GetPrimaryInteractor()) {
-            _relativeXform = interactor.GlobalTransform.AffineInverse() * Target.GlobalTransform; 
+            _relativeXform = interactor.GlobalTransform.AffineInverse() * GlobalTransform; 
         }
     }
 
-    private void TriedChamber() { 
-        ReturnTween(); 
+     private void TryChambered() { 
+        if (IsBack() && !_firearm.Chambered ) { 
+            ReturnTween();
+        }
+    }
+    private void Chambered() { 
+        ReturnTween();
     }
     
     private void ReturnTween()
     {
-        Tween returnTween = GetTree().CreateTween();
-        returnTween.TweenProperty(Target, "position", StartXform.Origin, 0.1f);
-    }
+        if (lockedBack) return; 
 
+        Tween returnTween = GetTree().CreateTween();
+        returnTween.TweenProperty(this, "position", StartXform.Origin, 0.1f);
+    }
 }
