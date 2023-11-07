@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://ctrtq0t2fqwtr"]
+[gd_scene load_steps=13 format=3 uid="uid://ctrtq0t2fqwtr"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/player/Player.cs" id="1_rc1uy"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/core/Origin.cs" id="2_3x8s4"]
@@ -21,11 +21,8 @@ albedo_color = Color(0.423529, 0.403922, 0.717647, 1)
 shading_mode = 0
 albedo_color = Color(0, 0, 0, 1)
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_oscbt"]
-radius = 0.0710996
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_tyjap"]
-size = Vector3(0.0890827, 0.111458, 1.00387)
+size = Vector3(0.109394, 0.180049, 1.84167)
 
 [node name="NXRPlayer" type="CharacterBody3D" node_paths=PackedStringArray("_leftController", "_rightController", "_xrOrigin")]
 collision_layer = 2
@@ -37,7 +34,7 @@ _leftController = NodePath("XROrigin3D/LeftController")
 _rightController = NodePath("XROrigin3D/RightController")
 _xrOrigin = NodePath("XROrigin3D")
 _stepHeight = 0.66
-_stepSmoothing = 0.4
+_stepSmoothing = 0.3
 
 [node name="PlayerWalk" type="Node" parent="."]
 script = ExtResource("7_tckao")
@@ -103,18 +100,17 @@ Controller = NodePath("../XROrigin3D/LeftController")
 _smoothing = 20.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LeftInteractor"]
-shape = SubResource("SphereShape3D_oscbt")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.729379)
+shape = SubResource("BoxShape3D_tyjap")
 
-[node name="HandLeft" parent="LeftInteractor" node_paths=PackedStringArray("Controller") instance=ExtResource("5_utiyv")]
-Controller = NodePath("../../XROrigin3D/LeftController")
+[node name="HandRight" parent="LeftInteractor" node_paths=PackedStringArray("Controller", "_animPlayer", "_animTree", "_collider", "HandNode") instance=ExtResource("5_utiyv")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0431479, 0.00948057)
+Controller = NodePath("../../XROrigin3D/RightController")
 _blendTime = 0.0
-_physicsEnabled = true
-
-[node name="Hand_Glove_R" parent="LeftInteractor/HandLeft" index="2"]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0469464, 0.160566)
-
-[node name="CollisionShape3D" parent="LeftInteractor/HandLeft" index="3"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -0.0928909, 0.115798)
+_animPlayer = NodePath("../../RightInteractor/HandRight/AnimationPlayer")
+_animTree = NodePath("../../RightInteractor/HandRight/AnimationTree")
+_collider = NodePath("../../RightInteractor/HandRight/CollisionShape3D")
+HandNode = NodePath("../../RightInteractor/HandRight/Hand_Glove_R")
 
 [node name="RightInteractor" type="Area3D" parent="." node_paths=PackedStringArray("Controller")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00305932)
@@ -124,13 +120,10 @@ Controller = NodePath("../XROrigin3D/RightController")
 _smoothing = 20.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RightInteractor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.484961)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.729379)
 shape = SubResource("BoxShape3D_tyjap")
 
 [node name="HandRight" parent="RightInteractor" node_paths=PackedStringArray("Controller") instance=ExtResource("5_utiyv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.00305932)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0431479, 0.00948057)
 Controller = NodePath("../../XROrigin3D/RightController")
 _blendTime = 0.0
-
-[editable path="LeftInteractor/HandLeft"]
-[editable path="LeftInteractor/HandLeft/Hand_Glove_R"]

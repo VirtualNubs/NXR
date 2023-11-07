@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://dydxi0x7d4u7l"]
+[gd_scene load_steps=46 format=3 uid="uid://dydxi0x7d4u7l"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_12tsm"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="2_rbk50"]
@@ -17,8 +17,9 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmSpawner.cs" id="14_qy2vl"]
 [ext_resource type="PackedScene" uid="uid://b2w3jidu8sxgl" path="res://addons/nxr/scenes/demo/firearms/ammo/spent_casings/556_spent.tscn" id="15_robx0"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRail.cs" id="15_sd8oa"]
+[ext_resource type="PackedScene" uid="uid://b0l5qbqtfnr1n" path="res://assets/models/guns/M4A1/m4a1.glb" id="15_u1boa"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMagZoneTrack.cs" id="16_phjxw"]
-[ext_resource type="PackedScene" uid="uid://pkqns3n458ob" path="res://addons/nxr/scenes/demo/firearms/optics/OpticHolo.tscn" id="23_4boj0"]
+[ext_resource type="Material" uid="uid://ckhn2nohm0vht" path="res://assets/models/guns/M4A1/mat_m4.tres" id="21_6ecd0"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmChamberVisualizer.cs" id="24_elglu"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_i8hdp"]
@@ -174,6 +175,7 @@ freeze_mode = 1
 script = ExtResource("1_12tsm")
 _fireMode = 2
 _recoilKick = Vector3(0, 0, 0.2)
+MaxGrabDistance = 2.0
 
 [node name="InteractableGrabKinematic" type="Node" parent="."]
 script = ExtResource("2_rbk50")
@@ -181,15 +183,25 @@ _twoHanded = true
 _lookUpVector = 2
 
 [node name="FirearmSlide" type="RigidBody3D" parent="." node_paths=PackedStringArray("_firearmNode", "Target")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000758565, 0.0420501, 0.0152158)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000758566, 0.0420501, 0.0152158)
 collision_layer = 8
 freeze = true
 script = ExtResource("7_drbwx")
-_firearmNode = NodePath("..")
-Target = NodePath(".")
+_firearmNode = NodePath("../m4a1/M4A1/Parts/Charging_Handle")
+Target = NodePath("../m4a1/M4A1/Parts/Charging_Handle")
 StartXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000758566, 0.0420501, 0.0152158)
-EndXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000758566, 0.0420501, 0.0844133)
+EndXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000758565, 0.0420501, 0.0865566)
 GrabAction = "trigger_click"
+
+[node name="FirearmSlide" type="RigidBody3D" parent="FirearmSlide" node_paths=PackedStringArray("_firearmNode", "Target")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.00344587, -0.0196921, -0.0666462)
+freeze = true
+script = ExtResource("7_drbwx")
+_setBackOnFire = true
+_firearmNode = NodePath("../..")
+Target = NodePath("../../m4a1/M4A1/Parts/Ejector/Ejector_2")
+StartXform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.00344587, -0.0196921, -0.0666462)
+EndXform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.00344587, -0.0196921, 4.91729e-05)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FirearmSlide"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0872494)
@@ -390,13 +402,47 @@ Target = NodePath(".")
 StartXform = Transform3D(1, 0, 0, 0, 0.997164, -0.0752573, 0, 0.0752573, 0.997164, 0, -0.0366415, 0.0274971)
 EndXform = Transform3D(1, 0, 0, 0, 0.953196, 0.302353, 0, -0.302353, 0.953196, 0, -0.0366415, 0.0274971)
 
-[node name="m4a1" type="Node3D" parent="."]
+[node name="m4a1" parent="." instance=ExtResource("15_u1boa")]
 
-[node name="SpotLight3D" type="SpotLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0351879, 0, -0.276016)
-light_energy = 5.0
-spot_range = 12.052
-spot_angle = 29.42
+[node name="Base" parent="m4a1/M4A1" index="0"]
+material_override = ExtResource("21_6ecd0")
 
-[node name="OpticHolo" parent="." instance=ExtResource("23_4boj0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0556291, 0)
+[node name="Magazine" parent="m4a1/M4A1" index="1"]
+visible = false
+
+[node name="Barrel" parent="m4a1/M4A1/Parts" index="0"]
+material_override = ExtResource("21_6ecd0")
+
+[node name="Charging_Handle" parent="m4a1/M4A1/Parts" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0325896, 1.04848, -3.10734)
+material_override = ExtResource("21_6ecd0")
+
+[node name="Ejector" parent="m4a1/M4A1/Parts" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, -1.42109e-14, 0, 1.42109e-14, 1, 0.718099, -4.1081, -0.538238)
+
+[node name="Ejector_2" parent="m4a1/M4A1/Parts/Ejector" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.340922, -1.50804, -0.599894)
+material_override = ExtResource("21_6ecd0")
+
+[node name="Ejector_Lid" parent="m4a1/M4A1/Parts/Ejector" index="1"]
+material_override = ExtResource("21_6ecd0")
+
+[node name="FrontSight" parent="m4a1/M4A1/Parts" index="4"]
+material_override = ExtResource("21_6ecd0")
+
+[node name="Sight" parent="m4a1/M4A1/Parts" index="5"]
+material_override = ExtResource("21_6ecd0")
+
+[node name="Sight_2" parent="m4a1/M4A1/Parts/Sight" index="0"]
+material_override = ExtResource("21_6ecd0")
+
+[node name="Switch1" parent="m4a1/M4A1/Parts/Sight" index="1"]
+material_override = ExtResource("21_6ecd0")
+
+[node name="Stock" parent="m4a1/M4A1/Parts" index="6"]
+material_override = ExtResource("21_6ecd0")
+
+[node name="Trigger" parent="m4a1/M4A1/Parts" index="7"]
+material_override = ExtResource("21_6ecd0")
+
+[editable path="m4a1"]

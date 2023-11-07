@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://dxk7v53lt5thq"]
+[gd_scene load_steps=37 format=3 uid="uid://dxk7v53lt5thq"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_a2525"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="2_0hb8b"]
@@ -18,12 +18,21 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRay.cs" id="15_sch43"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRayHitSpawner.cs" id="16_551d1"]
 [ext_resource type="PackedScene" uid="uid://cmvybwirj715t" path="res://demo/scenes/part_hit.tscn" id="17_ger5f"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmLight.cs" id="19_w3mni"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="20_nf2hc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_i000j"]
 size = Vector3(0.0298283, 0.11559, 0.232056)
 
+[sub_resource type="Gradient" id="Gradient_fhjrh"]
+offsets = PackedFloat32Array(0.123288, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_erf3m"]
+gradient = SubResource("Gradient_fhjrh")
+
 [sub_resource type="Curve" id="Curve_vscxk"]
-_data = [Vector2(0, 0.189474), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0.189474), 0.0, 0.0, 0, 0, Vector2(1, 0.136842), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_fkobl"]
@@ -35,12 +44,16 @@ spread = 23.76
 gravity = Vector3(0, 0, 0)
 initial_velocity_min = 3.0
 initial_velocity_max = 3.0
+scale_min = 0.5
+scale_max = 0.8
 scale_curve = SubResource("CurveTexture_fkobl")
+color_ramp = SubResource("GradientTexture1D_erf3m")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5iab6"]
 transparency = 1
+blend_mode = 1
 shading_mode = 0
-vertex_color_is_srgb = true
+vertex_color_use_as_albedo = true
 albedo_color = Color(1, 1, 1, 0.0784314)
 albedo_texture = ExtResource("8_sohq4")
 billboard_mode = 3
@@ -153,11 +166,10 @@ _grabPose = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0323391, 0.00303644)
 shape = SubResource("BoxShape3D_i000j")
 
-[node name="FirearmParticlePlayer2" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0304897, -0.088922)
+[node name="FirearmParticlePlayer3" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0261565, -0.177844)
 emitting = false
-amount = 4
-lifetime = 0.32
+lifetime = 0.2
 one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_lshne")
@@ -170,6 +182,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0163067, 0.0042981)
 collision_layer = 8
 freeze = true
 script = ExtResource("6_maolg")
+_setBackOnFire = true
+_setBackOnEmpty = true
 Target = NodePath("../glock_17/Slide")
 StartXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0163067, 0.0042981)
 EndXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0163067, 0.0482371)
@@ -201,7 +215,7 @@ skeleton = NodePath("")
 surface_material_override/0 = ExtResource("8_gfj2c")
 
 [node name="FirearmMagZoneTrack" type="RigidBody3D" parent="." node_paths=PackedStringArray("Target")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0808707, 0.0398361)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0190348, 0.00579122)
 collision_layer = 8
 freeze = true
 script = ExtResource("7_ql27h")
@@ -252,5 +266,16 @@ script = ExtResource("15_sch43")
 [node name="FirearmRayHitSpawner" type="Node" parent="FirearmRay"]
 script = ExtResource("16_551d1")
 _scene = ExtResource("17_ger5f")
+
+[node name="FirearmLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0245628, -0.108543)
+light_color = Color(1, 0.643137, 0.505882, 1)
+script = ExtResource("19_w3mni")
+Energy = 0.2
+
+[node name="InteractableGrabPoint" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.973479, 0.228776, 0, -0.228776, 0.973479, 0, 0, 0)
+freeze = true
+script = ExtResource("20_nf2hc")
 
 [editable path="glock_17"]

@@ -38,9 +38,9 @@ public partial class InteractableGrab : Node
     private Vector3 aVelocity = Vector3.Zero;
 
     [Export]
-    private float _rotationSmoothing = 20.0f;
+    private float _rotationSmoothing = 5.0f;
     [Export]
-    private float _positionSmoothing = 30.0f;
+    private float _positionSmoothing = 5.0f;
 
     private float _positionDelta = 0.0f; 
     private float _rotationDelta = 0.0f; 
@@ -107,7 +107,6 @@ public partial class InteractableGrab : Node
         Vector3 up = Interactable.GlobalTransform.Basis.Y + GetUpVector();
         Vector3 lookDir = secondaryXform.Origin - Interactable.PrimaryInteractor.GlobalTransform.Origin;
 
-
         Interactable._primaryGrabTransorm.Basis = Interactable.Basis;
         lookXform.Basis = interactableXform.Basis.Slerp(Basis.LookingAt(lookDir.Normalized(), up.Normalized()).Orthonormalized(), _rotationDelta);
         return lookXform;
@@ -157,13 +156,12 @@ public partial class InteractableGrab : Node
             Vector3 newPos = interactor.GlobalPosition + posOffset;
             Basis rotOffset = (Interactable.GlobalTransform.Basis.Inverse() * grabPoint.GlobalTransform.Basis).Orthonormalized();
             Basis newRot = (interactor.GlobalTransform.Basis * rotOffset).Orthonormalized();
-            Basis lastBasis = _primaryXform.Basis.Orthonormalized();
 
-            _rotationDelta = Mathf.Lerp(_rotationDelta, 1.0f, delta * _positionSmoothing);
-            _positionDelta = Mathf.Lerp(_positionDelta, 1.0f, delta * _rotationDelta); 
+            _rotationDelta = Mathf.Lerp(_rotationDelta, 1.0f, delta * _rotationSmoothing);
+            _positionDelta = Mathf.Lerp(_positionDelta, 1.0f, delta * _positionSmoothing); 
 
+            _primaryXform.Basis = Interactable.GlobalTransform.Basis.Orthonormalized().Slerp(newRot.Orthonormalized(), _rotationDelta);
             _primaryXform.Origin = Interactable.GlobalTransform.Origin.Slerp(newPos, _positionDelta);
-            _primaryXform.Basis = Interactable.GlobalTransform.Basis.Slerp(newRot, _rotationDelta);
 
             if (_percise) { _primaryXform = Interactable.GetPrimaryRelativeXform(); }
 

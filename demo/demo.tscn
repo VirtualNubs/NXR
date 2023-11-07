@@ -1,6 +1,6 @@
-[gd_scene load_steps=74 format=3 uid="uid://de5mtyewlytyu"]
+[gd_scene load_steps=82 format=3 uid="uid://de5mtyewlytyu"]
 
-[ext_resource type="Texture2D" path="res://assets/textures/EveningSkyHDRI017B_4K-HDR.exr" id="2_ub05x"]
+[ext_resource type="Texture2D" uid="uid://5oork2oun5d4" path="res://assets/textures/EveningSkyHDRI017B_4K-HDR.exr" id="2_ub05x"]
 [ext_resource type="PackedScene" uid="uid://sfgdm1jksecs" path="res://addons/nxr/scenes/demo/firearms/ak.tscn" id="4_ckwcl"]
 [ext_resource type="PackedScene" uid="uid://dydxi0x7d4u7l" path="res://addons/nxr/scenes/demo/firearms/m4a1.tscn" id="5_7pwt6"]
 [ext_resource type="PackedScene" uid="uid://oe4d811e40gt" path="res://assets/models/weapon_wall/weapon_wall.glb" id="9_n52b8"]
@@ -28,6 +28,9 @@
 [ext_resource type="Material" uid="uid://cl0kc6qfwi88s" path="res://assets/materials/ambientcg/gravel/mat_gravel.tres" id="25_s6yju"]
 [ext_resource type="PackedScene" uid="uid://dxk7v53lt5thq" path="res://addons/nxr/scenes/demo/firearms/glock_17.tscn" id="25_t48vp"]
 [ext_resource type="Texture2D" uid="uid://daigr38dvr8gw" path="res://assets/textures/puff.png" id="27_tck6v"]
+[ext_resource type="Script" path="res://demo/scripts/killhouse.gd" id="28_gfwr5"]
+[ext_resource type="Script" path="res://demo/scripts/killhouse/section.gd" id="28_v6jmc"]
+[ext_resource type="Material" uid="uid://daq3ob68ah1tb" path="res://assets/materials/plywood_base.material" id="30_qxw60"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_fohs8"]
 panorama = ExtResource("2_ub05x")
@@ -523,6 +526,63 @@ particles_anim_loop = false
 material = SubResource("StandardMaterial3D_74toq")
 size = Vector2(10, 10)
 
+[sub_resource type="Animation" id="Animation_k1dkk"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_hdi0s"]
+resource_name = "close"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -2.93324, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_7lq5e"]
+resource_name = "open"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -2.93324, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_b68sd"]
+_data = {
+"RESET": SubResource("Animation_k1dkk"),
+"close": SubResource("Animation_hdi0s"),
+"open": SubResource("Animation_7lq5e")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xpbsl"]
+size = Vector3(1, 2.30257, 1.68077)
+
 [node name="Level" type="Node3D"]
 
 [node name="NXRPlayer" parent="." instance=ExtResource("9_sulpo")]
@@ -657,15 +717,6 @@ material_override = ExtResource("25_s6yju")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/terrain/Plane/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_uj0vn")
-
-[node name="GridMap" type="GridMap" parent="Geometry"]
-mesh_library = ExtResource("24_fo1dq")
-cell_size = Vector3(1.3, 1.3, 1.3)
-cell_center_y = false
-data = {
-"cells": PackedInt32Array(65539, 2, 655360, 65539, 0, 655360, 65539, 65534, 655360, 65539, 65532, 655360, 65539, 4, 655370, 65539, 65530, 655370, 65539, 65528, 655370, 65539, 6, 655370, 65538, 65527, 1441800, 131070, 65527, 1441800, 131067, 65528, 8, 131067, 65530, 8, 131067, 65532, 8, 131067, 65534, 8, 65538, 7, 1048584, 131070, 7, 1048584, 131068, 7, 1048584, 131067, 6, 8, 131067, 2, 8, 131067, 0, 8, 131067, 4, 6, 131066, 3, 1441800, 131066, 5, 1048584, 131064, 5, 1048583, 131062, 5, 1048583, 131064, 3, 1441801, 131062, 3, 1441801, 131060, 3, 1441799, 131058, 3, 1441799, 131060, 5, 1048585, 131058, 5, 1048585, 131057, 4, 6, 131057, 6, 655368, 131057, 8, 655368, 131056, 9, 1048584, 131054, 9, 1048584, 131057, 2, 655368, 131057, 0, 655368, 131056, 65535, 1441800, 131054, 65535, 1441800, 131052, 65535, 1441798, 131052, 9, 1048584, 131050, 9, 1048584, 131048, 9, 1048584, 131047, 8, 8, 131047, 6, 8, 131047, 4, 8, 131047, 2, 8, 131047, 0, 8, 131048, 65535, 1441800, 131050, 65535, 1441800, 131058, 0, 1441802, 131068, 65527, 1441800, 65536, 65527, 1441799, 65536, 7, 1048583)
-}
-metadata/_editor_floor_ = Vector3(0, 1, 0)
 
 [node name="EquipArea" type="Node3D" parent="Geometry"]
 
@@ -908,25 +959,225 @@ lifetime = 2.0
 process_material = SubResource("ParticleProcessMaterial_wss86")
 draw_pass_1 = SubResource("QuadMesh_ojt44")
 
-[node name="Killhouse" type="Node3D" parent="Geometry"]
+[node name="Killhouse" type="Node3D" parent="Geometry" node_paths=PackedStringArray("start_door")]
+script = ExtResource("28_gfwr5")
+start_door = NodePath("Door")
 
-[node name="Target" parent="Geometry/Killhouse" instance=ExtResource("18_ytwgt")]
-transform = Transform3D(-0.999828, 0, -0.0184992, 0, 1, 0, 0.0184992, 0, -0.999828, -14.9457, -0.0120988, 3.73194)
+[node name="GridMap" type="GridMap" parent="Geometry/Killhouse"]
+mesh_library = ExtResource("24_fo1dq")
+cell_size = Vector3(1.3, 1.3, 1.3)
+cell_center_y = false
+data = {
+"cells": PackedInt32Array(65539, 2, 655360, 65539, 0, 655360, 65539, 65534, 655360, 65539, 65532, 655360, 65539, 4, 655370, 65539, 65530, 655370, 65539, 65528, 655370, 65539, 6, 655370, 65538, 65527, 1441800, 131067, 65530, 8, 131067, 65532, 8, 131067, 65534, 8, 65538, 7, 1048584, 131070, 7, 1048584, 131068, 7, 1048584, 131067, 6, 8, 131067, 2, 8, 131067, 0, 8, 131067, 4, 6, 131066, 3, 1441800, 131066, 5, 1048584, 131064, 5, 1048583, 131062, 5, 1048583, 131064, 3, 1441801, 131062, 3, 1441801, 131060, 3, 1441799, 131058, 3, 1441799, 131060, 5, 1048585, 131058, 5, 1048585, 131057, 4, 6, 131057, 6, 655368, 131057, 8, 655368, 131056, 9, 1048584, 131054, 9, 1048584, 131057, 2, 655368, 131057, 0, 655368, 131056, 65535, 1441800, 131054, 65535, 1441800, 131052, 65535, 1441798, 131052, 9, 1048584, 131050, 9, 1048584, 131048, 9, 1048584, 131047, 8, 8, 131047, 6, 8, 131047, 4, 8, 131047, 2, 8, 131047, 0, 8, 131048, 65535, 1441800, 131050, 65535, 1441800, 131058, 0, 1441802, 65536, 65527, 1441799, 65536, 7, 1048583, 131053, 65534, 655368, 131051, 65534, 8, 131052, 65532, 3, 131051, 65532, 8, 131053, 65532, 655368, 131052, 65531, 1441800, 196588, 65530, 196616, 196586, 65530, 196616, 196586, 65528, 196616, 196588, 65528, 196616, 196590, 65530, 196616, 196590, 65528, 196616, 196588, 65526, 196616, 196588, 65524, 196616, 196590, 65524, 196616, 196592, 65524, 196616, 262127, 65528, 131080, 262127, 65530, 131080, 262126, 65531, 1179656, 262122, 65531, 1179656, 262121, 65530, 524296, 262121, 65528, 524296, 262122, 65527, 1310728, 262126, 65527, 1310728, 262123, 65526, 524296, 262125, 65526, 131080, 262123, 65524, 524296, 262126, 65525, 1179656, 262126, 65523, 1310728, 262128, 65523, 1310728, 262125, 65522, 131081, 262123, 65522, 524297, 196588, 65522, 720905, 262124, 65521, 1310729, 327660, 65522, 327689, 131067, 65528, 8, 131068, 65527, 1441800, 131070, 65527, 1048582, 262123, 65534, 8, 262123, 65532, 8, 262125, 65534, 655368, 262125, 65532, 655368, 327660, 65534, 720904, 327660, 65532, 720904, 262124, 65535, 1245192, 262129, 65524, 6, 196594, 65524, 196616, 196596, 65524, 196616, 196594, 65526, 196616, 196596, 65526, 196616, 196598, 65526, 196616, 196598, 65524, 196616, 196596, 65522, 196616, 196598, 65522, 196616, 196596, 65520, 196616, 196598, 65520, 196616, 262134, 65519, 1048582, 131062, 65518, 655363, 131063, 65518, 655368, 131061, 65518, 8, 131066, 65527, 1441800, 131065, 65526, 655368, 131065, 65524, 8, 131065, 65522, 8, 131065, 65520, 8, 131065, 65518, 8, 131064, 65517, 1048584, 131061, 65516, 8, 131061, 65514, 8, 131062, 65513, 1441800, 131064, 65513, 1441800, 131066, 65513, 1441800, 131068, 65513, 1441800, 131070, 65513, 1441800, 131071, 65514, 655368, 131071, 65516, 655368, 131071, 65518, 655368, 131071, 65520, 655368, 131071, 65522, 655368, 131071, 65524, 655368, 131071, 65526, 655368, 262128, 65525, 1048583, 262130, 65527, 1048583, 262132, 65527, 1048583, 262134, 65527, 1048583, 262135, 65526, 655368, 262129, 65526, 8, 262135, 65524, 655368, 262135, 65522, 655368, 262135, 65520, 655368, 262131, 65520, 8, 262131, 65522, 8, 262130, 65523, 1441800, 262132, 65519, 1441799, 262133, 65518, 8, 262135, 65518, 655368, 327670, 65518, 589832, 196598, 65528, 458760, 196596, 65528, 458760, 196594, 65528, 458760, 196594, 65530, 458760, 196596, 65530, 458760, 196598, 65530, 458760, 262135, 65528, 131080, 262135, 65530, 131080, 262134, 65531, 1179656, 262132, 65531, 1179656, 262130, 65531, 1179656, 262129, 65530, 524296, 262129, 65528, 524296, 262128, 65531, 1179656, 262127, 65526, 524296, 196592, 65526, 458760, 196592, 65528, 458760, 196592, 65530, 458760, 262124, 65523, 1441799, 196596, 65518, 196616, 262131, 65518, 524296, 262132, 65517, 1310728, 327668, 65518, 851976, 131058, 65535, 1310728, 131060, 65535, 1310728, 131062, 65535, 1310728, 131064, 65535, 1310728, 131066, 65535, 1310728, 131067, 8, 131080, 131067, 10, 131080, 131066, 11, 1179656, 131064, 11, 1179656, 131062, 11, 1179656, 131060, 11, 1179656, 131058, 11, 1179656, 131057, 10, 524296)
+}
+metadata/_editor_floor_ = Vector3(0, 1, 0)
+
+[node name="Section1" type="Node" parent="Geometry/Killhouse" node_paths=PackedStringArray("door")]
+script = ExtResource("28_v6jmc")
+door = NodePath("Door")
+
+[node name="Door" type="Node3D" parent="Geometry/Killhouse/Section1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.30759, 0.992174, 5.20455)
+
+[node name="Pivot" type="Node3D" parent="Geometry/Killhouse/Section1/Door"]
+
+[node name="Door" type="CSGBox3D" parent="Geometry/Killhouse/Section1/Door/Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.652275)
+material_override = ExtResource("30_qxw60")
+use_collision = true
+size = Vector3(0.002, 2.21381, 1.29878)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Geometry/Killhouse/Section1/Door"]
+autoplay = "RESET"
+libraries = {
+"": SubResource("AnimationLibrary_b68sd")
+}
+
+[node name="Target" parent="Geometry/Killhouse/Section1" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(-0.999827, 0, -0.0184992, 0, 1, 0, 0.0184992, 0, -0.999827, -1.326, -0.0120988, 2.94252)
 one_shot = true
 
-[node name="Target2" parent="Geometry/Killhouse" instance=ExtResource("18_ytwgt")]
-transform = Transform3D(-0.924026, 0, -0.382329, 0, 1, 0, 0.382329, 0, -0.924026, -18.3174, 0.777797, 0.0614505)
+[node name="Target2" parent="Geometry/Killhouse/Section1" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(-0.924026, 0, -0.382329, 0, 1, 0, 0.382329, 0, -0.924026, -4.6977, 0.777797, 0.0614505)
 one_shot = true
 
-[node name="Target3" parent="Geometry/Killhouse" instance=ExtResource("18_ytwgt")]
-transform = Transform3D(0.969076, 0, 0.246762, 0, 1, 0, -0.246762, 0, 0.969076, -8.8481, -0.0120993, 13.5713)
+[node name="Target3" parent="Geometry/Killhouse/Section1" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(0.969076, 0, 0.246762, 0, 1, 0, -0.246762, 0, 0.969076, 4.7716, -0.0120993, 13.5713)
 one_shot = true
 
-[node name="Target4" parent="Geometry/Killhouse" instance=ExtResource("18_ytwgt")]
-transform = Transform3D(0.988329, 0, -0.152331, 0, 1, 0, 0.152331, 0, 0.988329, -13.1263, -0.0120993, 11.9979)
+[node name="Target4" parent="Geometry/Killhouse/Section1" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(0.988328, 0, -0.152331, 0, 1, 0, 0.152331, 0, 0.988328, 0.493401, -0.0120993, 11.9979)
 one_shot = true
 
-[node name="LightmapGI" type="LightmapGI" parent="."]
+[node name="Section2" type="Node" parent="Geometry/Killhouse" node_paths=PackedStringArray("door")]
+script = ExtResource("28_v6jmc")
+door = NodePath("Door")
+
+[node name="Target" parent="Geometry/Killhouse/Section2" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(0.515934, 0, -0.856626, 0, 1, 0, 0.856626, 0, 0.515934, -16.1024, -0.0120988, 10.0971)
+one_shot = true
+
+[node name="Target2" parent="Geometry/Killhouse/Section2" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(-0.28527, 0, -0.958446, 0, 1, 0, 0.958446, 0, -0.28527, -16.1024, -0.0120988, 5.00272)
+one_shot = true
+
+[node name="Target3" parent="Geometry/Killhouse/Section2" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(-0.685805, 0, -0.727784, 0, 1, 0, 0.727784, 0, -0.685805, -16.1024, -0.0120988, 1.70124)
+one_shot = true
+
+[node name="Door" type="Node3D" parent="Geometry/Killhouse/Section2"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -11.0861, 0.992174, -0.59339)
+
+[node name="Pivot" type="Node3D" parent="Geometry/Killhouse/Section2/Door"]
+
+[node name="Door" type="CSGBox3D" parent="Geometry/Killhouse/Section2/Door/Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.652275)
+material_override = ExtResource("30_qxw60")
+use_collision = true
+size = Vector3(0.002, 2.21381, 1.29878)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Geometry/Killhouse/Section2/Door"]
+autoplay = "RESET"
+libraries = {
+"": SubResource("AnimationLibrary_b68sd")
+}
+
+[node name="Section3" type="Node" parent="Geometry/Killhouse" node_paths=PackedStringArray("door")]
+script = ExtResource("28_v6jmc")
+door = NodePath("Door")
+
+[node name="Target" parent="Geometry/Killhouse/Section3" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(-0.970547, 0, 0.240906, 0, 1, 0, -0.240906, 0, -0.970547, -8.92827, 3.00017, -9.86855)
+one_shot = true
+
+[node name="Target2" parent="Geometry/Killhouse/Section3" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(-0.999621, 0, 0.0274856, 0, 1, 0, -0.0274856, 0, -0.999621, -14.5272, 2.66496, -10.3239)
+one_shot = true
+
+[node name="Target3" parent="Geometry/Killhouse/Section3" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(-0.984858, 0, 0.173356, 0, 1, 0, -0.173356, 0, -0.984858, -11.671, 3.00017, -17.0378)
+one_shot = true
+
+[node name="Door" type="Node3D" parent="Geometry/Killhouse/Section3"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -5.27907, 3.62249, -14.2877)
+
+[node name="Pivot" type="Node3D" parent="Geometry/Killhouse/Section3/Door"]
+
+[node name="Door" type="CSGBox3D" parent="Geometry/Killhouse/Section3/Door/Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.652275)
+material_override = ExtResource("30_qxw60")
+use_collision = true
+size = Vector3(0.002, 2.21381, 1.29878)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Geometry/Killhouse/Section3/Door"]
+autoplay = "RESET"
+libraries = {
+"": SubResource("AnimationLibrary_b68sd")
+}
+
+[node name="Section4" type="Node" parent="Geometry/Killhouse" node_paths=PackedStringArray("door")]
+script = ExtResource("28_v6jmc")
+door = NodePath("Door")
+
+[node name="Target" parent="Geometry/Killhouse/Section4" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(0.960971, 0, 0.276642, 0, 1, 0, -0.276642, 0, 0.960971, 1.13318, 2.60895, -9.60778)
+one_shot = true
+
+[node name="Target2" parent="Geometry/Killhouse/Section4" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(0.958445, 0, -0.28527, 0, 1, 0, 0.28527, 0, 0.958445, -1.4324, 2.60895, -9.22374)
+one_shot = true
+
+[node name="Target4" parent="Geometry/Killhouse/Section4" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(0.956135, 0, 0.292922, 0, 1, 0, -0.292922, 0, 0.956135, -4.11705, 2.60895, -9.22374)
+one_shot = true
+
+[node name="Target3" parent="Geometry/Killhouse/Section4" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(-0.999501, 0, 0.0315677, 0, 1, 0, -0.0315677, 0, -0.999501, -1.32249, 2.60895, -22.1837)
+one_shot = true
+
+[node name="Door" type="Node3D" parent="Geometry/Killhouse/Section4"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.91507, 3.62249, -21.433)
+
+[node name="Pivot" type="Node3D" parent="Geometry/Killhouse/Section4/Door"]
+
+[node name="Door" type="CSGBox3D" parent="Geometry/Killhouse/Section4/Door/Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.652275)
+material_override = ExtResource("30_qxw60")
+use_collision = true
+size = Vector3(0.002, 2.21381, 1.29878)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Geometry/Killhouse/Section4/Door"]
+autoplay = "RESET"
+libraries = {
+"": SubResource("AnimationLibrary_b68sd")
+}
+
+[node name="Section5" type="Node" parent="Geometry/Killhouse" node_paths=PackedStringArray("door")]
+script = ExtResource("28_v6jmc")
+door = NodePath("Door")
+
+[node name="Target" parent="Geometry/Killhouse/Section5" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(0.856626, 0, 0.515934, 0, 1, 0, -0.515934, 0, 0.856626, 8.12069, -0.0120988, -16.2145)
+one_shot = true
+
+[node name="Target2" parent="Geometry/Killhouse/Section5" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(0.999621, 0, -0.0274856, 0, 1, 0, 0.0274856, 0, 0.999621, 6.06323, -0.0120988, -21.3089)
+one_shot = true
+
+[node name="Target3" parent="Geometry/Killhouse/Section5" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(-0.0296835, 0, 0.999558, 0, 1, 0, -0.999558, 0, -0.0296835, 11.583, -0.0120988, -27.5891)
+one_shot = true
+
+[node name="Door" type="Node3D" parent="Geometry/Killhouse/Section5"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 11.0242, 0.909168, -10.9816)
+
+[node name="Pivot" type="Node3D" parent="Geometry/Killhouse/Section5/Door"]
+
+[node name="Door" type="CSGBox3D" parent="Geometry/Killhouse/Section5/Door/Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.652275)
+material_override = ExtResource("30_qxw60")
+use_collision = true
+size = Vector3(0.002, 2.21381, 1.29878)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Geometry/Killhouse/Section5/Door"]
+autoplay = "RESET"
+libraries = {
+"": SubResource("AnimationLibrary_b68sd")
+}
+
+[node name="StartArea" type="Area3D" parent="Geometry/Killhouse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.49581, 0.801796, 5.99383)
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Killhouse/StartArea"]
+shape = SubResource("BoxShape3D_xpbsl")
+
+[node name="EndArea" type="Area3D" parent="Geometry/Killhouse"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.94824, 0.801796, -9.8272)
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Killhouse/EndArea"]
+shape = SubResource("BoxShape3D_xpbsl")
+
+[node name="Door" type="Node3D" parent="Geometry/Killhouse"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -5.74052, 0.992174, 6.47729)
+
+[node name="Pivot" type="Node3D" parent="Geometry/Killhouse/Door"]
+
+[node name="Door" type="CSGBox3D" parent="Geometry/Killhouse/Door/Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.652275)
+material_override = ExtResource("30_qxw60")
+use_collision = true
+size = Vector3(0.002, 2.21381, 1.29878)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Geometry/Killhouse/Door"]
+autoplay = "open"
+libraries = {
+"": SubResource("AnimationLibrary_b68sd")
+}
+
+[connection signal="body_entered" from="Geometry/Killhouse/StartArea" to="Geometry/Killhouse" method="_on_start_area_body_entered"]
+[connection signal="body_entered" from="Geometry/Killhouse/EndArea" to="Geometry/Killhouse" method="_on_end_area_body_entered"]
 
 [editable path="Geometry/terrain"]
 [editable path="Geometry/EquipArea/M4GrabSpawn/m4a1"]

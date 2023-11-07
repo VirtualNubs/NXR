@@ -1,10 +1,14 @@
-[gd_scene load_steps=33 format=3 uid="uid://dfl5qvof7chxv"]
+[gd_scene load_steps=40 format=3 uid="uid://dfl5qvof7chxv"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_hrx52"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="2_yg4sk"]
 [ext_resource type="Material" uid="uid://cqyydsr8wxrs7" path="res://assets/models/guns/Sniper/mat_sniper.tres" id="3_rgx54"]
+[ext_resource type="PackedScene" uid="uid://cinmh5mwq557y" path="res://assets/models/scope/glass.glb" id="4_2naaa"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmScopeViewport.cs" id="4_73new"]
+[ext_resource type="Shader" path="res://assets/shaders/optic.gdshader" id="5_36yq3"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRotatingBolt.cs" id="5_obog8"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMag.cs" id="6_60hkw"]
+[ext_resource type="Texture2D" uid="uid://hjc1q0he70c2" path="res://assets/textures/reticles/sniper_reticle.png" id="6_ja0d8"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRay.cs" id="7_8wr27"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="12_m8880"]
 
@@ -175,6 +179,35 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_1xcjx")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_v3l4g"]
+viewport_path = NodePath("sniper/Sniper_Rifle/Scope/SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j0k7a"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("5_36yq3")
+shader_parameter/flip_x = true
+shader_parameter/flip_y = false
+shader_parameter/dist = 6.196
+shader_parameter/scale = 1.0
+shader_parameter/glow = 1.0
+shader_parameter/reticle_color = Color(1, 1, 1, 1)
+shader_parameter/glass_color = Color(0, 0, 0, 1)
+shader_parameter/reticle_texture = SubResource("ViewportTexture_v3l4g")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v8rf3"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("5_36yq3")
+shader_parameter/flip_x = false
+shader_parameter/flip_y = false
+shader_parameter/dist = 6.196
+shader_parameter/scale = 1.0
+shader_parameter/glow = 1.0
+shader_parameter/reticle_color = Color(1, 0, 0, 1)
+shader_parameter/glass_color = Color(0, 0, 0, 1)
+shader_parameter/reticle_texture = ExtResource("6_ja0d8")
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_gpyip"]
 _surfaces = [{
@@ -359,20 +392,27 @@ material_override = ExtResource("3_rgx54")
 mesh = SubResource("ArrayMesh_mxsio")
 skeleton = NodePath("")
 
-[node name="SubViewport" type="SubViewport" parent="sniper/Sniper_Rifle/Scope"]
-size = Vector2i(1500, 1500)
-render_target_update_mode = 4
+[node name="SubViewport" type="SubViewport" parent="sniper/Sniper_Rifle/Scope" node_paths=PackedStringArray("_camera")]
+size = Vector2i(1000, 1000)
+script = ExtResource("4_73new")
+_camera = NodePath("Camera3D")
 
 [node name="Camera3D" type="Camera3D" parent="sniper/Sniper_Rifle/Scope/SubViewport"]
 transform = Transform3D(0.999832, -2.29425e-05, 0.0183062, -4.03583e-05, 0.999994, 0.00345751, -0.0183062, -0.00345767, 0.999826, -0.00362562, 0.0982665, -0.196508)
-current = true
-fov = 13.0
+fov = 2.0
 
-[node name="glassCam2" type="Node3D" parent="sniper/Sniper_Rifle/Scope"]
-transform = Transform3D(32.5242, -0.00325125, -0.00590795, 0.00590789, -4.47035e-07, 32.5242, -0.00325125, -32.5242, -1.07288e-06, -0.740144, 16.9101, -0.478553)
+[node name="glass" parent="sniper/Sniper_Rifle/Scope" instance=ExtResource("4_2naaa")]
+transform = Transform3D(31.5674, -6.75498e-09, 7.15256e-07, -1.19209e-07, 0.453118, 31.5641, -6.51926e-09, -31.5642, 0.453117, -0.747116, 16.3299, -0.421291)
 
-[node name="glassCam3" type="Node3D" parent="sniper/Sniper_Rifle/Scope"]
-transform = Transform3D(27.7056, -0.00276955, -0.00503266, 0.00503254, -3.57628e-07, 27.7056, -0.00276955, -27.7055, -9.23872e-07, -0.379266, 16.9168, -0.478457)
+[node name="Plane" parent="sniper/Sniper_Rifle/Scope/glass" index="0"]
+transform = Transform3D(1, 4.16334e-17, 5.58794e-09, 0, 0.999999, 8.88178e-16, 0, 8.88178e-16, 1, -3.72529e-09, 0, -0.00131333)
+material_override = SubResource("ShaderMaterial_j0k7a")
+
+[node name="glass2" parent="sniper/Sniper_Rifle/Scope" instance=ExtResource("4_2naaa")]
+transform = Transform3D(31.5674, -6.0275e-09, 7.7486e-07, -1.78814e-07, 0.453117, 31.5641, -7.45058e-09, -31.5641, 0.453117, -0.747116, 16.3299, -0.421291)
+
+[node name="Plane" parent="sniper/Sniper_Rifle/Scope/glass2" index="0"]
+material_override = SubResource("ShaderMaterial_v8rf3")
 
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="sniper/Sniper_Rifle"]
 transform = Transform3D(1, 4.08457e-05, -0.00014081, 0.000130866, 0.184369, 0.982858, 6.61062e-05, -0.982858, 0.184369, 0.255279, -3.9179, -8.05234)
@@ -445,3 +485,6 @@ _grabPose = 1
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0761718)
 shape = SubResource("BoxShape3D_m2dys")
+
+[editable path="sniper/Sniper_Rifle/Scope/glass"]
+[editable path="sniper/Sniper_Rifle/Scope/glass2"]

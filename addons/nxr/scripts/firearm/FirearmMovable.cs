@@ -143,6 +143,13 @@ public partial class FirearmMovable : Interactable
 		return EndXform.Orthonormalized().IsEqualApprox(Transform.Orthonormalized());
 	}
 
+	public void GoToStart() { 
+		Transform = StartXform; 
+	}	
+
+	public void GoToEnd() { 
+		Transform = EndXform; 
+	}
 	public void StartToEnd(float t)
 	{
 		t = Mathf.Clamp(t, 0, 1);

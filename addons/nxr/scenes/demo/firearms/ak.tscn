@@ -1,8 +1,7 @@
-[gd_scene load_steps=28 format=3 uid="uid://sfgdm1jksecs"]
+[gd_scene load_steps=27 format=3 uid="uid://sfgdm1jksecs"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_3xpfa"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="2_8v36k"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMagZoneTrack.cs" id="4_b6sd3"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMagZone.cs" id="5_nrs13"]
 [ext_resource type="PackedScene" uid="uid://cicqk5srmto4a" path="res://addons/nxr/scenes/demo/firearms/mags/ak_mag.tscn" id="6_qf2kd"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmSlide.cs" id="8_1owmr"]
@@ -52,7 +51,7 @@ nodes/trigger/position = Vector2(-220, 320)
 node_connections = [&"output", 0, &"Add2", &"Add2", 0, &"Animation", &"Add2", 1, &"trigger", &"trigger", 0, &"Animation 2", &"trigger", 1, &"Animation 3"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_5t150"]
-radius = 0.0408566
+radius = 0.0628267
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6lssy"]
 radius = 0.0280212
@@ -106,6 +105,7 @@ _yCurve = SubResource("Curve_ur3b0")
 [node name="InteractableGrabKinematic" type="Node" parent="."]
 script = ExtResource("2_8v36k")
 _twoHanded = true
+_lookUpVector = 2
 
 [node name="HandPose" type="RemoteTransform3D" parent="." node_paths=PackedStringArray("_customTree")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0221531, 0.120832)
@@ -125,27 +125,20 @@ script = ExtResource("12_v4fnm")
 _pose = "poses_rifle/secondary"
 _grabPose = 1
 
-[node name="FirearmMagZoneTrack" type="RigidBody3D" parent="." node_paths=PackedStringArray("Target")]
+[node name="FirearmMagZone" type="Area3D" parent="." node_paths=PackedStringArray("_firearm")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.00254692, -0.0224589, -0.059502)
-freeze = true
-script = ExtResource("4_b6sd3")
-Target = NodePath(".")
-StartXform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.00254692, -0.0224589, -0.059502)
-EndXform = Transform3D(1, 0, 0, 0, -0.431314, -0.902202, 0, 0.902202, -0.431314, -0.00254692, -0.0536282, -0.101464)
-
-[node name="FirearmMagZone" type="Area3D" parent="FirearmMagZoneTrack" node_paths=PackedStringArray("_firearm")]
 collision_mask = 9
 script = ExtResource("5_nrs13")
-_firearm = NodePath("../..")
+_firearm = NodePath("..")
 AllowedGroups = PackedStringArray("AKMag")
 _sticky = true
 _tweenTime = 0.0
 _easeType = 1
 _transType = 5
 
-[node name="Interactable" parent="FirearmMagZoneTrack/FirearmMagZone" instance=ExtResource("6_qf2kd")]
+[node name="Interactable" parent="FirearmMagZone" instance=ExtResource("6_qf2kd")]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FirearmMagZoneTrack/FirearmMagZone"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FirearmMagZone"]
 shape = SubResource("SphereShape3D_5t150")
 
 [node name="FirearmTrigger" type="Node3D" parent="."]

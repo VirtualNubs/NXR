@@ -46,8 +46,8 @@ public partial class Pointer : RayCast3D
 			
 			curve.EndPoint = TargetPosition; 
 			curve.MidPoint.Z = TargetPosition.Z / 2; 
-			curve.MidPoint.X = Mathf.Lerp(curve.MidPoint.X, _controller.GetLocalVelocity().X * _velocityStrength, 0.2f); 
-			curve.MidPoint.Y = Mathf.Lerp(curve.MidPoint.Y, _controller.GetLocalVelocity().Y * _velocityStrength, 0.2f); 
+			curve.MidPoint.X = Mathf.Lerp(curve.MidPoint.X, 0, (float)delta); 
+			curve.MidPoint.Y = Mathf.Lerp(curve.MidPoint.Y, 0, (float)delta); 
 		} 
 
 		if (_hitting_gui) { 

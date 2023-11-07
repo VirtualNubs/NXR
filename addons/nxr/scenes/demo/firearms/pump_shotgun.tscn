@@ -19,7 +19,7 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmParticlePlayer.cs" id="14_m6tgk"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_i000j"]
-size = Vector3(0.0298283, 0.159043, 0.727847)
+size = Vector3(0.0298283, 0.159043, 0.878885)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_4crqc"]
 radius = 0.0282565
@@ -58,27 +58,27 @@ node_connections = [&"output", 0, &"Add2", &"Add2", 0, &"Animation", &"Add2", 1,
 [sub_resource type="Gradient" id="Gradient_c2hh0"]
 colors = PackedColorArray(1, 1, 1, 0.603922, 1, 1, 1, 0)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_bue16"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5m2yo"]
 gradient = SubResource("Gradient_c2hh0")
 
 [sub_resource type="Curve" id="Curve_vscxk"]
 _data = [Vector2(0, 0.0947368), 0.0, 0.0, 0, 0, Vector2(1, 0.210526), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CurveTexture" id="CurveTexture_fkobl"]
+[sub_resource type="CurveTexture" id="CurveTexture_e58ke"]
 curve = SubResource("Curve_vscxk")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_lshne"]
 direction = Vector3(0, 0, -1)
 spread = 5.0
 gravity = Vector3(0, 0, 0)
-initial_velocity_min = 3.0
-initial_velocity_max = 3.0
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
 scale_max = 1.5
-scale_curve = SubResource("CurveTexture_fkobl")
-color_ramp = SubResource("GradientTexture1D_bue16")
+scale_curve = SubResource("CurveTexture_e58ke")
+color_ramp = SubResource("GradientTexture1D_5m2yo")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5iab6"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bjch8"]
 transparency = 1
 blend_mode = 1
 shading_mode = 0
@@ -92,7 +92,7 @@ particles_anim_v_frames = 1
 particles_anim_loop = false
 
 [sub_resource type="QuadMesh" id="QuadMesh_0xluh"]
-material = SubResource("StandardMaterial3D_5iab6")
+material = SubResource("StandardMaterial3D_bjch8")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ywvdo"]
 radius = 0.0537363
@@ -284,16 +284,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.034652, -0.104417)
 freeze = true
 script = ExtResource("5_t0fpk")
 _internal = true
+MaxAmmo = 10
 CurrentAmmo = 10
 
-[node name="FirearmMagLoadZone" type="Area3D" parent="FirearmMag"]
+[node name="FirearmMagLoadZone" type="Area3D" parent="FirearmMag" node_paths=PackedStringArray("_mag")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00180579, 0)
 collision_mask = 8
 script = ExtResource("4_son5b")
 _ammoGroup = "12g"
+_mag = NodePath("..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FirearmMag/FirearmMagLoadZone"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0177692, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00147969, 0.00224831, -0.000137158)
 shape = SubResource("SphereShape3D_4crqc")
 
 [node name="HandPose" type="RemoteTransform3D" parent="." node_paths=PackedStringArray("_customTree")]
@@ -371,11 +373,12 @@ script = ExtResource("6_08mhc")
 _scene = ExtResource("7_nray2")
 
 [node name="FirearmParticlePlayer2" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0236106, -0.626323)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0236106, -0.642783)
 emitting = false
 lifetime = 0.2
 one_shot = true
 explosiveness = 1.0
+visibility_aabb = AABB(-0.256019, -0.523258, -0.713181, 0.5263, 1.05116, 0.926579)
 process_material = SubResource("ParticleProcessMaterial_lshne")
 draw_pass_1 = SubResource("QuadMesh_0xluh")
 script = ExtResource("14_m6tgk")

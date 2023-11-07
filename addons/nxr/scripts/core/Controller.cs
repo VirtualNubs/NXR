@@ -20,9 +20,11 @@ public partial class Controller : XRController3D
 	private Array<Vector3> _localVels = new Array<Vector3>(); 
 	private Array<Vector3> _globalVels = new Array<Vector3>(); 
 	private Array<Vector3> _angularVels = new Array<Vector3>(); 
-	private Vector3 _globalVelocity; 
+	private Transform3D _globalVelocityXform; 
+	private Transform3D _localVelocityXform; 
 
-	private List<Transform3D> velocityXforms = new(); 
+	private List<Transform3D> velocityXformsGlobal = new(); 
+	private List<Transform3D> velocityXformsLocal = new(); 
 
     public override void _Ready()
     {
@@ -30,6 +32,8 @@ public partial class Controller : XRController3D
 
     public override void _PhysicsProcess(double delta)
     {
+		_globalVelocityXform = GetTransformVelocity(GlobalTransform, velocityXformsGlobal); 
+		_localVelocityXform = GetTransformVelocity(Transform, velocityXformsLocal); 
     }
 
     public void Pulse(double freq, double amp, double time)
@@ -60,12 +64,15 @@ public partial class Controller : XRController3D
 		return false; 
 	}
 
+	public Vector3 GetVelocity() { 
+		return this.GetPose().LinearVelocity; 
+	}
 
-	public Transform3D GetTransformVelocity()
+	public Transform3D GetTransformVelocity(Transform3D xform, List<Transform3D> xforms)
     {
         // Get the current transform
-        Transform3D currentTransform = GlobalTransform;
-
+        Transform3D currentTransform = xform;
+		List<Transform3D> velocityXforms = xforms; 
 
 		velocityXforms.Add(currentTransform);
 
@@ -98,19 +105,26 @@ public partial class Controller : XRController3D
     }
 
 	public Vector3 GetLocalVelocity() { 
-		Node3D parent = (Node3D)GetParent(); 
-		return  parent.ToLocal(GetTransformVelocity().Origin); 
+		return _localVelocityXform.Origin * 10.0f; 
 	}
 	public Vector3 GetGlobalVelocity() { 
-		return GetTransformVelocity().Origin * _linearVelocityStrength; 
-	}
-	public Vector3 GetAngularVelocity() { 
-		return GetTransformVelocity().Basis.GetEuler() * _angulerVelocityStrength; 
+		return  _globalVelocityXform.Origin * 10.0f; 
 	}
 
-	public bool LocalVelMatches(Vector3 dir, float threshold) { 
-		Node3D parent = (Node3D)GetParent(); 
-		float dot = GetGlobalVelocity().Normalized().Dot(dir.Normalized()); 
+	public Vector3 GetGlobalVelocityLimited() { 
+		return GetGlobalVelocity().LimitLength(GetLocalVelocity().Length()); 
+	}
+	public Vector3 GetAngularVelocity() { 
+		return _globalVelocityXform.Basis.GetEuler() * _angulerVelocityStrength; 
+	}
+
+	public bool VelMatches(Vector3 dir, float threshold) { 
+		Node3D parent = (Node3D)GetParent(); 	 
+		Vector3 vel = GetLocalVelocity(); 
+		Vector3 newDir = dir; 
+
+
+		float dot = vel.Dot(newDir.Normalized()); 
 		return dot > threshold; 
 	}
 }

@@ -4,6 +4,7 @@ using NXR;
 
 namespace NXRPlayer; 
 
+[GlobalClass]
 public partial class Player : CharacterBody3D
 {
     [Export]

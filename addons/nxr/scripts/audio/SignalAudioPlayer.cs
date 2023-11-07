@@ -24,6 +24,7 @@ public partial class SignalAudioPlayer : AudioStreamPlayer3D
 				}
 			}
 			Action signalAction = OnSignal; 
+			Signal newSignal = new Signal(GetParent(), _signal); 
 
 			GetParent().Connect(_signal, Callable.From(signalAction)); 
 		}

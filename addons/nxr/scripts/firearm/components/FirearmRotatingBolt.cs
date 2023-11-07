@@ -48,10 +48,7 @@ public partial class FirearmRotatingBolt : FirearmMovable
         if (AtStart() && _setBack) { 
             _setBack = false; 
             _firearm?.EmitSignal("TryChamber"); 
-            GD.Print("chamber"); 
-        
         }
-
     }
 
     public override void _PhysicsProcess(double delta)

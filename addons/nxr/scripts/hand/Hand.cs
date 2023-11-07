@@ -72,7 +72,6 @@ public partial class Hand : RigidBody3D
             HandNode = this; 
         }
 
-
 		_initTransform = HandNode.Transform;
 	}
 

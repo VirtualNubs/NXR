@@ -57,6 +57,7 @@ public partial class FirearmBreakAction : FirearmMovable
 
 		if (!IsClosed())
 		{
+			
 			_firearm.BlockFire = true;
 		}
 		else
@@ -95,11 +96,9 @@ public partial class FirearmBreakAction : FirearmMovable
 	private bool GetCloseInput()
 	{
 		if (_firearm.GetPrimaryInteractor() == null) return false;
-
 		Controller controller = _firearm.GetPrimaryInteractor().Controller;
-
-		Vector3 dir = GlobalTransform.Basis.Y; 
+		Vector3 dir = _firearm.GetPrimaryInteractor().Controller.Transform.Basis.Y; 
 				
-		return controller.LocalVelMatches(dir, 0.8f);
+		return controller.VelMatches(dir, 2f);
 	}
 }

@@ -94,7 +94,7 @@ public partial class Firearm : Interactable
     }
     public void Fire()
     {   
-        if (BlockFire) return; 
+        if (BlockFire || !Chambered) return; 
         
         _shotCount += 1; 
         Chambered = false; 

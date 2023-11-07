@@ -7,6 +7,9 @@ namespace NXRInteractable;
 public partial class Interactable : RigidBody3D
 {
 	[Export]
+	public bool Disabled = false; 
+
+	[Export]
 	public float Priority = 1; 
 	
 	[Export]
@@ -80,8 +83,9 @@ public partial class Interactable : RigidBody3D
 		InitGlobalTransform = Transform; 
     }
 
-	public void Grab(Interactor interactor)
+    public void Grab(Interactor interactor)
 	{
+		if (Disabled) return; 
 
 		interactor._grabbedInteractable = this; 
 
@@ -151,6 +155,7 @@ public partial class Interactable : RigidBody3D
 		if (!IsGrabbed()) { 
 			EmitSignal("OnFullDropped"); 
 			LinearVelocity = interactor.Controller.GetGlobalVelocity();
+			AngularVelocity = interactor.Controller.GetAngularVelocity(); 
 		}
 	}
 

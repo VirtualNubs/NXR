@@ -114,6 +114,7 @@ public partial class InteractableSnapZone : Area3D
         tween.SetParallel(true);
         tween.SetEase(_easeType);
         tween.SetTrans(_transType);
+        
         tween.TweenProperty(_snappedInteractable, "position", Vector3.Zero, _tweenTime);
         tween.TweenProperty(_snappedInteractable, "rotation", Vector3.Zero, _tweenTime);
 

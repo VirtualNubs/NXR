@@ -25,7 +25,6 @@ public partial class FirearmMag : Interactable
     public override void _Ready()
     {
         base._Ready(); 
-        CurrentAmmo = MaxAmmo; 
 
         if (_internal && Util.NodeIs((Node)GetParent(), typeof(Firearm)))
         {

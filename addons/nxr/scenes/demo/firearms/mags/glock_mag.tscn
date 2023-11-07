@@ -426,6 +426,7 @@ RotationOffset = Vector3(43.15, 0, 0)
 
 [node name="InteractableGrab" type="Node" parent="."]
 script = ExtResource("2_1celn")
+_rotationSmoothing = 10.0
 
 [node name="InteractableGrabPoint" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.374493, 0.92723, 0, -0.92723, 0.374493, 0, 0.108213, -0.0403745)

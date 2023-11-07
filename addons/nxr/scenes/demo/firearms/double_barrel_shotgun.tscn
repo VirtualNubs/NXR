@@ -93,6 +93,9 @@ _kickRecoverSpeed = 0.05
 _riseRecoverSpeed = 0.05
 _switchOnDrop = true
 
+[node name="InteractableGrabKinematic" type="Node" parent="."]
+script = ExtResource("16_en00u")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.000202769, -0.111079)
 shape = SubResource("BoxShape3D_i000j")
@@ -177,6 +180,7 @@ _firearm = NodePath("../../..")
 transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, -0.0150582, 0.0395843, 0.0940909)
 script = ExtResource("13_13ou0")
 AllowedGroups = PackedStringArray("12g")
+_tweenTime = 0.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="double_barrel_shotgun/Barrel/FirearmBulletZoneQueue/FirearmBulletZoneLeft"]
 shape = SubResource("SphereShape3D_urj1p")
@@ -185,6 +189,7 @@ shape = SubResource("SphereShape3D_urj1p")
 transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, 0.0149418, 0.0395843, 0.0936791)
 script = ExtResource("13_13ou0")
 AllowedGroups = PackedStringArray("12g")
+_tweenTime = 0.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="double_barrel_shotgun/Barrel/FirearmBulletZoneQueue/FirearmBulletZoneRight"]
 transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, 0, 0, -0.00774557)
@@ -214,9 +219,5 @@ _customTree = NodePath("AnimationTree")
 tree_root = SubResource("AnimationNodeBlendTree_i6mxa")
 parameters/Add2/add_amount = 1.0
 parameters/trigger/blend_amount = 0
-
-[node name="InteractableGrabKinematic" type="Node" parent="."]
-script = ExtResource("16_en00u")
-_usePhysics = true
 
 [editable path="double_barrel_shotgun"]

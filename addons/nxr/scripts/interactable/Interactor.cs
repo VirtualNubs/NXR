@@ -43,14 +43,6 @@ public partial class Interactor : Area3D
 
 		if (_grabbedInteractable != null) {
 			Interactable interactable = _grabbedInteractable; 
-
-			// if (this == interactable.PrimaryInteractor && GlobalPosition.DistanceTo(interactable.PrimaryGrabPoint.GlobalPosition) > interactable.MaxGrabDistance) {
-			// 	Drop(); 
-			// }
-
-			// if (this == interactable.SecondaryInteractor && GlobalPosition.DistanceTo(interactable.SecondaryGrabPoint.GlobalPosition) > interactable.MaxGrabDistance) {
-			// 	Drop(); 
-			// }
 		}
 	}
 

@@ -77,22 +77,24 @@ public partial class FirearmCylinder : FirearmMovable
 
 	public void Close() { 
 		Tween tween = GetTree().CreateTween(); 
-		tween.TweenProperty(Target, "transform", StartXform, 0.1f); 
+		tween.TweenProperty(Target, "transform", StartXform, 0.05f); 
 	}
 	
 	private bool GetOpenInput() { 
 		if (_firearm.GetPrimaryInteractor() == null) return false; 
-		
+		bool input = _firearm.GetPrimaryInteractor().Controller.IsButtonPressed("by_button"); 
 		Controller controller = _firearm.GetPrimaryInteractor().Controller; 
+		Vector3 dir = -_firearm.GetPrimaryInteractor().Controller.Transform.Basis.X;
 
-		return _firearm.GetPrimaryInteractor().Controller.ButtonOneShot("by_button"); 
+		return controller.VelMatches(dir, 1f) && input; 
 	}
 
 	private bool GetCloseInput() { 
 		if (_firearm.GetPrimaryInteractor() == null) return false; 
 		
 		Controller controller = _firearm.GetPrimaryInteractor().Controller; 
+		Vector3 dir = _firearm.GetPrimaryInteractor().Controller.Transform.Basis.X;
 
-		return controller.LocalVelMatches(GlobalTransform.Basis.X, 2); 
+		return controller.VelMatches(dir, 1f); 
 	}
 }

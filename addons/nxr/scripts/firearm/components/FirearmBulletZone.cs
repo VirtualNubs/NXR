@@ -28,8 +28,8 @@ public partial class FirearmBulletZone : InteractableSnapZone
 		if (Util.NodeIs((Node)GetParent(), typeof(FirearmBullet))) return; 
 		
 		Bullet = (FirearmBullet)interactable; 
-
-        base.Snap(interactable);
+        Bullet.Disabled = true; 
+        base.Snap(Bullet);
     }
 
 	public void Eject(Vector3 velocity, Vector3 torque) { 
@@ -37,5 +37,6 @@ public partial class FirearmBulletZone : InteractableSnapZone
 		Unsnap(); 
 		Bullet.ApplyTorqueImpulse(torque * 1000); 
 		Bullet.ApplyCentralImpulse(velocity); 
+        Bullet.Disabled = false; 
 	}
 }
