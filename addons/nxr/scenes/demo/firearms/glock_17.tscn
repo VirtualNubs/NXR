@@ -215,7 +215,7 @@ skeleton = NodePath("")
 surface_material_override/0 = ExtResource("8_gfj2c")
 
 [node name="FirearmMagZoneTrack" type="RigidBody3D" parent="." node_paths=PackedStringArray("Target")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0190348, 0.00579122)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00609653, 0.0289449, -0.0221265)
 collision_layer = 8
 freeze = true
 script = ExtResource("7_ql27h")
@@ -225,6 +225,7 @@ EndXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0808707, 0.0398361)
 
 [node name="FirearmMagZone" type="Area3D" parent="FirearmMagZoneTrack" node_paths=PackedStringArray("_firearm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.100605, 0.059378)
+collision_mask = 9
 script = ExtResource("8_l5mrm")
 _firearm = NodePath("../..")
 AllowedGroups = PackedStringArray("glock_mag")
@@ -274,7 +275,7 @@ script = ExtResource("19_w3mni")
 Energy = 0.2
 
 [node name="InteractableGrabPoint" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.973479, 0.228776, 0, -0.228776, 0.973479, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.978188, 0.207724, 0, -0.207724, 0.978188, 0, 0.0174059, -0.0222279)
 freeze = true
 script = ExtResource("20_nf2hc")
 

@@ -93,37 +93,33 @@ layers = 16
 material_override = SubResource("StandardMaterial3D_t6337")
 radius = 0.0224133
 
-[node name="LeftInteractor" type="Area3D" parent="." node_paths=PackedStringArray("Controller")]
+[node name="LeftInteractor" type="Area3D" parent="XROrigin3D" node_paths=PackedStringArray("Controller")]
 collision_mask = 9
 script = ExtResource("4_480fq")
-Controller = NodePath("../XROrigin3D/LeftController")
-_smoothing = 20.0
+Controller = NodePath("../LeftController")
+_smoothing = 25.0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="LeftInteractor"]
+[node name="PhysicsHand" parent="XROrigin3D/LeftInteractor" node_paths=PackedStringArray("Controller") instance=ExtResource("5_utiyv")]
+transform = Transform3D(-0.96279, 0.131946, -0.235851, 0.0982031, 0.983868, 0.149535, -0.251777, -0.12081, 0.960215, 0, -0.048, 0.00305932)
+Controller = NodePath("../../LeftController")
+_blendTime = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/LeftInteractor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.729379)
 shape = SubResource("BoxShape3D_tyjap")
 
-[node name="HandRight" parent="LeftInteractor" node_paths=PackedStringArray("Controller", "_animPlayer", "_animTree", "_collider", "HandNode") instance=ExtResource("5_utiyv")]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0431479, 0.00948057)
-Controller = NodePath("../../XROrigin3D/RightController")
-_blendTime = 0.0
-_animPlayer = NodePath("../../RightInteractor/HandRight/AnimationPlayer")
-_animTree = NodePath("../../RightInteractor/HandRight/AnimationTree")
-_collider = NodePath("../../RightInteractor/HandRight/CollisionShape3D")
-HandNode = NodePath("../../RightInteractor/HandRight/Hand_Glove_R")
-
-[node name="RightInteractor" type="Area3D" parent="." node_paths=PackedStringArray("Controller")]
+[node name="RightInteractor" type="Area3D" parent="XROrigin3D" node_paths=PackedStringArray("Controller")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00305932)
 collision_mask = 9
 script = ExtResource("4_480fq")
-Controller = NodePath("../XROrigin3D/RightController")
-_smoothing = 20.0
+Controller = NodePath("../RightController")
+_smoothing = 25.0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RightInteractor"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/RightInteractor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.729379)
 shape = SubResource("BoxShape3D_tyjap")
 
-[node name="HandRight" parent="RightInteractor" node_paths=PackedStringArray("Controller") instance=ExtResource("5_utiyv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0431479, 0.00948057)
-Controller = NodePath("../../XROrigin3D/RightController")
+[node name="HandRight" parent="XROrigin3D/RightInteractor" node_paths=PackedStringArray("Controller") instance=ExtResource("5_utiyv")]
+transform = Transform3D(0.96266, -0.132707, 0.235956, 0.0989945, 0.983804, 0.149432, -0.251965, -0.120494, 0.960206, 0, -0.048, 0)
+Controller = NodePath("../../RightController")
 _blendTime = 0.0

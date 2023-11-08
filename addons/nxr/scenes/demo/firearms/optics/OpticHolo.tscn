@@ -32,6 +32,7 @@ freeze = true
 script = ExtResource("1_y6soa")
 Priority = 0.5
 MaxGrabDistance = 1.0
+GrabAction = "trigger_click"
 
 [node name="CSGMesh3D" type="CSGMesh3D" parent="."]
 transform = Transform3D(0.022022, -1.36134e-09, -0.022022, -0.022022, -1.36134e-09, -0.022022, 0, 0.0311439, -1.92523e-09, 0, 0.0202163, 0)

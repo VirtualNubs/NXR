@@ -13,9 +13,18 @@ public partial class FirearmMagZone : InteractableSnapZone
     public FirearmMag CurrentMag = null; 
 
     
+    [ExportGroup("Eject Settings")]
     [Export]
     private string _ejectAction = "ax_button"; 
+    [Export]
+    private float _ejectForce = 0.1f; 
+
     public bool MagIn = false; 
+
+
+    [Signal]
+    public delegate void OnEjectEventHandler(); 
+
 
     public override void _Ready()
     {
@@ -41,8 +50,7 @@ public partial class FirearmMagZone : InteractableSnapZone
 
         if (_firearm != null && _firearm.GetPrimaryInteractor() != null) { 
             if (_ejectAction != null && _firearm.GetPrimaryInteractor().Controller.ButtonOneShot(_ejectAction) && CurrentMag != null) { 
-                FirearmMag mag = CurrentMag; 
-                Eject(CurrentMag); 
+                EmitSignal("OnEject"); 
             }
         }
     }
@@ -59,7 +67,7 @@ public partial class FirearmMagZone : InteractableSnapZone
 
     private void Eject(FirearmMag mag) { 
         Unsnap(); 
-        mag.ApplyCentralImpulse(mag.GlobalTransform.Basis.Z); 
+        mag.ApplyCentralImpulse(-_firearm.GlobalTransform.Basis.Y * _ejectForce); 
     }
 
     private void TryChamber() { 
@@ -72,5 +80,9 @@ public partial class FirearmMagZone : InteractableSnapZone
             CurrentMag.RemoveBullet(1); 
             _firearm.EmitSignal("OnChambered"); 
         }
+    }
+
+    public Firearm GetFirearm() { 
+        return _firearm; 
     }
 }

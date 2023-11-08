@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://c47iwb4c6irhj"]
+
+[node name="ui_settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 512.0
+offset_bottom = 512.0
+
+[node name="HSlider" type="HSlider" parent="."]
+layout_mode = 0
+offset_top = 99.0
+offset_right = 162.0
+offset_bottom = 115.0
+
+[node name="HSlider2" type="HSlider" parent="."]
+layout_mode = 0
+offset_top = 144.0
+offset_right = 162.0
+offset_bottom = 160.0

@@ -43,6 +43,7 @@ shadow_mesh = SubResource("ArrayMesh_fjq5w")
 collision_layer = 8
 mass = 0.28
 script = ExtResource("1_fmevu")
+GrabAction = "trigger_click"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0370945)

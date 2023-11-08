@@ -312,6 +312,7 @@ EndXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000758566, -0.107234, -0.05
 
 [node name="FirearmMagZone" type="Area3D" parent="FirearmMagZoneTrack" node_paths=PackedStringArray("_firearm")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+collision_mask = 9
 script = ExtResource("5_iyft0")
 _firearm = NodePath("../..")
 AllowedGroups = PackedStringArray("stanag")
@@ -327,44 +328,52 @@ shape = SubResource("SphereShape3D_mt2ev")
 
 [node name="FirearmRail" type="Area3D" parent="Rails"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0532737, -0.0103624)
+collision_mask = 9
 script = ExtResource("15_sd8oa")
 _minZPosition = -0.093
 _maxZPosition = 0.04
 AllowedGroups = PackedStringArray("attachment")
 _sticky = true
+_breakDistance = 0.1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Rails/FirearmRail"]
 shape = SubResource("SphereShape3D_62q43")
 
 [node name="FirearmRail2" type="Area3D" parent="Rails"]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -0.03332, 0.0205155, -0.191034)
+collision_mask = 9
 script = ExtResource("15_sd8oa")
 _minZPosition = -0.283
 _maxZPosition = -0.127
 AllowedGroups = PackedStringArray("attachment")
 _sticky = true
+_breakDistance = 0.1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Rails/FirearmRail2"]
 shape = SubResource("BoxShape3D_e0lji")
 
 [node name="FirearmRail6" type="Area3D" parent="Rails"]
 transform = Transform3D(0.999227, -1.62921e-07, 0.0393121, 1.62795e-07, 1, 6.40476e-09, -0.0393121, 0, 0.999227, 0.0630873, 0.0898356, 0.226081)
+collision_mask = 9
 script = ExtResource("15_sd8oa")
 _minZPosition = 0.18
 _maxZPosition = 0.26
 AllowedGroups = PackedStringArray("gopro")
 _sticky = true
+_breakDistance = 0.1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Rails/FirearmRail6"]
 shape = SubResource("BoxShape3D_e0lji")
 
 [node name="FirearmRail3" type="Area3D" parent="Rails"]
 transform = Transform3D(1.31134e-07, 1, 0, -1, 1.31134e-07, 0, 0, 0, 1, 0.0256718, 0.0205155, -0.191034)
+collision_mask = 9
 script = ExtResource("15_sd8oa")
 _minZPosition = -0.283
 _maxZPosition = -0.127
 AllowedGroups = PackedStringArray("attachment")
 _sticky = true
+_breakDistance = 0.1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Rails/FirearmRail3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.72529e-09, 0.00522368, 0)
@@ -372,11 +381,13 @@ shape = SubResource("BoxShape3D_e0lji")
 
 [node name="FirearmRail4" type="Area3D" parent="Rails"]
 transform = Transform3D(1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, -8.7496e-09, 0.0537553, -0.191)
+collision_mask = 9
 script = ExtResource("15_sd8oa")
 _minZPosition = -0.283
 _maxZPosition = -0.127
 AllowedGroups = PackedStringArray("attachment")
 _sticky = true
+_breakDistance = 0.1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Rails/FirearmRail4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00161396, 0)
@@ -384,11 +395,13 @@ shape = SubResource("BoxShape3D_e0lji")
 
 [node name="FirearmRail5" type="Area3D" parent="Rails"]
 transform = Transform3D(-1, 2.62268e-07, 0, -2.62268e-07, -1, 0, 0, 0, 1, 7.41466e-09, -0.0078772, -0.191)
+collision_mask = 9
 script = ExtResource("15_sd8oa")
 _minZPosition = -0.283
 _maxZPosition = -0.127
 AllowedGroups = PackedStringArray("attachment")
 _sticky = true
+_breakDistance = 0.1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Rails/FirearmRail5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00161396, 0)

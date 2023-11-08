@@ -96,8 +96,9 @@ public partial class HandPose : RemoteTransform3D
 
     private void Pose(Hand hand)
     {
+
         
-        if (hand.HandNode.Scale.X < 0) { 
+        if (hand.Scale.X < 0 || hand.HandNode.Scale.X < 0) { 
             Scale = new Vector3(-1, 1, 1); 
         } else { 
             Scale = _initScale; 
@@ -113,7 +114,6 @@ public partial class HandPose : RemoteTransform3D
             hand.SetCurrentTree(_customTree);
         }
 
-        
         // set RT paths
         _lastPath = hand.HandNode.GetPath();
         RemotePath = hand.HandNode.GetPath(); 

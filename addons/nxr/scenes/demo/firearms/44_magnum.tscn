@@ -72,6 +72,7 @@ _firearm = NodePath("../../..")
 
 [node name="FirearmBulletZone" type="Area3D" parent="44_magnum/Rotator/FirearmBulletZoneQueue"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0148082, 0.00422315, 0)
+collision_mask = 9
 script = ExtResource("8_etwa3")
 AllowedGroups = PackedStringArray("44")
 
@@ -80,6 +81,7 @@ shape = SubResource("SphereShape3D_i8hxm")
 
 [node name="FirearmBulletZone4" type="Area3D" parent="44_magnum/Rotator/FirearmBulletZoneQueue"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0113551, -0.00958937, 0)
+collision_mask = 9
 script = ExtResource("8_etwa3")
 AllowedGroups = PackedStringArray("44")
 
@@ -88,6 +90,7 @@ shape = SubResource("SphereShape3D_i8hxm")
 
 [node name="FirearmBulletZone5" type="Area3D" parent="44_magnum/Rotator/FirearmBulletZoneQueue"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0024574, -0.0134741, 0)
+collision_mask = 9
 script = ExtResource("8_etwa3")
 AllowedGroups = PackedStringArray("44")
 
@@ -96,6 +99,7 @@ shape = SubResource("SphereShape3D_i8hxm")
 
 [node name="FirearmBulletZone6" type="Area3D" parent="44_magnum/Rotator/FirearmBulletZoneQueue"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0119535, -0.00397803, 0)
+collision_mask = 9
 script = ExtResource("8_etwa3")
 AllowedGroups = PackedStringArray("44")
 
@@ -104,6 +108,7 @@ shape = SubResource("SphereShape3D_i8hxm")
 
 [node name="FirearmBulletZone2" type="Area3D" parent="44_magnum/Rotator/FirearmBulletZoneQueue"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00893889, 0.00721011, 0)
+collision_mask = 9
 script = ExtResource("8_etwa3")
 AllowedGroups = PackedStringArray("44")
 
@@ -112,6 +117,7 @@ shape = SubResource("SphereShape3D_i8hxm")
 
 [node name="FirearmBulletZone3" type="Area3D" parent="44_magnum/Rotator/FirearmBulletZoneQueue"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00369614, 0.011127, 0)
+collision_mask = 9
 script = ExtResource("8_etwa3")
 AllowedGroups = PackedStringArray("44")
 
@@ -235,7 +241,7 @@ _pose = "poses_pistol/sgrip"
 _grabPose = 1
 
 [node name="FirearmHammer" type="RigidBody3D" parent="." node_paths=PackedStringArray("Target")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.0047e-06, -0.0124286, 0.031602)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.0047e-06, -0.0124286, 0.0316019)
 freeze = true
 script = ExtResource("18_axgoc")
 Target = NodePath("../44_magnum/Trigger/Hammer")

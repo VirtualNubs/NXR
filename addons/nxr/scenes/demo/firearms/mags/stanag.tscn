@@ -117,8 +117,8 @@ collision_layer = 8
 mass = 0.1
 script = ExtResource("1_tjp0p")
 CurrentAmmo = 30
+GrabAction = "trigger_click"
 _switchOnDrop = true
-RotationOffset = Vector3(43.15, 0, 0)
 
 [node name="InteractableGrabKinematic" type="Node" parent="."]
 script = ExtResource("4_mtw8e")
@@ -473,5 +473,6 @@ skeleton = NodePath("")
 surface_material_override/0 = ExtResource("10_oymf2")
 
 [node name="InteractableGrabPoint" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.258819, -0.965926, 0, 0.965926, 0.258819, 0, 0, 0)
 freeze = true
 script = ExtResource("7_da1jw")

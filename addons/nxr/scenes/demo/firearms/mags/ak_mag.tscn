@@ -53,6 +53,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000677347, -0.00169241, 0.
 collision_layer = 8
 script = ExtResource("1_1dbia")
 CurrentAmmo = 30
+GrabAction = "trigger_click"
 _switchOnDrop = true
 
 [node name="InteractableGrabKinematic" type="Node" parent="."]

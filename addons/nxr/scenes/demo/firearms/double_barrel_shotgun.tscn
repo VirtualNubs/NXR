@@ -129,7 +129,7 @@ script = ExtResource("17_f3snt")
 _restartOnFire = true
 
 [node name="Rays" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0979972)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00401978, 0.114576)
 
 [node name="FirearmRay" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
 transform = Transform3D(1, 0, 0, 0, 0.998681, 0.0513425, 0, -0.0513425, 0.998681, 0, 0.0256179, -0.448217)
@@ -138,13 +138,13 @@ script = ExtResource("11_1ciw0")
 _firearm = NodePath("../..")
 
 [node name="FirearmRay2" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(0.998953, 0, -0.0457466, 0, 1, 0, 0.0457466, 0, 0.998953, 0, 0.0256179, -0.448217)
+transform = Transform3D(0.996759, 0, -0.0804425, 0, 1, 0, 0.0804425, 0, 0.996759, 0, 0.0256179, -0.448217)
 target_position = Vector3(0, 0, -100)
 script = ExtResource("11_1ciw0")
 _firearm = NodePath("../..")
 
 [node name="FirearmRay4" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
-transform = Transform3D(0.998953, 0, -0.0457466, -0.00479929, 0.994482, -0.1048, 0.0454941, 0.10491, 0.993441, 0, 0.0256179, -0.448217)
+transform = Transform3D(0.998953, 0.00232801, -0.0456873, -0.00479929, 0.998527, -0.0540558, 0.0454941, 0.0542186, 0.997493, 0, 0.0256179, -0.448217)
 target_position = Vector3(0, 0, -100)
 script = ExtResource("11_1ciw0")
 _firearm = NodePath("../..")
@@ -155,8 +155,14 @@ target_position = Vector3(0, 0, -100)
 script = ExtResource("11_1ciw0")
 _firearm = NodePath("../..")
 
-[node name="FirearmRay3" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
+[node name="FirearmRay6" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
 transform = Transform3D(0.997094, 0, 0.0761796, 0, 1, 0, -0.0761796, 0, 0.997094, 0, 0.0256179, -0.448217)
+target_position = Vector3(0, 0, -100)
+script = ExtResource("11_1ciw0")
+_firearm = NodePath("../..")
+
+[node name="FirearmRay3" type="RayCast3D" parent="Rays" node_paths=PackedStringArray("_firearm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0256179, -0.448217)
 target_position = Vector3(0, 0, -100)
 script = ExtResource("11_1ciw0")
 _firearm = NodePath("../..")

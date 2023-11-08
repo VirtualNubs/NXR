@@ -125,11 +125,10 @@ script = ExtResource("12_v4fnm")
 _pose = "poses_rifle/secondary"
 _grabPose = 1
 
-[node name="FirearmMagZone" type="Area3D" parent="." node_paths=PackedStringArray("_firearm")]
+[node name="FirearmMagZone" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.00254692, -0.0224589, -0.059502)
 collision_mask = 9
 script = ExtResource("5_nrs13")
-_firearm = NodePath("..")
 AllowedGroups = PackedStringArray("AKMag")
 _sticky = true
 _tweenTime = 0.0

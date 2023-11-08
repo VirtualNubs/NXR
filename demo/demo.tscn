@@ -1,4 +1,4 @@
-[gd_scene load_steps=82 format=3 uid="uid://de5mtyewlytyu"]
+[gd_scene load_steps=93 format=3 uid="uid://de5mtyewlytyu"]
 
 [ext_resource type="Texture2D" uid="uid://5oork2oun5d4" path="res://assets/textures/EveningSkyHDRI017B_4K-HDR.exr" id="2_ub05x"]
 [ext_resource type="PackedScene" uid="uid://sfgdm1jksecs" path="res://addons/nxr/scenes/demo/firearms/ak.tscn" id="4_ckwcl"]
@@ -31,6 +31,12 @@
 [ext_resource type="Script" path="res://demo/scripts/killhouse.gd" id="28_gfwr5"]
 [ext_resource type="Script" path="res://demo/scripts/killhouse/section.gd" id="28_v6jmc"]
 [ext_resource type="Material" uid="uid://daq3ob68ah1tb" path="res://assets/materials/plywood_base.material" id="30_qxw60"]
+[ext_resource type="PackedScene" uid="uid://c47iwb4c6irhj" path="res://demo/scenes/ui/ui_settings.tscn" id="32_hkxfw"]
+[ext_resource type="PackedScene" uid="uid://dq6in8x7tjd4r" path="res://addons/nxr/scenes/demo/firearms/44_magnum.tscn" id="35_xx5e5"]
+[ext_resource type="PackedScene" uid="uid://b2tbvp7qunl34" path="res://addons/nxr/scenes/demo/firearms/ammo/44.tscn" id="36_jbbn4"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/Interactable.cs" id="38_eb328"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="39_rws7o"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="40_q0twl"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_fohs8"]
 panorama = ExtResource("2_ub05x")
@@ -583,6 +589,24 @@ _data = {
 [sub_resource type="BoxShape3D" id="BoxShape3D_xpbsl"]
 size = Vector3(1, 2.30257, 1.68077)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_x5o0g"]
+size = Vector3(2, 2, 0.001)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_bcoar"]
+viewport_path = NodePath("StaticBody3D/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a87b4"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_bcoar")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_gn3cd"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_a87b4")
+orientation = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cnshr"]
+size = Vector3(0.0576989, 0.801153, 0.0420947)
+
 [node name="Level" type="Node3D"]
 
 [node name="NXRPlayer" parent="." instance=ExtResource("9_sulpo")]
@@ -611,7 +635,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.191899, 0, 0)
 [node name="DistanceMarkers" type="Node3D" parent="Geometry/Range"]
 
 [node name="Label3D" type="Label3D" parent="Geometry/Range/DistanceMarkers"]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 10.7905, 0.2, 0)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 10.791, 0.2, 0.5)
 pixel_size = 0.01
 text = "10m"
 
@@ -775,6 +799,9 @@ material_override = ExtResource("14_b1qo8")
 material_override = ExtResource("14_b1qo8")
 
 [node name="Firemode_Selector" parent="Geometry/EquipArea/M4GrabSpawn/m4a1/M4A1/Parts" index="3"]
+material_override = ExtResource("14_b1qo8")
+
+[node name="FrontSight" parent="Geometry/EquipArea/M4GrabSpawn/m4a1/M4A1/Parts" index="4"]
 material_override = ExtResource("14_b1qo8")
 
 [node name="Sight" parent="Geometry/EquipArea/M4GrabSpawn/m4a1/M4A1/Parts" index="5"]
@@ -1006,7 +1033,7 @@ transform = Transform3D(0.969076, 0, 0.246762, 0, 1, 0, -0.246762, 0, 0.969076, 
 one_shot = true
 
 [node name="Target4" parent="Geometry/Killhouse/Section1" instance=ExtResource("18_ytwgt")]
-transform = Transform3D(0.988328, 0, -0.152331, 0, 1, 0, 0.152331, 0, 0.988328, 0.493401, -0.0120993, 11.9979)
+transform = Transform3D(0.988327, 0, -0.152331, 0, 1, 0, 0.152331, 0, 0.988327, 0.493401, -0.0120993, 11.9979)
 one_shot = true
 
 [node name="Section2" type="Node" parent="Geometry/Killhouse" node_paths=PackedStringArray("door")]
@@ -1055,7 +1082,7 @@ transform = Transform3D(-0.999621, 0, 0.0274856, 0, 1, 0, -0.0274856, 0, -0.9996
 one_shot = true
 
 [node name="Target3" parent="Geometry/Killhouse/Section3" instance=ExtResource("18_ytwgt")]
-transform = Transform3D(-0.984858, 0, 0.173356, 0, 1, 0, -0.173356, 0, -0.984858, -11.671, 3.00017, -17.0378)
+transform = Transform3D(-0.984857, 0, 0.173356, 0, 1, 0, -0.173356, 0, -0.984857, -11.671, 3.00017, -17.0378)
 one_shot = true
 
 [node name="Door" type="Node3D" parent="Geometry/Killhouse/Section3"]
@@ -1092,7 +1119,7 @@ transform = Transform3D(0.956135, 0, 0.292922, 0, 1, 0, -0.292922, 0, 0.956135, 
 one_shot = true
 
 [node name="Target3" parent="Geometry/Killhouse/Section4" instance=ExtResource("18_ytwgt")]
-transform = Transform3D(-0.999501, 0, 0.0315677, 0, 1, 0, -0.0315677, 0, -0.999501, -1.32249, 2.60895, -22.1837)
+transform = Transform3D(-0.9995, 0, 0.0315677, 0, 1, 0, -0.0315677, 0, -0.9995, -1.32249, 2.60895, -22.1837)
 one_shot = true
 
 [node name="Door" type="Node3D" parent="Geometry/Killhouse/Section4"]
@@ -1175,6 +1202,66 @@ autoplay = "open"
 libraries = {
 "": SubResource("AnimationLibrary_b68sd")
 }
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.91562, 1.03704, -2.62471)
+visible = false
+
+[node name="SubViewport" type="SubViewport" parent="StaticBody3D"]
+
+[node name="ui_settings" parent="StaticBody3D/SubViewport" instance=ExtResource("32_hkxfw")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_x5o0g")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("PlaneMesh_gn3cd")
+skeleton = NodePath("../SubViewport")
+
+[node name="44Magnum" parent="." instance=ExtResource("35_xx5e5")]
+transform = Transform3D(0.258819, 0, -0.965926, 0, 1, 0, 0.965926, 0, 0.258819, 17.9392, 1.06036, -4.77539)
+
+[node name="FirearmBullet" parent="." instance=ExtResource("36_jbbn4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.9706, 0.979254, -4.42697)
+
+[node name="FirearmBullet2" parent="." instance=ExtResource("36_jbbn4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.9706, 0.979254, -4.35022)
+
+[node name="FirearmBullet3" parent="." instance=ExtResource("36_jbbn4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.9706, 0.979254, -4.28225)
+
+[node name="FirearmBullet4" parent="." instance=ExtResource("36_jbbn4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.9706, 0.979254, -4.19899)
+
+[node name="FirearmBullet5" parent="." instance=ExtResource("36_jbbn4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.9706, 0.979254, -4.16392)
+
+[node name="FirearmBullet6" parent="." instance=ExtResource("36_jbbn4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.9706, 0.979254, -4.16392)
+
+[node name="Interactable" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5312, 0.0741576, 0)
+collision_layer = 8
+script = ExtResource("38_eb328")
+MaxGrabDistance = 1.495
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Interactable"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+size = Vector3(0.0442191, 1, 0.0518478)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("BoxShape3D_cnshr")
+
+[node name="InteractableGrab" type="Node" parent="Interactable"]
+script = ExtResource("39_rws7o")
+_twoHanded = true
+_lookUpVector = 2
+
+[node name="InteractableGrabPoint" type="RigidBody3D" parent="Interactable"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.193949)
+freeze = true
+script = ExtResource("40_q0twl")
 
 [connection signal="body_entered" from="Geometry/Killhouse/StartArea" to="Geometry/Killhouse" method="_on_start_area_body_entered"]
 [connection signal="body_entered" from="Geometry/Killhouse/EndArea" to="Geometry/Killhouse" method="_on_end_area_body_entered"]

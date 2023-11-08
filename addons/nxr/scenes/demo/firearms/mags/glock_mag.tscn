@@ -422,14 +422,13 @@ script = ExtResource("1_noc5w")
 CurrentAmmo = 30
 GrabAction = "trigger_click"
 _switchOnDrop = true
-RotationOffset = Vector3(43.15, 0, 0)
 
 [node name="InteractableGrab" type="Node" parent="."]
 script = ExtResource("2_1celn")
 _rotationSmoothing = 10.0
 
 [node name="InteractableGrabPoint" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.374493, 0.92723, 0, -0.92723, 0.374493, 0, 0.108213, -0.0403745)
+transform = Transform3D(1, 0, 0, 0, 0.971076, 0.238771, 0, -0.238771, 0.971076, 0, 0.108213, -0.0403745)
 freeze = true
 script = ExtResource("4_k60ut")
 

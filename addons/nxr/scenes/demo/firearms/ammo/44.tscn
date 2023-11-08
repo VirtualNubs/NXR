@@ -74,6 +74,7 @@ shadow_mesh = SubResource("ArrayMesh_tg4cl")
 [node name="FirearmBullet" type="RigidBody3D" groups=["44"]]
 collision_layer = 8
 script = ExtResource("1_y7wsr")
+GrabAction = "trigger_click"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0257404)

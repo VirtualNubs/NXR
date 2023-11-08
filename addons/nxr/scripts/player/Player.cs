@@ -8,6 +8,9 @@ namespace NXRPlayer;
 public partial class Player : CharacterBody3D
 {
     [Export]
+    private float _playerHeight = 1.8f; 
+
+    [Export]
     private DominantHand _dominantHand = DominantHand.Left;
 
     [Export]
@@ -61,9 +64,8 @@ public partial class Player : CharacterBody3D
         _headCollisionShape.GlobalTransform = _camera.GlobalTransform;
         _groundRay.GlobalPosition = _camera.GlobalPosition;
 
-        float flatDistance = new Vector3(GetCamera().GlobalPosition.X, 0f, GetCamera().GlobalPosition.Z).DistanceTo(new Vector3(_bodyCollisionShape.GlobalPosition.X, 0, _bodyCollisionShape.GlobalPosition.Z));
 
-        float bodyShapeHeight = Mathf.Abs(_xrOrigin.GlobalPosition.Y - _camera.GlobalPosition.Y) - _stepHeight;
+        float bodyShapeHeight = Mathf.Abs(GlobalPosition.Y - _camera.GlobalPosition.Y) - _stepHeight;
         bodyShapeHeight = Mathf.Clamp(bodyShapeHeight, 0.1f, 10.0f); 
         _bodyShape.Height = bodyShapeHeight; 
         Vector3 bodyPos = new Vector3(GetCamera().GlobalPosition.X, GetCamera().GlobalPosition.Y - (_bodyShape.Height / 2), GetCamera().GlobalPosition.Z);
@@ -78,11 +80,9 @@ public partial class Player : CharacterBody3D
         if (IsOnGround())
         {
             Grounder();
-
         }
         else
         {
-            int physicsStep = (int)ProjectSettings.GetSetting("physics/common/physics_ticks_per_second"); 
             float gravity = (float)ProjectSettings.GetSetting("physics/3d/default_gravity") / 30f; 
             Vector3 gravityVector = (Vector3)ProjectSettings.GetSetting("physics/3d/default_gravity_vector") * Mathf.Abs(gravity);
 
@@ -140,11 +140,17 @@ public partial class Player : CharacterBody3D
         return _groundRay.GetCollisionNormal(); 
     }
 
+    public XROrigin3D GetXROrigin() { 
+        return _xrOrigin; 
+    }
+
+    public float GetPlayerHeight() { 
+        return _playerHeight; 
+    }
     public bool IsOnGround()
     {
         return _groundRay.IsColliding() || IsOnFloor(); 
     }
-
 
     public Camera3D GetCamera()
     {
@@ -169,6 +175,10 @@ public partial class Player : CharacterBody3D
             newPos,
             _stepSmoothing
         );
+    }
+
+    public void SetPlayerHeight() { 
+        _playerHeight = GetCamera().Position.Y; 
     }
 
     private void ConfigureCollisionShapes()
