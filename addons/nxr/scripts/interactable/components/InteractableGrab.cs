@@ -78,9 +78,8 @@ public partial class InteractableGrab : Node
             Interactable.Freeze = !_usePhysics;
             Interactable.LinearVelocity = Vector3.Zero;
             _positionDelta = 0.0f; 
+            _rotationDelta = 0.0f;
         }
-
-        _rotationDelta = 0.0f;
     }
 
     public void OnDrop(Interactable interactable, Interactor interactor)

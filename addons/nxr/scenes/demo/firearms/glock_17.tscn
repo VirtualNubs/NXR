@@ -138,6 +138,7 @@ radius = 0.07457
 [node name="Glock17" type="RigidBody3D"]
 collision_layer = 8
 script = ExtResource("1_a2525")
+_fireMode = 2
 _recoilMultiplier = 0.8
 _recoilKick = Vector3(0, 0, 0.1)
 _recoilRise = Vector3(30, 0, 0)

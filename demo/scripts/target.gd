@@ -19,7 +19,7 @@ func hit(col, at):
 	is_hit = true
 	
 func reset(): 
-	$CollisionShape3D.disabled = false 
+	$CollisionShape3D.set_deferred("disabled", false)
 	$AnimationPlayer.play("RESET")
 	is_hit = false 
 

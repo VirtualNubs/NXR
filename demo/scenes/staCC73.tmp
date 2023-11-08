@@ -1,0 +1,65 @@
+[gd_scene load_steps=8 format=3 uid="uid://con7gg4ri10cm"]
+
+[ext_resource type="Script" path="res://addons/nxr/scripts/staging/Stage.cs" id="1_ps58v"]
+[ext_resource type="Script" path="res://demo/scripts/loading.gd" id="2_4iyec"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/core/Origin.cs" id="2_vp6k6"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5qp6l"]
+shading_mode = 0
+albedo_color = Color(0, 0.556863, 1, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_cxfow"]
+viewport_path = NodePath("Loading/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lofoy"]
+resource_local_to_scene = true
+transparency = 1
+albedo_texture = SubResource("ViewportTexture_cxfow")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1sd51"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_lofoy")
+
+[node name="Stage" type="Node3D" node_paths=PackedStringArray("_loadingScene")]
+script = ExtResource("1_ps58v")
+path = "res://demo/demo.tscn"
+_loadingScene = NodePath("Loading")
+
+[node name="Loading" type="Node3D" parent="."]
+script = ExtResource("2_4iyec")
+
+[node name="XROrigin3D" type="XROrigin3D" parent="Loading"]
+script = ExtResource("2_vp6k6")
+
+[node name="XRCamera3D" type="XRCamera3D" parent="Loading/XROrigin3D"]
+
+[node name="Label3D" type="Label3D" parent="Loading"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.91463)
+text = "NXR
+"
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="Loading"]
+flip_faces = true
+radius = 8.45155
+material = SubResource("StandardMaterial3D_5qp6l")
+
+[node name="SubViewport" type="SubViewport" parent="Loading"]
+transparent_bg = true
+
+[node name="Control" type="Control" parent="Loading/SubViewport"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ProgressBar" type="ProgressBar" parent="Loading/SubViewport/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 9.325
+anchor_bottom = 0.675
+offset_right = -3.05176e-05
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Loading"]
+transform = Transform3D(1, 0, 0, 0, -0.258819, -0.965926, 0, 0.965926, -0.258819, 0.282802, -0.450637, -2.67463)
+mesh = SubResource("PlaneMesh_1sd51")
+skeleton = NodePath("../..")

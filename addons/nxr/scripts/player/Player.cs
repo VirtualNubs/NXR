@@ -160,6 +160,8 @@ public partial class Player : CharacterBody3D
     private void Grounder()
     {
 
+        if (IsOnCeiling()) return; 
+        
         Node3D coll = (Node3D)_groundRay.GetCollider(); 
         Vector3 pos = GlobalPosition;
         Vector3 camPos = _camera.GlobalPosition;

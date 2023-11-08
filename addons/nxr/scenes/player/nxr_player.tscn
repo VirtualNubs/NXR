@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://ctrtq0t2fqwtr"]
+[gd_scene load_steps=11 format=3 uid="uid://ctrtq0t2fqwtr"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/player/Player.cs" id="1_rc1uy"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/core/Origin.cs" id="2_3x8s4"]
@@ -13,13 +13,6 @@
 no_depth_test = true
 shading_mode = 0
 albedo_color = Color(0.152941, 1, 1, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4w0p3"]
-albedo_color = Color(0.423529, 0.403922, 0.717647, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t6337"]
-shading_mode = 0
-albedo_color = Color(0, 0, 0, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tyjap"]
 size = Vector3(0.109394, 0.180049, 1.84167)
@@ -73,25 +66,6 @@ radius = 0.0232934
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
 cull_mask = 1048559
 current = true
-
-[node name="Head" type="CSGSphere3D" parent="XROrigin3D/XRCamera3D"]
-transform = Transform3D(1.42413, 0, 0, 0, 1.42413, 0, 0, 0, 1.42413, 5.71335e-05, -0.00425699, 0.0161382)
-visible = false
-layers = 16
-material_override = SubResource("StandardMaterial3D_4w0p3")
-radius = 0.0865781
-
-[node name="CSGSphere3D2" type="CSGSphere3D" parent="XROrigin3D/XRCamera3D/Head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0294042, 0.0151108, -0.0571497)
-layers = 16
-material_override = SubResource("StandardMaterial3D_t6337")
-radius = 0.0224133
-
-[node name="CSGSphere3D3" type="CSGSphere3D" parent="XROrigin3D/XRCamera3D/Head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0290001, 0.015, -0.0570001)
-layers = 16
-material_override = SubResource("StandardMaterial3D_t6337")
-radius = 0.0224133
 
 [node name="LeftInteractor" type="Area3D" parent="XROrigin3D" node_paths=PackedStringArray("Controller")]
 collision_mask = 9
