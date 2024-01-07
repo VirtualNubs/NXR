@@ -24,7 +24,17 @@ public partial class Player : CharacterBody3D
 
     [Export]
     private bool _gravityEnabled = true;
-    
+
+
+
+    [ExportGroup("Collider Settings")]
+    [Export]
+    private bool _enableHeadCollider = true; 
+    [Export]
+    private bool _enableBodyCollider = true; 
+
+
+
     [ExportGroup("Step Settings")]
     [Export]
     private float _stepHeight = 0.4f;
@@ -71,7 +81,18 @@ public partial class Player : CharacterBody3D
         Vector3 bodyPos = new Vector3(GetCamera().GlobalPosition.X, GetCamera().GlobalPosition.Y - (_bodyShape.Height / 2), GetCamera().GlobalPosition.Z);
 
         _bodyCollisionShape.GlobalPosition = bodyPos; 
+
+        if(!_enableBodyCollider) { 
+            _bodyCollisionShape.Disabled = true; 
+        } else { 
+            _bodyCollisionShape.Disabled = false; 
+        }
         
+        if(!_enableHeadCollider) { 
+            _headCollisionShape.Disabled = true; 
+        } else { 
+            _headCollisionShape.Disabled = false; 
+        }
     }
 
     public override void _PhysicsProcess(double delta)

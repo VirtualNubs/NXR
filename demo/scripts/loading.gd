@@ -8,7 +8,9 @@ func _ready():
 		stage.connect("Loaded", loaded)
 		stage.connect("TransitionQueued", queued)
 		stage.connect("Transitioned", transitioned)
-
+		
+		recenter()
+		
 func _process(delta):
 	pass
 	
@@ -20,8 +22,12 @@ func progress_updated(p):
 	$SubViewport/Control/ProgressBar.value = p
 
 func loaded(): 
-	$SubViewport/Control/ProgressBar.value = 100
+	pass
 
 func transitioned(): 
+	$SubViewport/Control/ProgressBar.value = 100
 	$XROrigin3D/XRCamera3D/CSGSphere3D/AnimationPlayer.play("transition")
-	
+
+func recenter(): 
+	await  get_tree().create_timer(1).timeout
+	XRServer.center_on_hmd(XRServer.RESET_BUT_KEEP_TILT, true)

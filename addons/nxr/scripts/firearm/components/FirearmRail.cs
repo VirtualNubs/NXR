@@ -32,7 +32,8 @@ public partial class FirearmRail : InteractableSnapZone
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
 	{
-		
+		base._Process(delta); 
+			
 		if (_snappedInteractable != null && _snappedInteractable.IsInsideTree()) { 
 
 			Node3D parent = (Node3D)GetParent(); 
@@ -63,7 +64,6 @@ public partial class FirearmRail : InteractableSnapZone
 
 		}
 
-		DistanceBreak(); 
 	}
 
     private void UnSnapped() { 

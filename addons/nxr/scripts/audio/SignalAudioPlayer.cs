@@ -11,27 +11,23 @@ public partial class SignalAudioPlayer : AudioStreamPlayer3D
 	private string _signal; 
 	// Called when the node enters the scene tree for the first time.
 
-	[Signal]
-	public delegate void OnSigEventHandler(); 
 
 	public override void _Ready()
 	{
 		if (GetParent().HasSignal(_signal)) { 
 			foreach (Dictionary item in GetParent().GetSignalList()) {
 				if (item["name"].ToString() ==  _signal) {
-					GD.Print(item["args"].AsGodotArray().Count); 
-
+					GD.Print(item["name"].ToString()); 
+					Callable callable = Callable.From(() => OnSignal()); 
+					Signal newSignal = new Signal(GetParent(), _signal); 
+					GetParent().Connect(_signal, callable); 
 				}
 			}
-			Action signalAction = OnSignal; 
-			Signal newSignal = new Signal(GetParent(), _signal); 
-
-			GetParent().Connect(_signal, Callable.From(signalAction)); 
 		}
 	}
 
 	private void OnSignal() { 
-		
+		Play(); 
 	}
 }
 

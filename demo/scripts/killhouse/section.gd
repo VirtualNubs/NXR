@@ -18,7 +18,7 @@ func _ready():
 		if child.has_method("hit"): 
 			targets.append(child)
 			child.connect("target_hit", target_hit)
-	
+
 # Called every frame. 'delta' is the elapsed time since the previous frame
 
 
@@ -28,13 +28,18 @@ func target_hit():
 	if hit_count >= targets.size(): 
 		emit_signal("section_cleared")
 		cleared = true 
-		door.get_node("AnimationPlayer").play("open")
+		
+		emit_signal("child_entered_tree")
+		
+		if door.name != "EndDoor": 
+			door.get_node("AnimationPlayer").play("open")
 
 func completed(): 
 	for target in targets: 
 		target.reset()
 		door.get_node("AnimationPlayer").play("RESET")
 	hit_count = 0
+	
 	door.get_node("AnimationPlayer").play("close")
 	
 func is_section(): 

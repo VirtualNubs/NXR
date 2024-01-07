@@ -12,21 +12,6 @@ no_depth_test = true
 shading_mode = 0
 albedo_color = Color(0, 0, 0, 1)
 
-[sub_resource type="Animation" id="Animation_ngvuu"]
-resource_name = "transition"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:material_override:albedo_color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 0.965936),
-"update": 0,
-"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
-}
-
 [sub_resource type="Animation" id="Animation_8g1t8"]
 length = 0.001
 tracks/0/type = "value"
@@ -57,6 +42,21 @@ tracks/0/keys = {
 "values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_ngvuu"]
+resource_name = "transition"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material_override:albedo_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 0.965936),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_b6dls"]
 _data = {
 "RESET": SubResource("Animation_8g1t8"),
@@ -83,6 +83,33 @@ albedo_texture = SubResource("ViewportTexture_cxfow")
 [sub_resource type="PlaneMesh" id="PlaneMesh_1sd51"]
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_lofoy")
+
+[sub_resource type="Animation" id="Animation_uobu1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OmniLight3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 2.47507, -6.15907)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OmniLight3D:light_energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
 
 [sub_resource type="Animation" id="Animation_6qlbd"]
 resource_name = "loading"
@@ -113,33 +140,6 @@ tracks/1/keys = {
 "values": [1.0, 1.5]
 }
 
-[sub_resource type="Animation" id="Animation_uobu1"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("OmniLight3D:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 2.47507, -6.15907)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("OmniLight3D:light_energy")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.0]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mdkkf"]
 _data = {
 "RESET": SubResource("Animation_uobu1"),
@@ -148,7 +148,7 @@ _data = {
 
 [node name="Stage" type="Node3D" node_paths=PackedStringArray("_loadingScene")]
 script = ExtResource("1_qe5p4")
-path = "res://demo/demo.tscn"
+_defaultPath = "res://demo/demo.tscn"
 _loadingScene = NodePath("Loading")
 
 [node name="Loading" type="Node3D" parent="." node_paths=PackedStringArray("stage")]
@@ -212,7 +212,7 @@ text = "LOADING"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.47507, -6.15907)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Loading"]
-autoplay = "loading"
 libraries = {
 "": SubResource("AnimationLibrary_mdkkf")
 }
+autoplay = "loading"

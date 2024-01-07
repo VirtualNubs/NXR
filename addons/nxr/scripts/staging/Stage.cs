@@ -6,23 +6,24 @@ using Godot.Collections;
 public partial class Stage : Node3D
 {
 	[Export]
-	private String path;
+	private String _defaultPath = "";
+	private String _path;
 
 	[Export]
-	private Node3D _loadingScene; 
+	private Node3D _loadingScene;
 	private Godot.Collections.Array _progress = new();
 	private Node _currentScene = null;
-	private bool _queued = false; 
-	
+	private bool _queued = false;
+
 
 	[ExportGroup("Delays")]
 	[Export]
 	private float _startDelay = 2f;
-	private float _endDelay = 4f; 
+	private float _endDelay = 4f;
 
 
 	[Signal]
-	public delegate void TransitionQueuedEventHandler(); 
+	public delegate void TransitionQueuedEventHandler();
 	[Signal]
 	public delegate void ProgressUpdatedEventHandler(double progress);
 
@@ -33,23 +34,17 @@ public partial class Stage : Node3D
 	public delegate void TransitionedEventHandler(double progress);
 
 
-    public override void _Ready()
-    {
-        QueueTransition(); 
-    }
+	public override void _Ready()
+	{
+		QueueTransition();
+	}
 
-    public override void _Process(double delta)
+	public override void _Process(double delta)
 	{
 
-		if (Input.IsActionJustPressed("ui_accept"))
-		{
-		
-		}
+		var status = ResourceLoader.LoadThreadedGetStatus(_path, _progress);
 
-
-		if (!_queued) return; 
-
-		var status = ResourceLoader.LoadThreadedGetStatus(path, _progress);
+		if (!_queued) return;
 
 		switch (status)
 		{
@@ -64,62 +59,68 @@ public partial class Stage : Node3D
 				EmitSignal("ProgressUpdated", progress);
 				break;
 			case ResourceLoader.ThreadLoadStatus.Loaded:
-				EmitSignal("Loaded"); 
-				Transition(); 
+				EmitSignal("Loaded");
+				Transition();
 				break;
 		}
 	}
 
-	private async void Transition() { 
-		
+	private async void Transition()
+	{
+
 		// set queued to false to stop updating the threaded status 
-		_queued = false; 
+		_queued = false;
 
-		EmitSignal("Transitioned"); 
+		EmitSignal("Transitioned");
 
-		Resource scene = ResourceLoader.LoadThreadedGet(path); 
-		PackedScene packed = (PackedScene)scene; 
-		Node newScene = packed.Instantiate(); 
+		Resource scene = ResourceLoader.LoadThreadedGet(_path);
+		PackedScene packed = (PackedScene)scene;
+		Node newScene = packed.Instantiate();
 
 		// optional delay for waiting for effects 
-		await ToSignal(GetTree().CreateTimer(_startDelay), "timeout"); 
+		await ToSignal(GetTree().CreateTimer(_startDelay), "timeout");
 
 		// hide loading scene if available
-		if (IsInstanceValid(_loadingScene)) _loadingScene.Hide(); 
-		
+		if (IsInstanceValid(_loadingScene)) _loadingScene.Hide();
+
 		// add the new scene
-		GetParent().AddChild(newScene); 
-		_currentScene = newScene; 
-		
+		GetParent().AddChild(newScene);
+		_currentScene = newScene;
 	}
-	public async void QueueTransition(string newPath="")
+	public async void QueueTransition(string newPath = "")
 	{
 		// emit first to give time to react 
-		EmitSignal("TransitionQueued"); 
+		EmitSignal("TransitionQueued");
 
 		// show our loading scene if available
-		if (IsInstanceValid(_loadingScene)) _loadingScene.Show(); 
-		
+		if (IsInstanceValid(_loadingScene)) _loadingScene.Show();
+
 		// remove current scene 
-		if (IsInstanceValid(_currentScene)) { 
-			_currentScene.GetParent().RemoveChild(_currentScene); 
-			_currentScene.QueueFree(); 
+		if (IsInstanceValid(_currentScene))
+		{
+			_currentScene.GetParent().RemoveChild(_currentScene);
+			_currentScene.QueueFree();
 		}
 
 		//wait for a couple seconds to show our delicious loading progress
-		await ToSignal(GetTree().CreateTimer(_endDelay), "timeout"); 
+		await ToSignal(GetTree().CreateTimer(_endDelay), "timeout");
 
 		// set path to new path parameter if provided
-		if (newPath != "") path = newPath; 
+		if (newPath != "")
+		{
+			_path = newPath;
+		} else{ 
+			_path = _defaultPath; 
+		}
 
 		// return if no path 
-		if (path == null) return;
+		if (_path == null) return;
 
 		// do our threaded request 
-		ResourceLoader.LoadThreadedRequest(path, useSubThreads: true, cacheMode: ResourceLoader.CacheMode.Replace);
+		ResourceLoader.LoadThreadedRequest(_path, useSubThreads: false, cacheMode: ResourceLoader.CacheMode.Reuse);
 
 		// set queued true to update the thread status in _process
-		_queued = true; 
+		_queued = true;
 	}
 
 }

@@ -9,15 +9,25 @@ public partial class Interactable : RigidBody3D
 	[Export]
 	public bool Disabled = false; 
 
+
 	[Export]
 	public float Priority = 1; 
 	
 	[Export]
-	public float MaxGrabDistance = 0.5f;
-	
-
-	[Export]
 	public HoldMode HoldMode = HoldMode.Hold;
+
+
+
+	[ExportGroup("Grab Settings")]
+	
+	[Export]
+	public float MaxGrabDistance = 0.5f;
+	[Export]
+	public bool DistanceGrabEnabled = false; 
+	[Export]
+	public float MaxDistanceGrab = 4; 
+
+
 
 	[ExportGroup("Actions")]
 	[Export]
@@ -28,12 +38,12 @@ public partial class Interactable : RigidBody3D
 	[ExportGroup("DropBehaviour")]
 	[Export]
 	private bool _switchOnDrop = false;
-
 	[ExportGroup("Offsets")]
 	[Export]
 	public Vector3 PositionOffset = new Vector3();
 	[Export]
 	public Vector3 RotationOffset = new Vector3();
+
 
 
 	[ExportGroup("Haptics")]
@@ -44,11 +54,14 @@ public partial class Interactable : RigidBody3D
 	private float _dropPulse = 0.1f;
 
 
+
 	public bool InitFreeze = false; 
 	public Transform3D InitTransform {set; get; } 
 	public Transform3D InitGlobalTransform {set; get; } 
 	public Interactor PrimaryInteractor { set; get; }
 	public Interactor SecondaryInteractor { set; get; }
+
+
 
 	// grab point
 	public Node3D PrimaryGrabPoint;

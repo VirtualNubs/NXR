@@ -73,8 +73,8 @@ public partial class FirearmRotatingBolt : FirearmMovable
             grab.Z = 0; 
             loc.Z = 0; 
 
-            Vector3 grabDir = (grab - Position); 
             Vector3 locDir = (loc - Position);  
+            Vector3 grabDir = (grab - Position); 
 
             float rotAngle = locDir.Normalized().SignedAngleTo(grabDir.Normalized(), axis);
             rotAngle = Mathf.Clamp(rotAngle, -.1f, .1f); 

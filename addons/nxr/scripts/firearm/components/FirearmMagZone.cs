@@ -3,32 +3,33 @@ using NXR;
 using NXRFirearm;
 using NXRInteractable;
 
-namespace NXRFirearm; 
+namespace NXRFirearm;
 
 [GlobalClass]
 public partial class FirearmMagZone : InteractableSnapZone
 {
     [Export]
-    private Firearm _firearm = null; 
-    public FirearmMag CurrentMag = null; 
+    private Firearm _firearm = null;
+    public FirearmMag CurrentMag = null;
 
-    
+    [Export]
+    private bool _disableMag = false;
+
     [ExportGroup("Eject Settings")]
     [Export]
-    private string _ejectAction = "ax_button"; 
+    private string _ejectAction = "ax_button";
     [Export]
-    private float _ejectForce = 0.1f; 
+    private float _ejectForce = 3f;
 
-    public bool MagIn = false; 
+    public bool MagIn = false;
 
 
     [Signal]
-    public delegate void OnEjectEventHandler(); 
-
+    public delegate void OnEjectEventHandler();
 
     public override void _Ready()
     {
-        OnSnap += OnSnapped; 
+        OnSnap += OnSnapped;
         OnUnSnap += OnUnSnapped;
 
         base._Ready();
@@ -36,11 +37,7 @@ public partial class FirearmMagZone : InteractableSnapZone
         if (Util.NodeIs((Node)GetParent(), typeof(Firearm)))
         {
             _firearm = (Firearm)GetParent();
-        }
-
-        if (_firearm != null) 
-        {
-            _firearm.TryChamber += TryChamber; 
+            _firearm.TryChamber += TryChamber;
         }
     }
 
@@ -48,41 +45,73 @@ public partial class FirearmMagZone : InteractableSnapZone
     {
         base._Process(delta);
 
-        if (_firearm != null && _firearm.GetPrimaryInteractor() != null) { 
-            if (_ejectAction != null && _firearm.GetPrimaryInteractor().Controller.ButtonOneShot(_ejectAction) && CurrentMag != null) { 
-                EmitSignal("OnEject"); 
+        if (_firearm != null && _firearm.GetPrimaryInteractor() != null)
+        {
+            if (_ejectAction != null && _firearm.GetPrimaryInteractor().Controller.ButtonOneShot(_ejectAction) && CurrentMag != null)
+            {
+                Eject(CurrentMag);
+                EmitSignal("OnEject");
             }
         }
     }
 
-    private void OnSnapped(Interactable mag) { 
-        if (!Util.NodeIs(mag, typeof(FirearmMag))) return; 
-        CurrentMag = (FirearmMag)mag; 
-        mag.InitParent = (Node3D)Owner.GetParent(); 
+    private void OnSnapped(Interactable mag)
+    {
+        if (!Util.NodeIs(mag, typeof(FirearmMag))) return;
+
+        if (_disableMag)
+        {
+            mag.FullDrop(); 
+            mag.Disabled = true;
+
+        }
+
+        CurrentMag = (FirearmMag)mag;
+        mag.InitParent = (Node3D)Owner.GetParent();
     }
 
-    private void OnUnSnapped() { 
-        CurrentMag = null; 
-    }
-
-    private void Eject(FirearmMag mag) { 
-        Unsnap(); 
-        mag.ApplyCentralImpulse(-_firearm.GlobalTransform.Basis.Y * _ejectForce); 
-    }
-
-    private void TryChamber() { 
-        if (CurrentMag == null) return; 
-
-        if (!CurrentMag.CanChamber) return; 
-        
-        if (CurrentMag.CurrentAmmo > 0) { 
-            _firearm.Chambered = true; 
-            CurrentMag.RemoveBullet(1); 
-            _firearm.EmitSignal("OnChambered"); 
+    private void OnUnSnapped()
+    {
+        if (CurrentMag != null) { 
+            Interactable mag = (Interactable)CurrentMag;
+            mag.Disabled = false;
+            CurrentMag = null;
         }
     }
 
-    public Firearm GetFirearm() { 
-        return _firearm; 
+    private void Eject(FirearmMag mag)
+    {
+        Unsnap();
+
+        if (GetFirearm() != null && GetFirearm().PrimaryInteractor != null)
+        {
+            Vector3 linear = GetFirearm().PrimaryInteractor.Controller.GetGlobalVelocity();
+            float linearLength = GetFirearm().PrimaryInteractor.Controller.GetLocalVelocity().Length();
+   
+            Vector3 anguler = CurrentMag.AngularVelocity = GetFirearm().PrimaryInteractor.Controller.GetAngularVelocity();
+            float angLength = anguler.Normalized().Length();
+
+            mag.LinearVelocity = (GetFirearm().PrimaryInteractor.Controller.GetGlobalVelocity().Normalized() * linearLength) * angLength * _ejectForce;
+            mag.AngularVelocity = anguler;
+        }
+    }
+
+    private void TryChamber()
+    {
+        if (CurrentMag == null) return;
+
+        if (!CurrentMag.CanChamber) return;
+
+        if (CurrentMag.CurrentAmmo > 0)
+        {
+            _firearm.Chambered = true;
+            CurrentMag.RemoveBullet(1);
+            _firearm.EmitSignal("OnChambered");
+        }
+    }
+
+    public Firearm GetFirearm()
+    {
+        return _firearm;
     }
 }

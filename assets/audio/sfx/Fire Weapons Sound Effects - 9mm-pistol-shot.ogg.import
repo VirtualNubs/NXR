@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bcgbjgo4d0ljd"
+path="res://.godot/imported/Fire Weapons Sound Effects - 9mm-pistol-shot.ogg-d1e4c15df8a3aeb6f9547465fc41bcc5.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/audio/sfx/Fire Weapons Sound Effects - 9mm-pistol-shot.ogg"
+dest_files=["res://.godot/imported/Fire Weapons Sound Effects - 9mm-pistol-shot.ogg-d1e4c15df8a3aeb6f9547465fc41bcc5.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

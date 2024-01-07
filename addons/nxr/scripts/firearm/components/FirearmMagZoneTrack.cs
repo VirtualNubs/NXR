@@ -51,29 +51,18 @@ public partial class FirearmMagZoneTrack : FirearmMovable
 
 			t += (float)delta; 
 			
-			StartToEnd(MiddlePositionRatio(locGrab)); 
+			StartToEnd(MiddlePositionRatio(locGrab) * 2); 
 		}
 
 
 		float distEnd = Transform.Origin.DistanceTo(EndXform.Origin);
 		float distStart = Transform.Origin.DistanceTo(StartXform.Origin);
 
-		if (distEnd <= 0.01)
-		{
-			_zone.CanUnsnap = true;
-
-			if (_unsnapQueued)
-			{
-				_unsnapQueued = false;
-				_zone.Unsnap();
-			}
-		}
-		else
-		{
+		if (!AtEnd()) { 
 			_zone.CanUnsnap = false;
-			if (!_unsnapQueued) _unsnapQueued = true;
+		} else{ 
+			_zone.CanUnsnap = true;
 		}
-
 
 		if (distStart < 0.001)
 		{
@@ -87,7 +76,9 @@ public partial class FirearmMagZoneTrack : FirearmMovable
 		if (_zone.CurrentMag == null) { 
 			Transform =EndXform; 
 		}
-		
+		if (!AtStart() && _zone._snappedInteractable != null && !_zone._snappedInteractable.IsGrabbed()) { 
+			OnEject(); 
+		}
 	}
 
 	private async void OnEject() { 

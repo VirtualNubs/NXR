@@ -48,7 +48,7 @@ nodes/Animation/position = Vector2(-200, 160)
 "nodes/Animation 3/position" = Vector2(-480, 400)
 nodes/trigger/node = SubResource("AnimationNodeBlend2_xr7fb")
 nodes/trigger/position = Vector2(-220, 320)
-node_connections = [&"output", 0, &"Add2", &"Add2", 0, &"Animation", &"Add2", 1, &"trigger", &"trigger", 0, &"Animation 2", &"trigger", 1, &"Animation 3"]
+node_connections = [&"Add2", 0, &"Animation", &"Add2", 1, &"trigger", &"output", 0, &"Add2", &"trigger", 0, &"Animation 2", &"trigger", 1, &"Animation 3"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_5t150"]
 radius = 0.0628267
@@ -69,9 +69,9 @@ gradient = SubResource("Gradient_m7fwa")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_i1cpv"]
 direction = Vector3(0, 0, -1)
 spread = 23.76
-gravity = Vector3(0, 0, 0)
 initial_velocity_min = 3.0
 initial_velocity_max = 3.0
+gravity = Vector3(0, 0, 0)
 scale_min = 0.1
 scale_max = 0.2
 color_ramp = SubResource("GradientTexture1D_th4vu")
@@ -101,6 +101,7 @@ _fireRate = 0.12
 _startChambered = true
 _recoilKick = Vector3(0, 0, 0.2)
 _yCurve = SubResource("Curve_ur3b0")
+DistanceGrabEnabled = true
 
 [node name="InteractableGrabKinematic" type="Node" parent="."]
 script = ExtResource("2_8v36k")
@@ -130,10 +131,11 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.002
 collision_mask = 9
 script = ExtResource("5_nrs13")
 AllowedGroups = PackedStringArray("AKMag")
-_sticky = true
+_snapMode = 2
 _tweenTime = 0.0
 _easeType = 1
 _transType = 5
+_snapDistance = 0.05
 
 [node name="Interactable" parent="FirearmMagZone" instance=ExtResource("6_qf2kd")]
 
@@ -152,7 +154,7 @@ _setBackOnFire = true
 Target = NodePath("../AKMesh/AK_47/Ejection_Port")
 StartXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00560485, 0.0210747, -0.0766559)
 EndXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00560485, 0.0210747, 0.0549049)
-MaxGrabDistance = 0.3
+MaxGrabDistance = 0.1
 GrabAction = "trigger_click"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FirearmSlide"]

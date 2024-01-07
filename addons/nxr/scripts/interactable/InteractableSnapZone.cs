@@ -20,8 +20,6 @@ public partial class InteractableSnapZone : Area3D
     [Export]
     private SnapMode _snapMode = SnapMode.OnEnter;
 
-    [Export]
-    private bool _sticky = false;
 
     [ExportGroup("Tween Settings")]
     [Export]
@@ -32,9 +30,12 @@ public partial class InteractableSnapZone : Area3D
     private Tween.TransitionType _transType;
 
 
-    [ExportGroup("Sticky Settings")]
+    [ExportGroup("Distance Settings")]
     [Export]
-    private float _breakDistance = 0.3f;
+    private float _snapDistance  = 0.08f;
+    [Export]
+    private float _breakDistance = 0.1f; 
+
 
     public Interactable _snappedInteractable = null;
     public Interactable _hoveredInteractable;
@@ -56,7 +57,6 @@ public partial class InteractableSnapZone : Area3D
     public override void _Ready()
     {
         BodyEntered += Entered;
-        BodyExited += Exited;
         OnUnSnap += Unsnapped;
 
         foreach (Node3D child in GetChildren())
@@ -72,16 +72,17 @@ public partial class InteractableSnapZone : Area3D
 
     public override void _Process(double delta)
     {
-        if (_sticky && _snappedInteractable != null)
+        if (_snapMode == SnapMode.Distance)
         {
-            if (_snappedInteractable.GetParent() != this) return;
-
-            _snappedInteractable.GlobalTransform = GlobalTransform;
-        }
-
-        if (_snappedInteractable != null && _snappedInteractable.IsInsideTree())
-        {
-            DistanceBreak();
+            if (_snappedInteractable == null)
+            {
+                DistanceSnap(_hoveredInteractable);
+            }
+            else
+            {
+                _snappedInteractable.GlobalTransform = GlobalTransform;
+                DistanceBreak();
+            }
         }
     }
 
@@ -111,16 +112,28 @@ public partial class InteractableSnapZone : Area3D
 
     public virtual void Snap(Interactable interactable)
     {
-        if (!interactable.IsInsideTree()) return; 
-        
+        if (!interactable.IsInsideTree()) return;
+
         Connect(interactable);
 
         _snappedInteractable = interactable;
         _snappedInteractable.Freeze = true;
 
-        if (interactable.IsInsideTree()) { 
+        if (interactable.IsInsideTree())
+        {
             _snappedInteractable.Reparent(this);
-        }   
+        }
+
+        if (_snapMode != SnapMode.Distance ) {
+            SnapTween();
+        }
+
+        EmitSignal("OnSnap", interactable);
+    }
+
+    private void SnapTween()
+    {
+        if (_snapMode == SnapMode.Distance) return;
 
         tween = GetTree().CreateTween();
 
@@ -129,19 +142,17 @@ public partial class InteractableSnapZone : Area3D
         tween.SetTrans(_transType);
         tween.TweenProperty(_snappedInteractable, "position", Vector3.Zero, _tweenTime);
         tween.TweenProperty(_snappedInteractable, "rotation", Vector3.Zero, _tweenTime);
-
-        EmitSignal("OnSnap", interactable);
     }
 
     private void Entered(Node3D body)
     {
+
         if (!CanSnap) return;
-        
+
         if (!Util.NodeIs(body, typeof(Interactable)) || _snappedInteractable != null) return;
 
         if (Util.NodeIs(body.GetParent(), typeof(InteractableSnapZone))) return;
 
-        if (_hoveredInteractable != null) return;
 
         Interactable hovered = (Interactable)body;
 
@@ -150,23 +161,20 @@ public partial class InteractableSnapZone : Area3D
         if (!InGroup(hovered)) return;
 
         _hoveredInteractable = (Interactable)body;
-
         Connect(_hoveredInteractable);
 
         if (_snapMode == SnapMode.OnEnter)
         {
-            if (!_sticky)
-            {
-                _hoveredInteractable.FullDrop();
-            }
-            
+           
+            _hoveredInteractable.FullDrop();
+
             Snap(_hoveredInteractable);
         }
     }
 
     protected void DistanceBreak()
     {
-        
+
         if (_snappedInteractable == null || !CanUnsnap) return;
 
 
@@ -182,18 +190,36 @@ public partial class InteractableSnapZone : Area3D
             interactor = _snappedInteractable.GetSecondaryInteractor();
         }
 
-        float distance = interactor.GlobalPosition.DistanceTo(GlobalPosition);
+        float distance = interactor.GlobalPosition.DistanceTo(_snappedInteractable.GlobalPosition);
         if (distance > _breakDistance)
         {
-            Unsnap(); 
+            Unsnap();
         }
     }
 
-    public void Exited(Node3D body)
+    protected void DistanceSnap(Interactable interactable)
     {
-        if (_hoveredInteractable == null || !CanUnsnap) return;
 
-        //Disconnect((Interactable)body);
+        if (_snappedInteractable != null) return;
+
+
+        if (!interactable.IsGrabbed()) return;
+
+        Interactor interactor = null;
+        if (interactable.GetPrimaryInteractor() != null)
+        {
+            interactor = interactable.GetPrimaryInteractor();
+        }
+        else if (interactable.GetSecondaryInteractor() != null)
+        {
+            interactor = interactable.GetSecondaryInteractor();
+        }
+
+        float distance = interactor.GlobalPosition.DistanceTo(GlobalPosition);
+        if (distance < _snapDistance)
+        {
+            Snap(interactable);
+        }
     }
 
     private void OnDropped()
@@ -206,7 +232,6 @@ public partial class InteractableSnapZone : Area3D
 
     private void OnGrabbed(Interactable interactable, Interactor interactor)
     {
-
         if (IsInstanceValid(tween) && tween.IsRunning())
         {
             tween.Stop();
@@ -217,21 +242,15 @@ public partial class InteractableSnapZone : Area3D
             return;
         }
 
-        if (!_sticky)
-        {
-            Unsnap();
-        }
-
-        if (_snapMode != SnapMode.OnDrop)
-        {
-            Disconnect(interactable);
-        }
+       
+        Disconnect(interactable);
     }
 
 
     private bool InGroup(Node3D interactable)
     {
         bool allowed = false;
+
         if (AllowedGroups != null)
         {
             foreach (String group in interactable.GetGroups())
@@ -289,7 +308,6 @@ public partial class InteractableSnapZone : Area3D
     private void Unsnapped()
     {
         Disconnect(_snappedInteractable);
-        _hoveredInteractable = null;
         _snappedInteractable = null;
     }
 }
