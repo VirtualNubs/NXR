@@ -24,6 +24,10 @@ public partial class FirearmRotatingBolt : FirearmMovable
     [Signal]
     public delegate void OnBoltBackEventHandler();
 
+    [Signal]
+    public delegate void OnBoltForwardEventHandler();
+    
+
     public override void _Ready()
     {
         base._Ready();
@@ -41,13 +45,15 @@ public partial class FirearmRotatingBolt : FirearmMovable
         RunTool();
 
          // chambering logic
-        if (AtEnd()) { 
+        if (AtEnd() && !_setBack) { 
             _setBack = true; 
+            EmitSignal("OnBoltBack"); 
         }
 
         if (AtStart() && _setBack) { 
             _setBack = false; 
             _firearm?.EmitSignal("TryChamber"); 
+            EmitSignal("OnBoltForward"); 
         }
     }
 

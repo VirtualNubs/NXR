@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bk128pfcsyk5h"
 path.s3tc="res://.godot/imported/FlareGun_Base_Color.png-a168f63f9e6fbc70788096e1d70e177e.s3tc.ctex"
+path.etc2="res://.godot/imported/FlareGun_Base_Color.png-a168f63f9e6fbc70788096e1d70e177e.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/models/guns/Flaregun/FlareGun_Base_Color.png"
-dest_files=["res://.godot/imported/FlareGun_Base_Color.png-a168f63f9e6fbc70788096e1d70e177e.s3tc.ctex"]
+dest_files=["res://.godot/imported/FlareGun_Base_Color.png-a168f63f9e6fbc70788096e1d70e177e.s3tc.ctex", "res://.godot/imported/FlareGun_Base_Color.png-a168f63f9e6fbc70788096e1d70e177e.etc2.ctex"]
 
 [params]
 

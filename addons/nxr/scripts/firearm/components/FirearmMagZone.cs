@@ -49,6 +49,7 @@ public partial class FirearmMagZone : InteractableSnapZone
         {
             if (_ejectAction != null && _firearm.GetPrimaryInteractor().Controller.ButtonOneShot(_ejectAction) && CurrentMag != null)
             {
+                CurrentMag.LinearVelocity = Vector3.Zero; 
                 Eject(CurrentMag);
                 EmitSignal("OnEject");
             }
@@ -63,7 +64,6 @@ public partial class FirearmMagZone : InteractableSnapZone
         {
             mag.FullDrop(); 
             mag.Disabled = true;
-
         }
 
         CurrentMag = (FirearmMag)mag;
@@ -81,6 +81,7 @@ public partial class FirearmMagZone : InteractableSnapZone
 
     private void Eject(FirearmMag mag)
     {
+
         Unsnap();
 
         if (GetFirearm() != null && GetFirearm().PrimaryInteractor != null)
@@ -88,13 +89,14 @@ public partial class FirearmMagZone : InteractableSnapZone
             Vector3 linear = GetFirearm().PrimaryInteractor.Controller.GetGlobalVelocity();
             float linearLength = GetFirearm().PrimaryInteractor.Controller.GetLocalVelocity().Length();
    
-            Vector3 anguler = CurrentMag.AngularVelocity = GetFirearm().PrimaryInteractor.Controller.GetAngularVelocity();
+            Vector3 anguler = GetFirearm().PrimaryInteractor.Controller.GetAngularVelocity();
             float angLength = anguler.Normalized().Length();
 
             mag.LinearVelocity = (GetFirearm().PrimaryInteractor.Controller.GetGlobalVelocity().Normalized() * linearLength) * angLength * _ejectForce;
             mag.AngularVelocity = anguler;
         }
     }
+
 
     private void TryChamber()
     {

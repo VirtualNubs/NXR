@@ -41,7 +41,6 @@ public partial class FirearmMag : Interactable
         _firearm.Chambered = true; 
         CurrentAmmo -= 1; 
         _firearm.EmitSignal("OnChambered"); 
-
     }
 
     public void RemoveBullet(int amount) { 

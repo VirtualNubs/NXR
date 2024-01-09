@@ -1,4 +1,5 @@
 using Godot;
+using Godot.Collections;
 using NXR;
 
 
@@ -176,6 +177,11 @@ public partial class Player : CharacterBody3D
     public Camera3D GetCamera()
     {
         return GetViewport().GetCamera3D(); 
+    }
+
+    public Array<StringName> GetGroundGroups() { 
+        Node3D col = (Node3D)_groundRay.GetCollider(); 
+        return col.GetGroups();  
     }
 
     private void Grounder()

@@ -44,9 +44,9 @@ public partial class InteractableFloatArea : Area3D
 
 		Interactor interactor = (Interactor)area;
 
-		if (interactor._grabbedInteractable == null) return;
+		if (interactor.GrabbedInteractable == null) return;
 
-		Connect(interactor._grabbedInteractable); 
+		Connect(interactor.GrabbedInteractable); 
 		EmitSignal("OnItemAdded"); 
 	}
 
@@ -57,9 +57,9 @@ public partial class InteractableFloatArea : Area3D
 
 		Interactor interactor = (Interactor)area;
 
-		if (interactor._grabbedInteractable == null) return;
+		if (interactor.GrabbedInteractable == null) return;
 
-		Disconnect(interactor._grabbedInteractable); 
+		Disconnect(interactor.GrabbedInteractable); 
 		EmitSignal("OnItemRemoved"); 
 	}
 	

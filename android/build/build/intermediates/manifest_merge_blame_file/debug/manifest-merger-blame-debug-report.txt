@@ -1,0 +1,203 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.nxr"
+4    android:installLocation="auto"
+5    android:versionCode="1"
+6    android:versionName="1.0.0" >
+7
+8    <uses-sdk
+9        android:minSdkVersion="24"
+10        android:targetSdkVersion="33" />
+11
+12    <supports-screens
+12-->D:\gamedev\NXR\android\build\AndroidManifest.xml:9:5-13:40
+13        android:largeScreens="true"
+13-->D:\gamedev\NXR\android\build\AndroidManifest.xml:12:9-36
+14        android:normalScreens="true"
+14-->D:\gamedev\NXR\android\build\AndroidManifest.xml:11:9-37
+15        android:smallScreens="true"
+15-->D:\gamedev\NXR\android\build\AndroidManifest.xml:10:9-36
+16        android:xlargeScreens="true" />
+16-->D:\gamedev\NXR\android\build\AndroidManifest.xml:13:9-37
+17
+18    <uses-feature
+18-->D:\gamedev\NXR\android\build\AndroidManifest.xml:15:5-17:35
+19        android:glEsVersion="0x00030000"
+19-->D:\gamedev\NXR\android\build\AndroidManifest.xml:16:9-41
+20        android:required="true" />
+20-->D:\gamedev\NXR\android\build\AndroidManifest.xml:17:9-32
+21    <uses-feature
+21-->D:\gamedev\NXR\android\build\src\debug\AndroidManifest.xml:11:5-132
+22        android:name="android.hardware.vulkan.level"
+22-->D:\gamedev\NXR\android\build\src\debug\AndroidManifest.xml:11:40-84
+23        android:required="false"
+23-->D:\gamedev\NXR\android\build\src\debug\AndroidManifest.xml:11:85-109
+24        android:version="1" />
+24-->D:\gamedev\NXR\android\build\src\debug\AndroidManifest.xml:11:110-129
+25    <uses-feature
+25-->D:\gamedev\NXR\android\build\src\debug\AndroidManifest.xml:12:5-140
+26        android:name="android.hardware.vulkan.version"
+26-->D:\gamedev\NXR\android\build\src\debug\AndroidManifest.xml:12:40-86
+27        android:required="true"
+27-->D:\gamedev\NXR\android\build\src\debug\AndroidManifest.xml:12:87-110
+28        android:version="0x400003" />
+28-->D:\gamedev\NXR\android\build\src\debug\AndroidManifest.xml:12:111-137
+29    <uses-feature
+29-->[godotopenxrmeta-debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\25c423993fb99bf359b2ae6ae2affbd7\transformed\jetified-godotopenxrmeta-debug\AndroidManifest.xml:7:5-10:31
+30        android:name="android.hardware.vr.headtracking"
+30-->[godotopenxrmeta-debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\25c423993fb99bf359b2ae6ae2affbd7\transformed\jetified-godotopenxrmeta-debug\AndroidManifest.xml:8:9-56
+31        android:required="true"
+31-->[godotopenxrmeta-debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\25c423993fb99bf359b2ae6ae2affbd7\transformed\jetified-godotopenxrmeta-debug\AndroidManifest.xml:9:9-32
+32        android:version="1" />
+32-->[godotopenxrmeta-debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\25c423993fb99bf359b2ae6ae2affbd7\transformed\jetified-godotopenxrmeta-debug\AndroidManifest.xml:10:9-28
+33
+34    <application
+34-->D:\gamedev\NXR\android\build\AndroidManifest.xml:19:5-53:19
+35        android:allowBackup="false"
+35-->D:\gamedev\NXR\android\build\AndroidManifest.xml:21:9-36
+36        android:appCategory="game"
+36-->D:\gamedev\NXR\android\build\AndroidManifest.xml:23:9-35
+37        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+37-->[androidx.core:core:1.2.0] C:\Users\joshu\.gradle\caches\transforms-3\9bcb1a65f5938aad264f4d73e9a06f28\transformed\core-1.2.0\AndroidManifest.xml:24:18-86
+38        android:debuggable="true"
+39        android:extractNativeLibs="false"
+40        android:hasFragileUserData="false"
+40-->D:\gamedev\NXR\android\build\AndroidManifest.xml:25:9-43
+41        android:icon="@mipmap/icon"
+41-->D:\gamedev\NXR\android\build\AndroidManifest.xml:22:9-36
+42        android:isGame="true"
+42-->D:\gamedev\NXR\android\build\AndroidManifest.xml:24:9-30
+43        android:label="@string/godot_project_name_string"
+43-->D:\gamedev\NXR\android\build\AndroidManifest.xml:20:9-58
+44        android:requestLegacyExternalStorage="false" >
+44-->D:\gamedev\NXR\android\build\AndroidManifest.xml:26:9-53
+45        <meta-data
+45-->D:\gamedev\NXR\android\build\src\debug\AndroidManifest.xml:23:9-125
+46            android:name="com.oculus.supportedDevices"
+46-->D:\gamedev\NXR\android\build\src\debug\AndroidManifest.xml:23:41-83
+47            android:value="quest2|quest3|questpro" />
+47-->D:\gamedev\NXR\android\build\src\debug\AndroidManifest.xml:23:84-122
+48
+49        <activity
+49-->D:\gamedev\NXR\android\build\AndroidManifest.xml:34:9-51:20
+50            android:name="com.godot.game.GodotApp"
+50-->D:\gamedev\NXR\android\build\AndroidManifest.xml:35:13-37
+51            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|density|keyboard|navigation|screenLayout|uiMode"
+51-->D:\gamedev\NXR\android\build\AndroidManifest.xml:42:13-141
+52            android:excludeFromRecents="false"
+52-->D:\gamedev\NXR\android\build\AndroidManifest.xml:39:13-47
+53            android:exported="true"
+53-->D:\gamedev\NXR\android\build\AndroidManifest.xml:40:13-36
+54            android:label="@string/godot_project_name_string"
+54-->D:\gamedev\NXR\android\build\AndroidManifest.xml:36:13-62
+55            android:launchMode="singleInstancePerTask"
+55-->D:\gamedev\NXR\android\build\AndroidManifest.xml:38:13-55
+56            android:resizeableActivity="true"
+56-->D:\gamedev\NXR\android\build\AndroidManifest.xml:43:13-47
+57            android:screenOrientation="landscape"
+57-->D:\gamedev\NXR\android\build\AndroidManifest.xml:41:13-50
+58            android:theme="@style/GodotAppSplashTheme" >
+58-->D:\gamedev\NXR\android\build\AndroidManifest.xml:37:13-55
+59            <intent-filter>
+59-->D:\gamedev\NXR\android\build\AndroidManifest.xml:46:13-50:29
+60                <action android:name="android.intent.action.MAIN" />
+60-->D:\gamedev\NXR\android\build\AndroidManifest.xml:47:17-69
+60-->D:\gamedev\NXR\android\build\AndroidManifest.xml:47:25-66
+61
+62                <category android:name="android.intent.category.DEFAULT" />
+62-->D:\gamedev\NXR\android\build\AndroidManifest.xml:48:17-76
+62-->D:\gamedev\NXR\android\build\AndroidManifest.xml:48:27-73
+63                <category android:name="android.intent.category.LAUNCHER" />
+63-->D:\gamedev\NXR\android\build\AndroidManifest.xml:49:17-77
+63-->D:\gamedev\NXR\android\build\AndroidManifest.xml:49:27-74
+64            </intent-filter>
+65            <intent-filter>
+65-->D:\gamedev\NXR\android\build\src\debug\AndroidManifest.xml:32:5-54:21
+66                <action android:name="android.intent.action.MAIN" />
+66-->D:\gamedev\NXR\android\build\AndroidManifest.xml:47:17-69
+66-->D:\gamedev\NXR\android\build\AndroidManifest.xml:47:25-66
+67
+68                <category android:name="android.intent.category.LAUNCHER" />
+68-->D:\gamedev\NXR\android\build\AndroidManifest.xml:49:17-77
+68-->D:\gamedev\NXR\android\build\AndroidManifest.xml:49:27-74
+69
+70                <!--
+71                    Enable access to OpenXR on Oculus mobile devices, no-op on other Android
+72
+73					platforms.
+74                -->
+75
+76                <category android:name="com.oculus.intent.category.VR" />
+76-->D:\gamedev\NXR\android\build\src\debug\AndroidManifest.xml:44:6-63
+76-->D:\gamedev\NXR\android\build\src\debug\AndroidManifest.xml:44:16-60
+77
+78                <!--
+79                    OpenXR category tag to indicate the activity starts in an immersive OpenXR mode. 
+80
+81					See https://registry.khronos.org/OpenXR/specs/1.0/html/xrspec.html#android-runtime-category.
+82                -->
+83
+84                <category android:name="org.khronos.openxr.intent.category.IMMERSIVE_HMD" />
+84-->D:\gamedev\NXR\android\build\src\debug\AndroidManifest.xml:52:6-82
+84-->D:\gamedev\NXR\android\build\src\debug\AndroidManifest.xml:52:16-79
+85            </intent-filter>
+86        </activity>
+87        <!-- Records the version of the Godot editor used for building -->
+88        <meta-data
+89            android:name="org.godotengine.editor.version"
+90            android:value="4.2.stable.mono" /> <!-- Records the version of the Godot library -->
+91        <meta-data
+91-->[godot-lib.template_debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\ba2d60567cae3cc8fb6160b66afefeeb\transformed\jetified-godot-lib.template_debug\AndroidManifest.xml:14:9-16:44
+92            android:name="org.godotengine.library.version"
+92-->[godot-lib.template_debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\ba2d60567cae3cc8fb6160b66afefeeb\transformed\jetified-godot-lib.template_debug\AndroidManifest.xml:15:13-59
+93            android:value="4.2.0.stable" />
+93-->[godot-lib.template_debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\ba2d60567cae3cc8fb6160b66afefeeb\transformed\jetified-godot-lib.template_debug\AndroidManifest.xml:16:13-41
+94
+95        <service android:name="org.godotengine.godot.GodotDownloaderService" />
+95-->[godot-lib.template_debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\ba2d60567cae3cc8fb6160b66afefeeb\transformed\jetified-godot-lib.template_debug\AndroidManifest.xml:18:9-80
+95-->[godot-lib.template_debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\ba2d60567cae3cc8fb6160b66afefeeb\transformed\jetified-godot-lib.template_debug\AndroidManifest.xml:18:18-77
+96
+97        <activity
+97-->[godot-lib.template_debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\ba2d60567cae3cc8fb6160b66afefeeb\transformed\jetified-godot-lib.template_debug\AndroidManifest.xml:20:9-24:75
+98            android:name="org.godotengine.godot.utils.ProcessPhoenix"
+98-->[godot-lib.template_debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\ba2d60567cae3cc8fb6160b66afefeeb\transformed\jetified-godot-lib.template_debug\AndroidManifest.xml:21:13-70
+99            android:exported="false"
+99-->[godot-lib.template_debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\ba2d60567cae3cc8fb6160b66afefeeb\transformed\jetified-godot-lib.template_debug\AndroidManifest.xml:22:13-37
+100            android:process=":phoenix"
+100-->[godot-lib.template_debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\ba2d60567cae3cc8fb6160b66afefeeb\transformed\jetified-godot-lib.template_debug\AndroidManifest.xml:23:13-39
+101            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+101-->[godot-lib.template_debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\ba2d60567cae3cc8fb6160b66afefeeb\transformed\jetified-godot-lib.template_debug\AndroidManifest.xml:24:13-72
+102
+103        <provider
+103-->[godot-lib.template_debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\ba2d60567cae3cc8fb6160b66afefeeb\transformed\jetified-godot-lib.template_debug\AndroidManifest.xml:26:9-34:20
+104            android:name="androidx.core.content.FileProvider"
+104-->[godot-lib.template_debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\ba2d60567cae3cc8fb6160b66afefeeb\transformed\jetified-godot-lib.template_debug\AndroidManifest.xml:27:13-62
+105            android:authorities="com.example.nxr.fileprovider"
+105-->[godot-lib.template_debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\ba2d60567cae3cc8fb6160b66afefeeb\transformed\jetified-godot-lib.template_debug\AndroidManifest.xml:28:13-64
+106            android:exported="false"
+106-->[godot-lib.template_debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\ba2d60567cae3cc8fb6160b66afefeeb\transformed\jetified-godot-lib.template_debug\AndroidManifest.xml:29:13-37
+107            android:grantUriPermissions="true" >
+107-->[godot-lib.template_debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\ba2d60567cae3cc8fb6160b66afefeeb\transformed\jetified-godot-lib.template_debug\AndroidManifest.xml:30:13-47
+108            <meta-data
+108-->[godot-lib.template_debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\ba2d60567cae3cc8fb6160b66afefeeb\transformed\jetified-godot-lib.template_debug\AndroidManifest.xml:31:13-33:64
+109                android:name="android.support.FILE_PROVIDER_PATHS"
+109-->[godot-lib.template_debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\ba2d60567cae3cc8fb6160b66afefeeb\transformed\jetified-godot-lib.template_debug\AndroidManifest.xml:32:17-67
+110                android:resource="@xml/godot_provider_paths" />
+110-->[godot-lib.template_debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\ba2d60567cae3cc8fb6160b66afefeeb\transformed\jetified-godot-lib.template_debug\AndroidManifest.xml:33:17-61
+111        </provider>
+112
+113        <meta-data
+113-->[godotopenxrmeta-debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\25c423993fb99bf359b2ae6ae2affbd7\transformed\jetified-godotopenxrmeta-debug\AndroidManifest.xml:13:9-15:83
+114            android:name="org.godotengine.plugin.v2.GodotOpenXRMeta"
+114-->[godotopenxrmeta-debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\25c423993fb99bf359b2ae6ae2affbd7\transformed\jetified-godotopenxrmeta-debug\AndroidManifest.xml:14:13-69
+115            android:value="org.godotengine.openxr.vendors.meta.GodotOpenXRMeta" />
+115-->[godotopenxrmeta-debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\25c423993fb99bf359b2ae6ae2affbd7\transformed\jetified-godotopenxrmeta-debug\AndroidManifest.xml:15:13-80
+116        <meta-data
+116-->[godotopenxrmeta-debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\25c423993fb99bf359b2ae6ae2affbd7\transformed\jetified-godotopenxrmeta-debug\AndroidManifest.xml:19:9-21:36
+117            android:name="com.oculus.vr.focusaware"
+117-->[godotopenxrmeta-debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\25c423993fb99bf359b2ae6ae2affbd7\transformed\jetified-godotopenxrmeta-debug\AndroidManifest.xml:20:13-52
+118            android:value="true" />
+118-->[godotopenxrmeta-debug.aar] C:\Users\joshu\.gradle\caches\transforms-3\25c423993fb99bf359b2ae6ae2affbd7\transformed\jetified-godotopenxrmeta-debug\AndroidManifest.xml:21:13-33
+119    </application>
+120
+121</manifest>

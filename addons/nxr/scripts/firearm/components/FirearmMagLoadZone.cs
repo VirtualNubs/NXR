@@ -12,6 +12,12 @@ public partial class FirearmMagLoadZone : Area3D
 
 	[Export]
 	private FirearmMag _mag; 
+
+
+	[Signal]
+	public delegate void AmmoAddedEventHandler(); 
+
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -20,9 +26,10 @@ public partial class FirearmMagLoadZone : Area3D
 
 	
 	private void Entered(Node3D body) { 
-
 			
 		if (body.IsInGroup(_ammoGroup)) { 
+			
+			if (_mag.CurrentAmmo >= _mag.MaxAmmo) return; 
 
 			if (Util.NodeIs(body, typeof(Interactable))) { 
 
@@ -37,6 +44,7 @@ public partial class FirearmMagLoadZone : Area3D
 
 				body.QueueFree(); 
 				_mag.AddBullet(1); 
+				EmitSignal("AmmoAdded"); 
 			}
 		}
 	}

@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://c1meo8ebbhnbr"
 path.s3tc="res://.godot/imported/M4A1_Base_Color.png-a8e049e435d035ecf96a945cd7f76894.s3tc.ctex"
+path.etc2="res://.godot/imported/M4A1_Base_Color.png-a8e049e435d035ecf96a945cd7f76894.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/models/guns/M4A1_Base_Color.png"
-dest_files=["res://.godot/imported/M4A1_Base_Color.png-a8e049e435d035ecf96a945cd7f76894.s3tc.ctex"]
+dest_files=["res://.godot/imported/M4A1_Base_Color.png-a8e049e435d035ecf96a945cd7f76894.s3tc.ctex", "res://.godot/imported/M4A1_Base_Color.png-a8e049e435d035ecf96a945cd7f76894.etc2.ctex"]
 
 [params]
 

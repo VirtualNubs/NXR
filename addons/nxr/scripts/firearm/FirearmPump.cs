@@ -13,6 +13,13 @@ public partial class FirearmPump : FirearmMovable
     private bool back = false;
     private bool _emptyShellIn = false; 
 
+    [Signal]
+    public delegate void PumpedBackEventHandler(); 
+
+    [Signal]
+    public delegate void PumpedForwardEventHandler(); 
+
+
     public override void _Ready()
     {
          if (Util.NodeIs(GetParent(), typeof(Firearm)))
@@ -34,16 +41,19 @@ public partial class FirearmPump : FirearmMovable
 
 		if (AtEnd() && !back) {
             back = true;  
+            EmitSignal("PumpedBack"); 
         }
 
-        if(AtEnd() && _firearm.Chambered) { 
-            _firearm.Chambered = false; 
-            _firearm.EmitSignal("TryEject"); 
-        }
 
         if (!AtEnd() && back) { 
             back = false; 
             _firearm.EmitSignal("TryChamber"); 
+            EmitSignal("PumpedForward"); 
+        }
+        
+        if(AtEnd() && _firearm.Chambered) { 
+            _firearm.Chambered = false; 
+            _firearm.EmitSignal("TryEject"); 
         }
         
         if (AtStart() && _firearm.Chambered) { 

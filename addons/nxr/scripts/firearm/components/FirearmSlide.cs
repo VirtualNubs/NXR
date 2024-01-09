@@ -22,6 +22,13 @@ public partial class FirearmSlide : FirearmMovable
 
     private bool lockedBack = false; 
 
+
+    [Signal]
+    public delegate void SlideBackEventHandler(); 
+    [Signal]
+    public delegate void SlideForwardEventHandler(); 
+
+
     public override void _Ready()
     {
         base._Ready(); 
@@ -60,11 +67,13 @@ public partial class FirearmSlide : FirearmMovable
                 _firearm.Chambered = false; 
             } 
             back = true;  
+            EmitSignal("SlideBack"); 
         }
 
         if (!AtEnd() && back) { 
             _firearm.EmitSignal("TryChamber"); 
             back = false; 
+            EmitSignal("SlideForward"); 
         }
     }
 

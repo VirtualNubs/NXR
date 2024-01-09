@@ -16,6 +16,8 @@ public partial class InteractableGrabSpawn : Interactable
     {
         base._Ready();
 		OnGrabbed += Grabbed;  
+
+		if (Disabled) Visible = false; 
     }
 
 	private void Grabbed(Interactable interactable, Interactor interactor) { 

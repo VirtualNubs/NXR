@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://crdc1vwdnxxld"
 path.bptc="res://.godot/imported/DaySkyHDRI026A_4K-HDR.exr-61a5625fbe5fd4588382baa934b8cfcf.bptc.ctex"
+path.astc="res://.godot/imported/DaySkyHDRI026A_4K-HDR.exr-61a5625fbe5fd4588382baa934b8cfcf.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/textures/DaySkyHDRI026A_4K-HDR.exr"
-dest_files=["res://.godot/imported/DaySkyHDRI026A_4K-HDR.exr-61a5625fbe5fd4588382baa934b8cfcf.bptc.ctex"]
+dest_files=["res://.godot/imported/DaySkyHDRI026A_4K-HDR.exr-61a5625fbe5fd4588382baa934b8cfcf.bptc.ctex", "res://.godot/imported/DaySkyHDRI026A_4K-HDR.exr-61a5625fbe5fd4588382baa934b8cfcf.astc.ctex"]
 
 [params]
 

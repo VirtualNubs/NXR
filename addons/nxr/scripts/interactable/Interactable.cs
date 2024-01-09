@@ -28,11 +28,9 @@ public partial class Interactable : RigidBody3D
 	public float MaxDistanceGrab = 4; 
 
 
-
 	[ExportGroup("Actions")]
 	[Export]
 	public string GrabAction = "grip_click";
-
 
 	
 	[ExportGroup("DropBehaviour")]
@@ -100,7 +98,7 @@ public partial class Interactable : RigidBody3D
 	{
 		if (Disabled) return; 
 
-		interactor._grabbedInteractable = this; 
+		interactor.GrabbedInteractable = this; 
 
 		if (!IsInstanceValid(PrimaryInteractor))
 		{
@@ -126,7 +124,7 @@ public partial class Interactable : RigidBody3D
 
 		if (!IsInstanceValid(SecondaryInteractor))
 		{
-			interactor._grabbedInteractable = this; 
+			interactor.GrabbedInteractable = this; 
 			SecondaryInteractor = interactor;
 			SecondaryInteractor.Controller.Pulse(0.5f, _grabPulse, 0.1);
 			_secondaryRelativeTransorm = SecondaryInteractor.GlobalTransform.AffineInverse() * GlobalTransform;

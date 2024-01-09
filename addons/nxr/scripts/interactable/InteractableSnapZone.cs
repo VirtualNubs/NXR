@@ -57,7 +57,6 @@ public partial class InteractableSnapZone : Area3D
     public override void _Ready()
     {
         BodyEntered += Entered;
-        OnUnSnap += Unsnapped;
 
         foreach (Node3D child in GetChildren())
         {
@@ -74,11 +73,12 @@ public partial class InteractableSnapZone : Area3D
     {
         if (_snapMode == SnapMode.Distance)
         {
-            if (_snappedInteractable == null)
+            if (_snappedInteractable == null && _hoveredInteractable != null)
             {
                 DistanceSnap(_hoveredInteractable);
             }
-            else
+            
+            if (_snappedInteractable != null)
             {
                 _snappedInteractable.GlobalTransform = GlobalTransform;
                 DistanceBreak();
@@ -103,11 +103,10 @@ public partial class InteractableSnapZone : Area3D
         interactable.Freeze = interactable.InitFreeze;
         interactable.Owner = interactable.InitParent;
 
-        // allow some time after reparenting to reset
-        await ToSignal(GetTree().CreateTimer(0.1f), "timeout");
+        Disconnect(_snappedInteractable);
+        _snappedInteractable = null;
 
         EmitSignal("OnUnSnap");
-
     }
 
     public virtual void Snap(Interactable interactable)
@@ -194,6 +193,7 @@ public partial class InteractableSnapZone : Area3D
         if (distance > _breakDistance)
         {
             Unsnap();
+            return; 
         }
     }
 
@@ -241,7 +241,6 @@ public partial class InteractableSnapZone : Area3D
         {
             return;
         }
-
        
         Disconnect(interactable);
     }
@@ -305,9 +304,4 @@ public partial class InteractableSnapZone : Area3D
         }
     }
 
-    private void Unsnapped()
-    {
-        Disconnect(_snappedInteractable);
-        _snappedInteractable = null;
-    }
 }
