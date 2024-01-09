@@ -1,0 +1,252 @@
+[gd_scene load_steps=21 format=3 uid="uid://dq6in8x7tjd4r"]
+
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_rl6gl"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="2_wajd7"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="3_0yvsy"]
+[ext_resource type="PackedScene" uid="uid://dfvibeh7vv12t" path="res://assets/models/guns/44_Magnum/44_magnum.glb" id="4_rrtpu"]
+[ext_resource type="Material" uid="uid://1tuacq4locuc" path="res://assets/models/guns/44_Magnum/44_magnum.material" id="5_r6oe6"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmCylinder.cs" id="6_yitu7"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmBulletZoneQueue.cs" id="7_8wjma"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmBulletZone.cs" id="8_etwa3"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRay.cs" id="9_2343w"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRayHitSpawner.cs" id="10_7jhsv"]
+[ext_resource type="PackedScene" uid="uid://cmvybwirj715t" path="res://demo/scenes/part_hit.tscn" id="11_6dc3a"]
+[ext_resource type="PackedScene" uid="uid://w7th3d2hl7b5" path="res://assets/hands/model/Hand_Glove_R.gltf" id="12_4a5xf"]
+[ext_resource type="AnimationLibrary" uid="uid://bvxp1d4s8s2h" path="res://assets/hands/poses/poses_default.res" id="13_pagow"]
+[ext_resource type="Material" uid="uid://p0q2df2dmy62" path="res://assets/hands/materials/ghost_hand.tres" id="13_sn8lh"]
+[ext_resource type="AnimationLibrary" uid="uid://k5gxr45s6bgc" path="res://assets/hands/poses/poses_pistol.tres" id="14_j7sr3"]
+[ext_resource type="AnimationLibrary" uid="uid://cfxiq30ri52j5" path="res://assets/hands/poses/poses_rifle.res" id="15_qar3l"]
+[ext_resource type="AnimationLibrary" uid="uid://h7sli6dulrsl" path="res://assets/hands/poses/poses_shotgun.res" id="16_5k3k6"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmHammer.cs" id="18_axgoc"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i000j"]
+size = Vector3(0.0298283, 0.151599, 0.257184)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_i8hxm"]
+radius = 0.00908724
+
+[node name="44Magnum" type="RigidBody3D"]
+collision_layer = 8
+script = ExtResource("1_rl6gl")
+_chamberOnFire = false
+_recoilKick = Vector3(0, 0, 0.5)
+_recoilRise = Vector3(45, 0, 0)
+_kickRecoverSpeed = 0.05
+_riseRecoverSpeed = 0.05
+
+[node name="InteractableGrabKinematic" type="Node" parent="."]
+script = ExtResource("2_wajd7")
+_lookUpVector = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0264712, -0.00344474)
+shape = SubResource("BoxShape3D_i000j")
+
+[node name="44_magnum" parent="." instance=ExtResource("4_rrtpu")]
+
+[node name="Lock" parent="44_magnum" index="0"]
+material_override = ExtResource("5_r6oe6")
+
+[node name="Body" parent="44_magnum" index="1"]
+material_override = ExtResource("5_r6oe6")
+
+[node name="Rotator" parent="44_magnum" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.30771e-06, -0.019172, -0.0381961)
+material_override = ExtResource("5_r6oe6")
+
+[node name="Connector" parent="44_magnum/Rotator" index="0"]
+material_override = ExtResource("5_r6oe6")
+
+[node name="Connector_Child" parent="44_magnum/Rotator/Connector" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0222619, 7.47666e-06)
+material_override = ExtResource("5_r6oe6")
+
+[node name="Drum" parent="44_magnum/Rotator/Connector/Connector_Child" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.85315e-05, 1.33887e-05, -9.25194e-05)
+material_override = ExtResource("5_r6oe6")
+
+[node name="FirearmBulletZoneQueue" type="Node3D" parent="44_magnum/Rotator" index="1" node_paths=PackedStringArray("_firearm")]
+transform = Transform3D(0.251613, 0.967828, 0, -0.967828, 0.251613, 0, 0, 0, 1, 0.00133554, 0.0269525, 0.0437388)
+script = ExtResource("7_8wjma")
+_firearm = NodePath("../../..")
+
+[node name="FirearmBulletZone" type="Area3D" parent="44_magnum/Rotator/FirearmBulletZoneQueue"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0148082, 0.00422315, 0)
+collision_mask = 9
+script = ExtResource("8_etwa3")
+AllowedGroups = PackedStringArray("44")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="44_magnum/Rotator/FirearmBulletZoneQueue/FirearmBulletZone"]
+shape = SubResource("SphereShape3D_i8hxm")
+
+[node name="FirearmBulletZone4" type="Area3D" parent="44_magnum/Rotator/FirearmBulletZoneQueue"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0113551, -0.00958937, 0)
+collision_mask = 9
+script = ExtResource("8_etwa3")
+AllowedGroups = PackedStringArray("44")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="44_magnum/Rotator/FirearmBulletZoneQueue/FirearmBulletZone4"]
+shape = SubResource("SphereShape3D_i8hxm")
+
+[node name="FirearmBulletZone5" type="Area3D" parent="44_magnum/Rotator/FirearmBulletZoneQueue"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0024574, -0.0134741, 0)
+collision_mask = 9
+script = ExtResource("8_etwa3")
+AllowedGroups = PackedStringArray("44")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="44_magnum/Rotator/FirearmBulletZoneQueue/FirearmBulletZone5"]
+shape = SubResource("SphereShape3D_i8hxm")
+
+[node name="FirearmBulletZone6" type="Area3D" parent="44_magnum/Rotator/FirearmBulletZoneQueue"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0119535, -0.00397803, 0)
+collision_mask = 9
+script = ExtResource("8_etwa3")
+AllowedGroups = PackedStringArray("44")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="44_magnum/Rotator/FirearmBulletZoneQueue/FirearmBulletZone6"]
+shape = SubResource("SphereShape3D_i8hxm")
+
+[node name="FirearmBulletZone2" type="Area3D" parent="44_magnum/Rotator/FirearmBulletZoneQueue"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00893889, 0.00721011, 0)
+collision_mask = 9
+script = ExtResource("8_etwa3")
+AllowedGroups = PackedStringArray("44")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="44_magnum/Rotator/FirearmBulletZoneQueue/FirearmBulletZone2"]
+shape = SubResource("SphereShape3D_i8hxm")
+
+[node name="FirearmBulletZone3" type="Area3D" parent="44_magnum/Rotator/FirearmBulletZoneQueue"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00369614, 0.011127, 0)
+collision_mask = 9
+script = ExtResource("8_etwa3")
+AllowedGroups = PackedStringArray("44")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="44_magnum/Rotator/FirearmBulletZoneQueue/FirearmBulletZone3"]
+shape = SubResource("SphereShape3D_i8hxm")
+
+[node name="Trigger" parent="44_magnum" index="3"]
+material_override = ExtResource("5_r6oe6")
+
+[node name="Hammer" parent="44_magnum/Trigger" index="0"]
+transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 0.0060049, 0.0290179)
+material_override = ExtResource("5_r6oe6")
+
+[node name="FirearmCylinder" type="RigidBody3D" parent="." node_paths=PackedStringArray("_bulletQueue", "_cylinderMesh", "Target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.30771e-06, -0.019172, -0.0381961)
+freeze = true
+script = ExtResource("6_yitu7")
+_bulletQueue = NodePath("../44_magnum/Rotator/FirearmBulletZoneQueue")
+_cylinderMesh = NodePath("../44_magnum/Rotator/Connector/Connector_Child")
+_step = 60.0
+Target = NodePath("../44_magnum/Rotator")
+StartXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.30771e-06, -0.019172, -0.0381961)
+EndXform = Transform3D(0.251613, -0.967828, 0, 0.967828, 0.251613, 0, 0, 0, 1, 8.30771e-06, -0.019172, -0.0381961)
+
+[node name="FirearmRay" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0203533, -0.254734)
+target_position = Vector3(0, 0, -200)
+script = ExtResource("9_2343w")
+metadata/_edit_group_ = true
+
+[node name="FirearmRayHitSpawner" type="Node" parent="FirearmRay"]
+script = ExtResource("10_7jhsv")
+_scene = ExtResource("11_6dc3a")
+
+[node name="HandPose2" type="RemoteTransform3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0172348, 0.0110264)
+script = ExtResource("3_0yvsy")
+_pose = "poses_pistol/pgrip"
+
+[node name="Hand_Glove_R" parent="HandPose2" instance=ExtResource("12_4a5xf")]
+visible = false
+
+[node name="Skeleton3D" parent="HandPose2/Hand_Glove_R/Armature" index="0"]
+bones/0/position = Vector3(0.00857374, -0.0391602, 0.148703)
+bones/0/rotation = Quaternion(-0.741694, -0.00783805, 0.0270563, 0.670146)
+bones/1/position = Vector3(-0.01, 0.0271729, 0.02)
+bones/1/rotation = Quaternion(0.174299, -0.0141678, 0.083326, 0.981059)
+bones/2/position = Vector3(-2.32831e-10, 0.0449165, -2.47383e-10)
+bones/2/rotation = Quaternion(-0.0858999, 0.0240916, 0.0762862, 0.993087)
+bones/3/position = Vector3(2.32831e-09, 0.0421479, 1.5134e-09)
+bones/3/rotation = Quaternion(-0.0804545, -0.00833118, -0.0152576, 0.996607)
+bones/4/position = Vector3(2.79397e-09, 0.0307495, -3.14321e-09)
+bones/4/rotation = Quaternion(-0.0757687, 0.019257, 0.0337124, 0.996369)
+bones/5/position = Vector3(0.01, 0.0271772, 0.0224051)
+bones/5/rotation = Quaternion(-0.000588777, -2.10359e-05, -0.0252196, 0.999682)
+bones/6/position = Vector3(-5.33618e-10, 0.0803676, 2.58493e-09)
+bones/6/rotation = Quaternion(0.111069, 0.00647194, -0.150296, 0.982361)
+bones/7/position = Vector3(0, 0.0381163, -3.31784e-09)
+bones/7/rotation = Quaternion(-0.00716819, 0.0272829, 0.467702, 0.883436)
+bones/7/scale = Vector3(1, 1, 1)
+bones/8/position = Vector3(-5.52973e-09, 0.0313457, 1.77533e-09)
+bones/8/rotation = Quaternion(0.0174517, 0.0064494, 0.462875, 0.886228)
+bones/8/scale = Vector3(1, 1, 1)
+bones/9/position = Vector3(-8.14907e-09, 0.027395, 1.36788e-09)
+bones/9/rotation = Quaternion(-0.0522884, 0.000557213, -0.103621, 0.993241)
+bones/10/position = Vector3(0.01, 0.0271458, 0.00352759)
+bones/10/rotation = Quaternion(0.0150979, -0.00259093, -0.0499104, 0.998636)
+bones/11/position = Vector3(7.05768e-10, 0.0804632, 3.49246e-10)
+bones/11/rotation = Quaternion(-0.0396988, -0.0042507, 0.19395, 0.980199)
+bones/12/position = Vector3(-1.12959e-09, 0.0450034, 6.62112e-10)
+bones/12/rotation = Quaternion(0.0291062, -0.0270897, 0.691003, 0.721757)
+bones/13/position = Vector3(-5.97356e-09, 0.0324167, -5.82077e-11)
+bones/13/rotation = Quaternion(-0.011496, 0.00787077, 0.688542, 0.725062)
+bones/13/scale = Vector3(1, 1, 1)
+bones/14/position = Vector3(2.07365e-09, 0.0233466, 6.54836e-11)
+bones/14/rotation = Quaternion(0.0136882, -7.99239e-05, -0.168411, 0.985622)
+bones/15/position = Vector3(0.01, 0.027118, -0.0131)
+bones/15/rotation = Quaternion(0.0165545, -0.001602, -0.0180145, 0.999699)
+bones/16/position = Vector3(-6.07542e-10, 0.0739438, 1.3315e-09)
+bones/16/rotation = Quaternion(-0.0502179, 0.00943617, 0.10394, 0.99327)
+bones/16/scale = Vector3(1, 1, 1)
+bones/17/position = Vector3(-8.73115e-11, 0.0401312, 9.60426e-10)
+bones/17/rotation = Quaternion(0.00502851, -0.0272563, 0.712562, 0.701061)
+bones/17/scale = Vector3(1, 1, 1)
+bones/18/position = Vector3(2.38651e-09, 0.0277976, 9.60426e-10)
+bones/18/rotation = Quaternion(-0.0155491, -0.00681101, 0.529278, 0.848278)
+bones/18/scale = Vector3(1, 1, 1)
+bones/19/position = Vector3(-5.326e-09, 0.0270494, 3.96903e-09)
+bones/19/rotation = Quaternion(0.0330517, 0.00671975, -0.126351, 0.991412)
+bones/20/position = Vector3(4.46056e-10, 0.0270897, -0.03)
+bones/20/rotation = Quaternion(0.017357, -0.00312759, -0.0282753, 0.999445)
+bones/21/position = Vector3(-3.49246e-10, 0.0657112, -2.20098e-10)
+bones/21/rotation = Quaternion(-0.0891448, -0.00593509, -0.0241488, 0.995708)
+bones/21/scale = Vector3(1, 1, 1)
+bones/22/position = Vector3(4.07454e-10, 0.0331235, 2.6921e-10)
+bones/22/rotation = Quaternion(0.0320458, -0.0454726, 0.489663, 0.870135)
+bones/22/scale = Vector3(1, 1, 1)
+bones/23/position = Vector3(-2.67755e-09, 0.0180244, 7.89441e-10)
+bones/23/rotation = Quaternion(-0.0213673, 0.000796952, 0.651667, 0.758204)
+bones/23/scale = Vector3(1, 1, 1)
+bones/24/position = Vector3(3.72529e-09, 0.0197651, 4.65661e-09)
+bones/24/rotation = Quaternion(0.0158363, 0.0193397, -0.153777, 0.987789)
+bones/25/position = Vector3(-0.0307819, 0.0670555, -0.0420653)
+bones/25/rotation = Quaternion(0.706524, 6.47993e-06, 8.68672e-06, 0.707689)
+
+[node name="mesh_Glove_R" parent="HandPose2/Hand_Glove_R/Armature/Skeleton3D" index="0"]
+material_override = ExtResource("13_sn8lh")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HandPose2/Hand_Glove_R"]
+libraries = {
+"poses_default": ExtResource("13_pagow"),
+"poses_pistol": ExtResource("14_j7sr3"),
+"poses_rifle": ExtResource("15_qar3l"),
+"poses_shotgun": ExtResource("16_5k3k6")
+}
+
+[node name="HandPose" type="RemoteTransform3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00366996, 0.00967595)
+script = ExtResource("3_0yvsy")
+_pose = "poses_pistol/sgrip"
+_grabPose = 1
+
+[node name="FirearmHammer" type="RigidBody3D" parent="." node_paths=PackedStringArray("Target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.0047e-06, -0.0124286, 0.0316019)
+freeze = true
+script = ExtResource("18_axgoc")
+Target = NodePath("../44_magnum/Trigger/Hammer")
+StartXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.0047e-06, -0.0124286, 0.031602)
+EndXform = Transform3D(1, 0, 0, 0, 0.81136, -0.584547, 0, 0.584547, 0.81136, 8.0047e-06, -0.0124286, 0.031602)
+
+[editable path="44_magnum"]
+[editable path="HandPose2/Hand_Glove_R"]

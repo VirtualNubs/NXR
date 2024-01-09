@@ -1,0 +1,4 @@
+[gd_resource type="AudioBusLayout" format=3 uid="uid://o7fwd3w43e70"]
+
+[resource]
+bus/0/send = &"GunShot"

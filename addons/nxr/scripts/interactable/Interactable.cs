@@ -7,30 +7,41 @@ namespace NXRInteractable;
 public partial class Interactable : RigidBody3D
 {
 	[Export]
+	public bool Disabled = false; 
+
+
+	[Export]
 	public float Priority = 1; 
 	
 	[Export]
-	public float MaxGrabDistance = 0.5f;
-	
-
-	[Export]
 	public HoldMode HoldMode = HoldMode.Hold;
+
+
+
+	[ExportGroup("Grab Settings")]
+	
+	[Export]
+	public float MaxGrabDistance = 0.5f;
+	[Export]
+	public bool DistanceGrabEnabled = false; 
+	[Export]
+	public float MaxDistanceGrab = 4; 
+
 
 	[ExportGroup("Actions")]
 	[Export]
 	public string GrabAction = "grip_click";
 
-
 	
 	[ExportGroup("DropBehaviour")]
 	[Export]
 	private bool _switchOnDrop = false;
-
 	[ExportGroup("Offsets")]
 	[Export]
 	public Vector3 PositionOffset = new Vector3();
 	[Export]
 	public Vector3 RotationOffset = new Vector3();
+
 
 
 	[ExportGroup("Haptics")]
@@ -41,14 +52,21 @@ public partial class Interactable : RigidBody3D
 	private float _dropPulse = 0.1f;
 
 
+
 	public bool InitFreeze = false; 
 	public Transform3D InitTransform {set; get; } 
 	public Transform3D InitGlobalTransform {set; get; } 
 	public Interactor PrimaryInteractor { set; get; }
 	public Interactor SecondaryInteractor { set; get; }
 
+
+
+	// grab point
 	public Node3D PrimaryGrabPoint;
-	public Node3D SecondaryGrabPoint;
+	public Node3D SecondaryGrabPoint;	
+	public Transform3D PrimaryGrabPointOffset = new(); 
+	public Transform3D SecondaryGrabPointOffset = new(); 
+
 	public Node3D InitParent = null; 
 
 	private Transform3D _secondaryRelativeTransorm = new Transform3D();
@@ -66,7 +84,6 @@ public partial class Interactable : RigidBody3D
 	public delegate void OnFullDroppedEventHandler();
 
 
- 
     public override void _Ready()
     {
 		PrimaryGrabPoint  ??= this;
@@ -77,10 +94,11 @@ public partial class Interactable : RigidBody3D
 		InitGlobalTransform = Transform; 
     }
 
-	public void Grab(Interactor interactor)
+    public void Grab(Interactor interactor)
 	{
+		if (Disabled) return; 
 
-		interactor._grabbedInteractable = this; 
+		interactor.GrabbedInteractable = this; 
 
 		if (!IsInstanceValid(PrimaryInteractor))
 		{
@@ -106,7 +124,7 @@ public partial class Interactable : RigidBody3D
 
 		if (!IsInstanceValid(SecondaryInteractor))
 		{
-			interactor._grabbedInteractable = this; 
+			interactor.GrabbedInteractable = this; 
 			SecondaryInteractor = interactor;
 			SecondaryInteractor.Controller.Pulse(0.5f, _grabPulse, 0.1);
 			_secondaryRelativeTransorm = SecondaryInteractor.GlobalTransform.AffineInverse() * GlobalTransform;
@@ -148,6 +166,7 @@ public partial class Interactable : RigidBody3D
 		if (!IsGrabbed()) { 
 			EmitSignal("OnFullDropped"); 
 			LinearVelocity = interactor.Controller.GetGlobalVelocity();
+			AngularVelocity = interactor.Controller.GetAngularVelocity(); 
 		}
 	}
 

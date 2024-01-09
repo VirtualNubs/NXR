@@ -18,6 +18,15 @@ public partial class InteractableGrabPoint : Interactable
          if (Util.NodeIs((Node3D)GetParent(), typeof(Interactable)))
         {
             _interactable = (Interactable)GetParent();
+            
+            if (_grabType == GrabType.Primary)  {
+                _interactable.PrimaryGrabPoint = this; 
+                CallDeferred("SetOffset");
+            } 
+            if (_grabType == GrabType.Secondary)  {
+                _interactable.SecondaryGrabPoint = this; 
+                CallDeferred("SetOffset");
+            }
         }
         
         OnGrabbed += Grab; 
@@ -33,6 +42,7 @@ public partial class InteractableGrabPoint : Interactable
             if (_interactable.GetPrimaryInteractor() == null) { 
                 _interactable.PrimaryGrabPoint = this; 
                 _interactable.Grab(interactor); 
+                SetOffset(); 
             }
         }
 
@@ -40,7 +50,26 @@ public partial class InteractableGrabPoint : Interactable
             if (_interactable.GetSecondaryInteractor() == null) { 
                 _interactable.SecondaryGrabPoint = this; 
                 _interactable.SecondaryGrab(interactor); 
+                SetOffset(); 
             }
+        }
+    }
+
+    private void SetOffset() { 
+
+
+        if (_grabType == GrabType.Primary) {
+            Transform3D newXform = new Transform3D(); 
+            newXform.Origin = GlobalTransform.Origin -_interactable.GlobalTransform.Origin; 
+            _interactable.PrimaryGrabPointOffset = newXform; 
+            _interactable.SecondaryGrabPointOffset = newXform.Orthonormalized(); 
+        }
+
+        if(_grabType == GrabType.Secondary) {
+            Transform3D newXform = new Transform3D(); 
+            newXform.Origin = GlobalTransform.Origin - _interactable.GlobalTransform.Origin; 
+            newXform.Basis = GlobalTransform.Basis; 
+            _interactable.SecondaryGrabPointOffset = newXform.Orthonormalized(); 
         }
     }
 }

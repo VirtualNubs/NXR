@@ -19,12 +19,12 @@ public partial class FirearmMag : Interactable
     [Export]
     public int CurrentAmmo;
 
+    public bool CanChamber = true; 
     private Firearm _firearm; 
 
     public override void _Ready()
     {
         base._Ready(); 
-        CurrentAmmo = MaxAmmo; 
 
         if (_internal && Util.NodeIs((Node)GetParent(), typeof(Firearm)))
         {
@@ -34,10 +34,13 @@ public partial class FirearmMag : Interactable
     }
 
     private void TryChamber() { 
+        if (!CanChamber) return; 
+        
         if (CurrentAmmo <= 0) return; 
 
         _firearm.Chambered = true; 
         CurrentAmmo -= 1; 
+        _firearm.EmitSignal("OnChambered"); 
     }
 
     public void RemoveBullet(int amount) { 

@@ -5,36 +5,41 @@ using NXR;
 
 [Tool]
 [GlobalClass]
-public partial class FirearmSlide : Interactable
+public partial class FirearmSlide : FirearmMovable
 {
+    [Export]
+    private bool _setBackOnFire = false; 
+    [Export]
+    private bool _setBackOnEmpty = false; 
 
     [Export]
-    protected Vector3 _startPosition;
-    [Export]
-    protected Vector3 _endPosition;
-
-    [Export]
-    private bool _setBackOnFire;
-
-    [ExportGroup("Tool Settings")]
-    [Export]
-    private bool _setStart;
-    [Export]
-    private bool _setEnd;
-    [Export]
-    private bool _goStart;
-    [Export]
-    private bool _goEnd;
-
+    private Node3D  _firearmNode; 
     protected Firearm _firearm = null; 
     protected bool back = false; 
     private Transform3D _relativeGrabXform; 
-    
+
+    protected Transform3D _relativeXform = new(); 
+
+    private bool lockedBack = false; 
+
+
+    [Signal]
+    public delegate void SlideBackEventHandler(); 
+    [Signal]
+    public delegate void SlideForwardEventHandler(); 
+
+
     public override void _Ready()
     {
         base._Ready(); 
         
-        if (Util.NodeIs(GetParent(), typeof(Firearm)))
+        if (Util.NodeIs(_firearmNode, typeof(Firearm)))
+        {
+            _firearm = (Firearm)_firearmNode;
+        }
+
+
+         if (Util.NodeIs(GetParent(), typeof(Firearm)))
         {
             _firearm = (Firearm)GetParent();
         }
@@ -42,81 +47,65 @@ public partial class FirearmSlide : Interactable
         if (_firearm == null) return; 
 
         _firearm.OnFire += OnFire;
+        _firearm.OnChambered += Chambered; 
+        _firearm.TryChamber += TryChambered; 
+
         this.OnDropped += OnDrop;
+        this.OnGrabbed += Grabbed;
     }
 
     public override void _Process(double delta)
     {
-        if (Engine.IsEditorHint())
-        {
-            if (_setStart)
-            {
-                _startPosition = Position;
-                _setStart = false;
-            }
-            if (_setEnd)
-            {
-                _endPosition = Position;
-                _setEnd = false;
-            }
-
-            if (_goStart)
-            {
-                Position = _startPosition;
-                _goStart = false;
-            }
-            if (_goEnd)
-            {
-                Position = _endPosition;
-                _goEnd = false;
-            }
-        }
-
+        RunTool(); 
+      
         if (_firearm == null) return;
         
-        if (IsBack() && !back && IsGrabbed()) {
+        if (AtEnd() && !back && IsGrabbed()) {
+            
+            if (_firearm.Chambered) { 
+                _firearm.EmitSignal("TryEject"); 
+                _firearm.Chambered = false; 
+            } 
             back = true;  
+            EmitSignal("SlideBack"); 
         }
 
-        if (IsForward() && back) { 
-            back = false; 
+        if (!AtEnd() && back) { 
             _firearm.EmitSignal("TryChamber"); 
+            back = false; 
+            EmitSignal("SlideForward"); 
         }
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        if (Engine.IsEditorHint()) return; 
 
+        base._PhysicsProcess(delta); 
+        
         if (IsGrabbed())
         {
             Node3D parent = (Node3D)GetParent();
-            Transform3D grabXform = GetPrimaryRelativeXform(); 
-            Vector3 newPos = parent.ToLocal(grabXform.Origin);
-
-            newPos= newPos.Clamp(_startPosition, _endPosition);
-            Position =  newPos;
+            Transform3D newXform = GetPrimaryInteractor().GlobalTransform * _relativeXform; 
+            Vector3 newPos = parent.ToLocal(newXform.Origin);
+            newPos= newPos.Clamp(StartXform.Origin, EndXform.Origin);
+            Position = newPos;
         } 
+
     }
 
     public bool IsBack() { 
-        return Position.IsEqualApprox(_endPosition); 
+        return Position.IsEqualApprox(EndXform.Origin); 
     }
 
     public bool IsForward() { 
-        return Position.IsEqualApprox(_startPosition); 
+        return Position.IsEqualApprox(StartXform.Origin); 
     }
 
     public void OnFire()
     {
         if (_setBackOnFire)
         {
-            Position = _endPosition;
-        }
-
-        if (Position.IsEqualApprox(_endPosition))
-        {
-            ReturnTween();
+            Position = EndXform.Origin;
         }
     }
 
@@ -124,12 +113,28 @@ public partial class FirearmSlide : Interactable
     {
         ReturnTween();
     }
- 
+    
+    private void Grabbed(Interactable interactable, Interactor interactor) { 
 
-    private void ReturnTween()
-    {
-        Tween returnTween = GetTree().CreateTween();
-        returnTween.TweenProperty(this, "position", _startPosition, 0.1f);
+        if (interactor == GetPrimaryInteractor()) {
+            _relativeXform = interactor.GlobalTransform.AffineInverse() * GlobalTransform; 
+        }
     }
 
+     private void TryChambered() { 
+        if (IsBack() && !_firearm.Chambered ) { 
+            ReturnTween();
+        }
+    }
+    private void Chambered() { 
+        ReturnTween();
+    }
+    
+    private void ReturnTween()
+    {
+        if (lockedBack) return; 
+
+        Tween returnTween = GetTree().CreateTween();
+        returnTween.TweenProperty(this, "position", StartXform.Origin, 0.1f);
+    }
 }

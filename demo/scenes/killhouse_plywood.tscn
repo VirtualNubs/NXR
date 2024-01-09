@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://d1mknttq6bwjs"]
+
+[ext_resource type="PackedScene" uid="uid://drfsxy4loew7u" path="res://assets/models/tactical_plywood/tactical_plywood.glb" id="1_t0xjb"]
+[ext_resource type="Material" uid="uid://daq3ob68ah1tb" path="res://assets/materials/plywood_base.material" id="2_6ys8v"]
+
+[node name="tactical_plywood" instance=ExtResource("1_t0xjb")]
+
+[node name="Tac_Shooting_Stand" parent="." index="0"]
+surface_material_override/0 = ExtResource("2_6ys8v")
+
+[node name="Tac_Barricade_Triangle" parent="." index="1"]
+surface_material_override/0 = ExtResource("2_6ys8v")
+
+[node name="Tac_Steps_Half" parent="." index="2"]
+surface_material_override/0 = ExtResource("2_6ys8v")
+
+[node name="Tac_Steps_Full" parent="." index="3"]
+surface_material_override/0 = ExtResource("2_6ys8v")
+
+[node name="Tac_Barricade_Half" parent="." index="4"]
+surface_material_override/0 = ExtResource("2_6ys8v")
+
+[node name="Tac_Barricade_Full" parent="." index="5"]
+surface_material_override/0 = ExtResource("2_6ys8v")
+
+[node name="Tac_Wall_Doorway" parent="." index="6"]
+surface_material_override/0 = ExtResource("2_6ys8v")
+
+[node name="Tac_Wall_Window" parent="." index="7"]
+surface_material_override/0 = ExtResource("2_6ys8v")
+
+[node name="Tac_Wall_Full" parent="." index="8"]
+surface_material_override/0 = ExtResource("2_6ys8v")
+
+[node name="Tac_Wall_Half_Up" parent="." index="9"]
+surface_material_override/0 = ExtResource("2_6ys8v")
+
+[node name="Tac_Wall_Half_Down" parent="." index="10"]
+surface_material_override/0 = ExtResource("2_6ys8v")

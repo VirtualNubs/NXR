@@ -8,4 +8,5 @@ namespace NXRFirearm;
 public partial class FirearmBullet : Interactable
 {
 	public bool Spent = false; 
+
 }

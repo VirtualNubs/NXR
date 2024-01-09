@@ -1,0 +1,50 @@
+[gd_scene load_steps=3 format=3 uid="uid://c47iwb4c6irhj"]
+
+[ext_resource type="Script" path="res://demo/scripts/ui/ui_settings.gd" id="1_j7mrh"]
+[ext_resource type="Resource" uid="uid://dqooh1vsmo8b8" path="res://addons/nxr/resources/default_player_settings.tres" id="2_wllv1"]
+
+[node name="ui_settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_j7mrh")
+player_settings = ExtResource("2_wllv1")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 512.0
+offset_bottom = 512.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 24.0
+offset_right = 156.0
+offset_bottom = 64.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "DOMINANT HAND
+"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "left"
+
+[node name="DominantCheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "right"
+
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/DominantCheckButton" to="." method="_on_check_button_toggled"]

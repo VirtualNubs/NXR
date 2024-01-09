@@ -1,0 +1,101 @@
+[gd_scene load_steps=10 format=3 uid="uid://beljd4s52kfpr"]
+
+[ext_resource type="Script" path="res://demo/scripts/killhouse/door.gd" id="1_1nbo1"]
+[ext_resource type="Material" uid="uid://daq3ob68ah1tb" path="res://assets/materials/plywood_base.material" id="2_ipqg3"]
+[ext_resource type="AudioStream" uid="uid://uu5vay4qvcio" path="res://assets/audio/sfx/door/door_close.wav" id="3_hvwgn"]
+[ext_resource type="AudioStream" uid="uid://dpreetmhawbm2" path="res://assets/audio/sfx/door/door_open.wav" id="4_q0rhj"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/audio/SignalAudioPlayer.cs" id="4_qqc3q"]
+
+[sub_resource type="Animation" id="Animation_k1dkk"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_hdi0s"]
+resource_name = "close"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -2.0944, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_7lq5e"]
+resource_name = "open"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -2.0944, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_b68sd"]
+resource_local_to_scene = true
+resource_name = "doorlib"
+_data = {
+"RESET": SubResource("Animation_k1dkk"),
+"close": SubResource("Animation_hdi0s"),
+"open": SubResource("Animation_7lq5e")
+}
+
+[node name="Door" type="Node3D"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -5.74052, 0.992174, 6.47729)
+script = ExtResource("1_1nbo1")
+
+[node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0310473)
+
+[node name="Door" type="CSGBox3D" parent="Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.620516)
+material_override = ExtResource("2_ipqg3")
+use_collision = true
+size = Vector3(0.002, 2.21381, 1.29878)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_b68sd")
+}
+autoplay = "open"
+
+[node name="SFXDoorClose" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.557416)
+stream = ExtResource("3_hvwgn")
+volume_db = -19.728
+pitch_scale = 1.44
+attenuation_filter_db = 0.0
+script = ExtResource("4_qqc3q")
+_signal = "closed"
+
+[node name="SFXDoorOpen" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.557416)
+stream = ExtResource("4_q0rhj")
+volume_db = 6.0
+max_db = 6.0
+pitch_scale = 1.25
+attenuation_filter_db = 0.0
+script = ExtResource("4_qqc3q")
+_signal = "opened"

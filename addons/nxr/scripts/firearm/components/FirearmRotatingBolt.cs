@@ -17,11 +17,16 @@ public partial class FirearmRotatingBolt : FirearmMovable
     private Transform3D _relativeGrab = new(); 
 
     private bool _setBack = false; 
+    private float _rotationAngle = 0.0f; 
 
     private Firearm _firearm = null; 
 
     [Signal]
     public delegate void OnBoltBackEventHandler();
+
+    [Signal]
+    public delegate void OnBoltForwardEventHandler();
+    
 
     public override void _Ready()
     {
@@ -36,13 +41,28 @@ public partial class FirearmRotatingBolt : FirearmMovable
 
     public override void _Process(double delta)
     {
-        base._Process(delta);
-        
-        RunTool(); 
+        base._Process(delta);   
+        RunTool();
+
+         // chambering logic
+        if (AtEnd() && !_setBack) { 
+            _setBack = true; 
+            EmitSignal("OnBoltBack"); 
+        }
+
+        if (AtStart() && _setBack) { 
+            _setBack = false; 
+            _firearm?.EmitSignal("TryChamber"); 
+            EmitSignal("OnBoltForward"); 
+        }
     }
 
     public override void _PhysicsProcess(double delta)
     {
+        
+        if (Engine.IsEditorHint()) { 
+            RunTool(); 
+        }
 
         if (PrimaryInteractor == null) return;
 
@@ -59,45 +79,37 @@ public partial class FirearmRotatingBolt : FirearmMovable
             grab.Z = 0; 
             loc.Z = 0; 
 
-            Vector3 grabDir = (grab - Position); 
             Vector3 locDir = (loc - Position);  
+            Vector3 grabDir = (grab - Position); 
 
             float rotAngle = locDir.Normalized().SignedAngleTo(grabDir.Normalized(), axis);
-
-            RotateZ(rotAngle);
+            rotAngle = Mathf.Clamp(rotAngle, -.1f, .1f); 
+            RotateZ(rotAngle * 2.0f);
         }
 
-        // Isues with clamp if not deconsturected 
-        Vector3 newPos = Position;
+        // rotation clamp
         Vector3 newRot = Rotation;
+        Vector3 startEuler = StartXform.Basis.GetEuler(); 
+        newRot = new Vector3(newRot.X, newRot.Y, Rotation.Z);
+        newRot.Z = Mathf.Clamp(newRot.Z, GetMinRotation().Z, GetMaxRotation().Z);
+
+        Rotation = newRot;
+
+        // position clamp
+        Vector3 newPos = Position;
         newPos.X = StartXform.Origin.X;
         newPos.Y = StartXform.Origin.Y;
         newPos.Z = parent.ToLocal(newXform.Origin).Z;
-        newPos.Z = Mathf.Clamp(newPos.Z, StartXform.Origin.Z, EndXform.Origin.Z);
+        newPos.Z = Mathf.Clamp(newPos.Z, GetMinOrigin().Z, GetMaxOrigin().Z);
 
-
-        Vector3 startEuler = StartXform.Basis.GetEuler(); 
         Vector3 endEuler = EndXform.Basis.GetEuler(); 
-        newRot = new Vector3(newRot.X, newRot.Y, Rotation.Z);
-        newRot.Z = Mathf.Clamp(newRot.Z, startEuler.Z, endEuler.Z);
-
-        if (!newRot.IsEqualApprox(endEuler))
+        if (!Rotation.IsEqualApprox(endEuler))
         {
-            newPos.Z = Mathf.Clamp(newPos.Z, StartXform.Origin.Z, StartXform.Origin.Z);
+            newPos.Z = Mathf.Clamp(newPos.Z, GetMinOrigin().Z, GetMinOrigin().Z);
         } 
         
-        Rotation = newRot;
         Position = newPos;
 
-        if (Position.IsEqualApprox(EndXform.Origin)) { 
-            _setBack = true; 
-        }
-
-        if (Position.IsEqualApprox(StartXform.Origin) && _setBack) { 
-            _setBack = false; 
-
-            _firearm?.EmitSignal("TryChamber"); 
-        }
     }
 
     public void OnGrab(Interactable interactable, Interactor interactor) { 

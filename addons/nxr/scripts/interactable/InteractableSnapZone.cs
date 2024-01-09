@@ -3,7 +3,9 @@ using Godot.Collections;
 using NXR;
 using NXRInteractable;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 
 [GlobalClass]
@@ -18,8 +20,6 @@ public partial class InteractableSnapZone : Area3D
     [Export]
     private SnapMode _snapMode = SnapMode.OnEnter;
 
-    [Export]
-    private bool _sticky = false;
 
     [ExportGroup("Tween Settings")]
     [Export]
@@ -30,13 +30,18 @@ public partial class InteractableSnapZone : Area3D
     private Tween.TransitionType _transType;
 
 
-    [ExportGroup("Sticky Settings")]
+    [ExportGroup("Distance Settings")]
     [Export]
-    private float _breakDistance = 0.3f;
+    private float _snapDistance  = 0.08f;
+    [Export]
+    private float _breakDistance = 0.1f; 
 
-    protected Interactable _snappedInteractable = null;
-    protected Interactable _hoveredInteractable;
 
+    public Interactable _snappedInteractable = null;
+    public Interactable _hoveredInteractable;
+
+    public bool CanSnap = true;
+    public bool CanUnsnap = true;
     private Vector3 _snappedInitScale;
     private Interactor _lastInteractor;
 
@@ -51,8 +56,7 @@ public partial class InteractableSnapZone : Area3D
 
     public override void _Ready()
     {
-        AreaEntered += Entered;
-        AreaExited += Exited;
+        BodyEntered += Entered;
 
         foreach (Node3D child in GetChildren())
         {
@@ -60,49 +64,75 @@ public partial class InteractableSnapZone : Area3D
             {
                 _hoveredInteractable = (Interactable)child;
                 Snap(_hoveredInteractable);
-                return; 
+                return;
             }
         }
     }
 
     public override void _Process(double delta)
     {
-        if (_sticky && _hoveredInteractable != null)
+        if (_snapMode == SnapMode.Distance)
         {
-            _hoveredInteractable.GlobalTransform = GlobalTransform;
-            _snappedInteractable = _hoveredInteractable;
-        }
-
-        if (_snappedInteractable != null)
-        {
-            DistanceBreak();
+            if (_snappedInteractable == null && _hoveredInteractable != null)
+            {
+                DistanceSnap(_hoveredInteractable);
+            }
+            
+            if (_snappedInteractable != null)
+            {
+                _snappedInteractable.GlobalTransform = GlobalTransform;
+                DistanceBreak();
+            }
         }
     }
 
-    public virtual void Unsnap()
+    public virtual async void Unsnap(bool force = true)
     {
         if (_snappedInteractable == null) return;
+
+        if (CanUnsnap == false && !force) return;
+
+
+        if (_snappedInteractable.IsInsideTree())
+        {
+            _snappedInteractable.Reparent(_snappedInteractable.InitParent);
+        }
+
         Interactable interactable = _snappedInteractable;
 
-        _snappedInteractable = null;
-        _hoveredInteractable = null;
-
         interactable.Freeze = interactable.InitFreeze;
-        interactable.Reparent(interactable.InitParent, true);
         interactable.Owner = interactable.InitParent;
+
+        Disconnect(_snappedInteractable);
+        _snappedInteractable = null;
 
         EmitSignal("OnUnSnap");
     }
 
     public virtual void Snap(Interactable interactable)
     {
-
-
+        if (!interactable.IsInsideTree()) return;
 
         Connect(interactable);
 
         _snappedInteractable = interactable;
-        interactable.Reparent(this, true);
+        _snappedInteractable.Freeze = true;
+
+        if (interactable.IsInsideTree())
+        {
+            _snappedInteractable.Reparent(this);
+        }
+
+        if (_snapMode != SnapMode.Distance ) {
+            SnapTween();
+        }
+
+        EmitSignal("OnSnap", interactable);
+    }
+
+    private void SnapTween()
+    {
+        if (_snapMode == SnapMode.Distance) return;
 
         tween = GetTree().CreateTween();
 
@@ -111,60 +141,31 @@ public partial class InteractableSnapZone : Area3D
         tween.SetTrans(_transType);
         tween.TweenProperty(_snappedInteractable, "position", Vector3.Zero, _tweenTime);
         tween.TweenProperty(_snappedInteractable, "rotation", Vector3.Zero, _tweenTime);
-
-        _snappedInteractable.Freeze = true;
-        EmitSignal("OnSnap", interactable);
     }
 
     private void Entered(Node3D body)
     {
-        if (!Util.NodeIs(body, typeof(Interactor)) || _snappedInteractable != null) return;
 
-        Interactor interactor = (Interactor)body;
+        if (!CanSnap) return;
 
-        // return if not grabbing 
-        if (interactor._grabbedInteractable == null || _hoveredInteractable != null) return;
+        if (!Util.NodeIs(body, typeof(Interactable)) || _snappedInteractable != null) return;
+
+        if (Util.NodeIs(body.GetParent(), typeof(InteractableSnapZone))) return;
 
 
-        // return if parent is type interactable 
-        if (Util.NodeIs(interactor._grabbedInteractable.Owner, typeof(Interactable))) return;
+        Interactable hovered = (Interactable)body;
 
-        // return if grabbed itneractable is a child of a snapzone 
-        if (Util.NodeIs(interactor._grabbedInteractable.GetParent(), typeof(InteractableSnapZone))) return;
+        if (!hovered.IsGrabbed()) return;
 
-        // return if no grab or parent is the grabbed interatable
-        if (interactor._grabbedInteractable == null || GetParent() == interactor._grabbedInteractable) return;
+        if (!InGroup(hovered)) return;
 
-        Interactable hovered = (Interactable)interactor._grabbedInteractable;
-
-        bool allowed = false;
-        if (AllowedGroups != null)
-        {
-            foreach (String group in hovered.GetGroups())
-            {
-                if (AllowedGroups.Contains(group))
-                {
-                    allowed = true;
-                }
-            }
-
-        }
-        else
-        {
-            allowed = true;
-        }
-        if (!allowed) return;
-
-        _hoveredInteractable = (Interactable)interactor._grabbedInteractable;
-
+        _hoveredInteractable = (Interactable)body;
         Connect(_hoveredInteractable);
 
         if (_snapMode == SnapMode.OnEnter)
         {
-            if (!_sticky)
-            {
-                _hoveredInteractable.FullDrop();
-            }
+           
+            _hoveredInteractable.FullDrop();
 
             Snap(_hoveredInteractable);
         }
@@ -172,12 +173,13 @@ public partial class InteractableSnapZone : Area3D
 
     protected void DistanceBreak()
     {
-        if (_snappedInteractable == null) return;
+
+        if (_snappedInteractable == null || !CanUnsnap) return;
+
 
         if (!_snappedInteractable.IsGrabbed()) return;
 
         Interactor interactor = null;
-
         if (_snappedInteractable.GetPrimaryInteractor() != null)
         {
             interactor = _snappedInteractable.GetPrimaryInteractor();
@@ -187,31 +189,36 @@ public partial class InteractableSnapZone : Area3D
             interactor = _snappedInteractable.GetSecondaryInteractor();
         }
 
-        float distance = interactor.GlobalPosition.DistanceTo(GlobalPosition);
-
+        float distance = interactor.GlobalPosition.DistanceTo(_snappedInteractable.GlobalPosition);
         if (distance > _breakDistance)
         {
             Unsnap();
+            return; 
         }
     }
-    public void Exited(Node3D area)
+
+    protected void DistanceSnap(Interactable interactable)
     {
-        if (_hoveredInteractable == null) return;
+
+        if (_snappedInteractable != null) return;
 
 
-        if (area == _hoveredInteractable.PrimaryInteractor || area == _hoveredInteractable.SecondaryInteractor)
+        if (!interactable.IsGrabbed()) return;
+
+        Interactor interactor = null;
+        if (interactable.GetPrimaryInteractor() != null)
         {
-            Disconnect((Interactable)_hoveredInteractable);
+            interactor = interactable.GetPrimaryInteractor();
+        }
+        else if (interactable.GetSecondaryInteractor() != null)
+        {
+            interactor = interactable.GetSecondaryInteractor();
         }
 
-        if (area == _hoveredInteractable.PrimaryInteractor)
+        float distance = interactor.GlobalPosition.DistanceTo(GlobalPosition);
+        if (distance < _snapDistance)
         {
-            _hoveredInteractable = null;
-
-            if (_sticky && _snappedInteractable != null)
-            {
-                Unsnap();
-            }
+            Snap(interactable);
         }
     }
 
@@ -225,7 +232,6 @@ public partial class InteractableSnapZone : Area3D
 
     private void OnGrabbed(Interactable interactable, Interactor interactor)
     {
-
         if (IsInstanceValid(tween) && tween.IsRunning())
         {
             tween.Stop();
@@ -235,16 +241,31 @@ public partial class InteractableSnapZone : Area3D
         {
             return;
         }
+       
+        Disconnect(interactable);
+    }
 
-        if (!_sticky)
+
+    private bool InGroup(Node3D interactable)
+    {
+        bool allowed = false;
+
+        if (AllowedGroups != null)
         {
-            Unsnap();
+            foreach (String group in interactable.GetGroups())
+            {
+                if (AllowedGroups.Contains(group))
+                {
+                    allowed = true;
+                }
+            }
+        }
+        else
+        {
+            allowed = true;
         }
 
-        if (_snapMode != SnapMode.OnDrop)
-        {
-            Disconnect(interactable);
-        }
+        return allowed;
     }
 
     private void Connect(Interactable interactable)
@@ -282,4 +303,5 @@ public partial class InteractableSnapZone : Area3D
             interactable.Disconnect("OnGrabbed", Callable.From(grabAction));
         }
     }
+
 }

@@ -43,7 +43,7 @@ public partial class FirearmBulletZoneQueue : Node3D
 
 	private void OnFire()
 	{
-		if (GetSorted().Last() != null)
+		if (GetSorted().Count > 0 && GetSorted().Last() != null)
 		{
 			GetSorted().Last().Bullet.Spent = true;
 		}

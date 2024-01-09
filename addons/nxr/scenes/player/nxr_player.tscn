@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://ctrtq0t2fqwtr"]
+[gd_scene load_steps=12 format=3 uid="uid://ctrtq0t2fqwtr"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/player/Player.cs" id="1_rc1uy"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/core/Origin.cs" id="2_3x8s4"]
+[ext_resource type="Resource" uid="uid://dqooh1vsmo8b8" path="res://addons/nxr/resources/default_player_settings.tres" id="2_775an"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/core/Controller.cs" id="3_ub7va"]
 [ext_resource type="PackedScene" uid="uid://8ap3o7qw7wri" path="res://addons/nxr/scenes/ui/UIPointer.tscn" id="4_2rouu"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/Interactor.cs" id="4_480fq"]
@@ -9,20 +10,33 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/player/components/PlayerTurn.cs" id="6_ias0r"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/player/components/PlayerWalk.cs" id="7_tckao"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_oscbt"]
-radius = 0.0935412
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t7fgb"]
+no_depth_test = true
+shading_mode = 0
+albedo_color = Color(0.152941, 1, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tyjap"]
+size = Vector3(0.109394, 0.180049, 1.84167)
 
 [node name="NXRPlayer" type="CharacterBody3D" node_paths=PackedStringArray("_leftController", "_rightController", "_xrOrigin")]
 collision_layer = 2
 floor_stop_on_slope = false
 floor_snap_length = 0.0
 script = ExtResource("1_rc1uy")
+PlayerSettings = ExtResource("2_775an")
 _dominantHand = 1
 _leftController = NodePath("XROrigin3D/LeftController")
 _rightController = NodePath("XROrigin3D/RightController")
 _xrOrigin = NodePath("XROrigin3D")
-_stepHeight = 0.66
-_stepSmoothing = 0.4
+_stepSmoothing = 0.3
+
+[node name="PlayerWalk" type="Node" parent="."]
+script = ExtResource("7_tckao")
+_walkSpeed = 40.0
+
+[node name="PlayerTurn" type="Node" parent="."]
+script = ExtResource("6_ias0r")
+_smoothTurnSpeed = 180.0
 
 [node name="XROrigin3D" type="XROrigin3D" parent="."]
 current = true
@@ -44,40 +58,42 @@ script = ExtResource("3_ub7va")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0218715, -0.0386385)
 _controller = NodePath("..")
 
+[node name="CSGSphere3D" type="CSGSphere3D" parent="XROrigin3D/RightController"]
+visible = false
+material_override = SubResource("StandardMaterial3D_t7fgb")
+radius = 0.0232934
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+cull_mask = 1048559
+current = true
+
 [node name="LeftInteractor" type="Area3D" parent="XROrigin3D" node_paths=PackedStringArray("Controller")]
 collision_mask = 9
 script = ExtResource("4_480fq")
 Controller = NodePath("../LeftController")
-_smoothing = 0.2
+_smoothing = 25.0
+
+[node name="PhysicsHand" parent="XROrigin3D/LeftInteractor" node_paths=PackedStringArray("Controller") instance=ExtResource("5_utiyv")]
+transform = Transform3D(-0.96279, 0.131946, -0.235851, 0.0982031, 0.983868, 0.149535, -0.251777, -0.12081, 0.960215, 0, -0.048, 0.00305932)
+Controller = NodePath("../../LeftController")
+_blendTime = 0.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/LeftInteractor"]
-shape = SubResource("SphereShape3D_oscbt")
-
-[node name="NXRHand" parent="XROrigin3D/LeftInteractor" node_paths=PackedStringArray("Controller") instance=ExtResource("5_utiyv")]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0228407, 0.135899)
-Controller = NodePath("../../LeftController")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.729379)
+shape = SubResource("BoxShape3D_tyjap")
 
 [node name="RightInteractor" type="Area3D" parent="XROrigin3D" node_paths=PackedStringArray("Controller")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00305932)
 collision_mask = 9
 script = ExtResource("4_480fq")
 Controller = NodePath("../RightController")
-_smoothing = 0.2
-metadata/_edit_group_ = true
+_smoothing = 25.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/RightInteractor"]
-shape = SubResource("SphereShape3D_oscbt")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.729379)
+shape = SubResource("BoxShape3D_tyjap")
 
-[node name="NXRHand" parent="XROrigin3D/RightInteractor" node_paths=PackedStringArray("Controller") instance=ExtResource("5_utiyv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0228407, 0.135899)
+[node name="HandRight" parent="XROrigin3D/RightInteractor" node_paths=PackedStringArray("Controller") instance=ExtResource("5_utiyv")]
+transform = Transform3D(0.96266, -0.132707, 0.235956, 0.0989945, 0.983804, 0.149432, -0.251965, -0.120494, 0.960206, 0, -0.048, 0)
 Controller = NodePath("../../RightController")
-
-[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
-current = true
-
-[node name="PlayerTurn" type="Node" parent="."]
-script = ExtResource("6_ias0r")
-_rotationMode = 1
-_smoothTurnSpeed = 180.0
-
-[node name="PlayerWalk" type="Node" parent="."]
-script = ExtResource("7_tckao")
+_blendTime = 0.0

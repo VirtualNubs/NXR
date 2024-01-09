@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dtl5jyfgg31ue"
 path.s3tc="res://.godot/imported/Boomstick_normal.png-2b9cbcf40a57024b1e7f98f75181571f.s3tc.ctex"
+path.etc2="res://.godot/imported/Boomstick_normal.png-2b9cbcf40a57024b1e7f98f75181571f.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/models/guns/Double_Barrel_Shotgun/Boomstick_normal.png"
-dest_files=["res://.godot/imported/Boomstick_normal.png-2b9cbcf40a57024b1e7f98f75181571f.s3tc.ctex"]
+dest_files=["res://.godot/imported/Boomstick_normal.png-2b9cbcf40a57024b1e7f98f75181571f.s3tc.ctex", "res://.godot/imported/Boomstick_normal.png-2b9cbcf40a57024b1e7f98f75181571f.etc2.ctex"]
 
 [params]
 

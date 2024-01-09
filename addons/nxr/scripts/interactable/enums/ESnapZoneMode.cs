@@ -7,4 +7,5 @@ public enum SnapMode
 {
     OnEnter, 
     OnDrop, 
+    Distance, 
 }

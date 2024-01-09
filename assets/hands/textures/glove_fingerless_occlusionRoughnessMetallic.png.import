@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://d2iocwfr47kqp"
 path.s3tc="res://.godot/imported/glove_fingerless_occlusionRoughnessMetallic.png-3b75c5c5c4a23a6e1ae1d1195de4a094.s3tc.ctex"
+path.etc2="res://.godot/imported/glove_fingerless_occlusionRoughnessMetallic.png-3b75c5c5c4a23a6e1ae1d1195de4a094.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/hands/textures/glove_fingerless_occlusionRoughnessMetallic.png"
-dest_files=["res://.godot/imported/glove_fingerless_occlusionRoughnessMetallic.png-3b75c5c5c4a23a6e1ae1d1195de4a094.s3tc.ctex"]
+dest_files=["res://.godot/imported/glove_fingerless_occlusionRoughnessMetallic.png-3b75c5c5c4a23a6e1ae1d1195de4a094.s3tc.ctex", "res://.godot/imported/glove_fingerless_occlusionRoughnessMetallic.png-3b75c5c5c4a23a6e1ae1d1195de4a094.etc2.ctex"]
 
 [params]
 

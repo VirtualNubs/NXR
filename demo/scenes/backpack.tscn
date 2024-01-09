@@ -1,0 +1,44 @@
+[gd_scene load_steps=6 format=3 uid="uid://cruglw88e4scn"]
+
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/Interactable.cs" id="1_per80"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/InteractableFloatArea.cs" id="2_q6bx8"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="3_ie327"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_4j2va"]
+radius = 0.0820733
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x3s55"]
+size = Vector3(0.199265, 0.378147, 0.340658)
+
+[node name="Backpack" type="RigidBody3D"]
+collision_layer = 8
+freeze = true
+script = ExtResource("1_per80")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.110663, 0)
+shape = SubResource("SphereShape3D_4j2va")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.195962, 0)
+size = Vector3(0.184676, 0.404266, 0.380918)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0226431, -0.195962, 0)
+operation = 2
+size = Vector3(0.184676, 0.354234, 0.324648)
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_mask = 9
+script = ExtResource("2_q6bx8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.020929, -0.202385, 0)
+shape = SubResource("BoxShape3D_x3s55")
+
+[node name="InteractableGrabKinematic" type="Node" parent="."]
+script = ExtResource("3_ie327")
+_percise = true

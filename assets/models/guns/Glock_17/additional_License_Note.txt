@@ -1,0 +1,16 @@
+	Glock 17
+
+	Co-Author: DigitalN8m4r3 aka Miodrag Sejic
+	Release Date: October 24, 2023
+
+	This model was edited by DigitalN8m4r3 for NXR.
+	It`s Mesh was edited and it`s UV unwrapped
+	and textured inside Blender3D and Substance Painter
+			------------------------------
+
+	License: (Creative Commons Zero, CC0)
+	http://creativecommons.org/publicdomain/zero/1.0/
+
+	This content is free to use in personal, educational and commercial projects.
+
+			------------------------------

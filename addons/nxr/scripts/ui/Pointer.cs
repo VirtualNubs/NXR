@@ -46,8 +46,8 @@ public partial class Pointer : RayCast3D
 			
 			curve.EndPoint = TargetPosition; 
 			curve.MidPoint.Z = TargetPosition.Z / 2; 
-			curve.MidPoint.X = Mathf.Lerp(curve.MidPoint.X, _controller.GetLocalVelocity().X * _velocityStrength, 0.2f); 
-			curve.MidPoint.Y = Mathf.Lerp(curve.MidPoint.Y, _controller.GetLocalVelocity().Y * _velocityStrength, 0.2f); 
+			curve.MidPoint.X = Mathf.Lerp(curve.MidPoint.X, 0, (float)delta); 
+			curve.MidPoint.Y = Mathf.Lerp(curve.MidPoint.Y, 0, (float)delta); 
 		} 
 
 		if (_hitting_gui) { 
@@ -73,8 +73,10 @@ public partial class Pointer : RayCast3D
 		CollisionShape3D shape = (CollisionShape3D)collider.GetChild(1); 
 		Vector3 shapeSize = (Vector3)shape.Shape.Get("size");  
 		Vector3 localPoint = collider.ToLocal(GetCollisionPoint()); 
-		localPoint /= shapeSize; 
+		localPoint /= new Vector3(-shapeSize.X, shapeSize.Y, shapeSize.Z); 
 		localPoint += new Vector3(0.5f, -0.5f, 0f); 
+
+		GD.Print(localPoint); 
 
 		Vector2 viewportPoint = new Vector2(localPoint.X, -localPoint.Y) * new Vector2(vp.Size.X, vp.Size.Y); 
 
