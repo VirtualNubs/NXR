@@ -1,4 +1,4 @@
-[gd_scene load_steps=97 format=3 uid="uid://de5mtyewlytyu"]
+[gd_scene load_steps=102 format=3 uid="uid://de5mtyewlytyu"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/player/PlayerSpawn.cs" id="1_b3yje"]
 [ext_resource type="Texture2D" uid="uid://5oork2oun5d4" path="res://assets/textures/EveningSkyHDRI017B_4K-HDR.exr" id="2_ub05x"]
@@ -37,6 +37,7 @@
 [ext_resource type="Script" path="res://demo/scripts/killhouse/section.gd" id="28_v6jmc"]
 [ext_resource type="PackedScene" uid="uid://beljd4s52kfpr" path="res://demo/scenes/killhouse/door.tscn" id="30_pisth"]
 [ext_resource type="AudioStream" uid="uid://p1x7lrb2chux" path="res://assets/audio/sfx/ambience/range_ambience.ogg" id="30_uk2gg"]
+[ext_resource type="PackedScene" uid="uid://c47iwb4c6irhj" path="res://demo/scenes/ui/ui_settings.tscn" id="38_t5ba3"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_fohs8"]
 panorama = ExtResource("2_ub05x")
@@ -695,10 +696,24 @@ shadow_mesh = SubResource("ArrayMesh_uft06")
 [sub_resource type="BoxShape3D" id="BoxShape3D_xpbsl"]
 size = Vector3(1, 2.30257, 1.68077)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_byyyh"]
+size = Vector3(1.00757, 1, 0.0302734)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_3dao8"]
+viewport_path = NodePath("Settings/StaticBody3D/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fj1th"]
+resource_local_to_scene = true
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_3dao8")
+
+[sub_resource type="QuadMesh" id="QuadMesh_qpu15"]
+resource_local_to_scene = true
+
 [node name="Level" type="Node3D"]
 
 [node name="PlayerSpawn" type="Marker3D" parent="."]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 10.0552, 0, -1.12496)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 9.07534, 0, -5.57958)
 script = ExtResource("1_b3yje")
 _player = ExtResource("9_sulpo")
 
@@ -1267,15 +1282,19 @@ script = ExtResource("28_v6jmc")
 door = NodePath("Door2")
 
 [node name="Target" parent="Geometry/Killhouse/Section3" instance=ExtResource("18_ytwgt")]
-transform = Transform3D(-0.970547, 0, 0.240906, 0, 1, 0, -0.240906, 0, -0.970547, -8.92827, 2.43147, -9.86855)
+transform = Transform3D(-0.873337, 0, 0.487113, 0, 1, 0, -0.487113, 0, -0.873337, -9.05038, 2.62266, -9.37661)
 one_shot = true
 
 [node name="Target4" parent="Geometry/Killhouse/Section3" instance=ExtResource("18_ytwgt")]
-transform = Transform3D(0.999259, 0, -0.0384409, 0, 1, 0, 0.0384409, 0, 0.999259, -6.24517, 2.6864, -9.16201)
+transform = Transform3D(0.997132, 0, 0.0756565, 0, 1, 0, -0.0756565, 0, 0.997132, -5.8567, 2.64653, -9.889)
+one_shot = true
+
+[node name="Target5" parent="Geometry/Killhouse/Section3" instance=ExtResource("18_ytwgt")]
+transform = Transform3D(0.995285, 0, -0.0969756, 0, 1, 0, 0.0969756, 0, 0.995285, -6.9767, 2.64653, -7.49648)
 one_shot = true
 
 [node name="Target2" parent="Geometry/Killhouse/Section3" instance=ExtResource("18_ytwgt")]
-transform = Transform3D(-0.999621, 0, 0.0274856, 0, 1, 0, -0.0274856, 0, -0.999621, -14.5272, 2.40175, -10.3239)
+transform = Transform3D(-0.748064, 0, -0.663625, 0, 1, 0, 0.663625, 0, -0.748064, -14.5473, 2.63208, -9.59321)
 one_shot = true
 
 [node name="Target3" parent="Geometry/Killhouse/Section3" instance=ExtResource("18_ytwgt")]
@@ -1330,6 +1349,25 @@ one_shot = true
 stream = ExtResource("30_uk2gg")
 volume_db = -20.097
 autoplay = true
+
+[node name="Settings" type="Node3D" parent="."]
+transform = Transform3D(5.96046e-08, 0, -1, 0, 1, 0, 1, 0, 5.96046e-08, 7.92583, 1.47263, -5.79964)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Settings"]
+transform = Transform3D(1.55, 0, 0, 0, 1.55, 0, 0, 0, 1.55, 0, -0.283471, 0)
+
+[node name="SubViewport" type="SubViewport" parent="Settings/StaticBody3D"]
+
+[node name="ui_settings" parent="Settings/StaticBody3D/SubViewport" instance=ExtResource("38_t5ba3")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Settings/StaticBody3D"]
+shape = SubResource("BoxShape3D_byyyh")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Settings/StaticBody3D"]
+transform = Transform3D(-1, 0, -1.19209e-07, 0, 1, 0, 1.19209e-07, 0, -1, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_fj1th")
+mesh = SubResource("QuadMesh_qpu15")
+skeleton = NodePath("../..")
 
 [connection signal="body_entered" from="Geometry/Killhouse/StartArea" to="Geometry/Killhouse" method="_on_start_area_body_entered"]
 [connection signal="body_entered" from="Geometry/Killhouse/EndArea" to="Geometry/Killhouse" method="_on_end_area_body_entered"]

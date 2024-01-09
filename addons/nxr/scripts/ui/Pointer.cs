@@ -73,8 +73,10 @@ public partial class Pointer : RayCast3D
 		CollisionShape3D shape = (CollisionShape3D)collider.GetChild(1); 
 		Vector3 shapeSize = (Vector3)shape.Shape.Get("size");  
 		Vector3 localPoint = collider.ToLocal(GetCollisionPoint()); 
-		localPoint /= shapeSize; 
+		localPoint /= new Vector3(-shapeSize.X, shapeSize.Y, shapeSize.Z); 
 		localPoint += new Vector3(0.5f, -0.5f, 0f); 
+
+		GD.Print(localPoint); 
 
 		Vector2 viewportPoint = new Vector2(localPoint.X, -localPoint.Y) * new Vector2(vp.Size.X, vp.Size.Y); 
 

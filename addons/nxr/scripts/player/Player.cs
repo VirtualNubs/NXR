@@ -7,12 +7,15 @@ namespace NXRPlayer;
 
 [GlobalClass]
 public partial class Player : CharacterBody3D
-{
+{   
+    [Export]
+    public PlayerSettings PlayerSettings { get; set; } 
+
     [Export]
     private float _playerHeight = 1.8f; 
 
     [Export]
-    private DominantHand _dominantHand = DominantHand.Left;
+    public DominantHand _dominantHand = DominantHand.Left;
 
     [Export]
     private Controller _leftController;
@@ -60,6 +63,11 @@ public partial class Player : CharacterBody3D
 
     public override void _Ready()
     {
+
+        if (PlayerSettings == null) { 
+            PlayerSettings = new PlayerSettings(); 
+        }
+
         if (GetViewport().GetCamera3D().GetClass() == "XRCamera3D")
         {
             _camera = GetViewport().GetCamera3D(); 
@@ -135,13 +143,13 @@ public partial class Player : CharacterBody3D
 
     public Controller GetDominantController()
     {
-        if (_dominantHand == DominantHand.Left) return _leftController;
+        if (PlayerSettings.DominantHand == DominantHand.Left) return _leftController;
         return _rightController; 
     }
 
     public Controller GetSecondaryController()
     {
-        if (_dominantHand == DominantHand.Left) return _rightController;
+        if (PlayerSettings.DominantHand== DominantHand.Left) return _rightController;
         return _leftController;
     }
 
@@ -208,6 +216,10 @@ public partial class Player : CharacterBody3D
 
     public void SetPlayerHeight() { 
         _playerHeight = GetCamera().Position.Y; 
+    }
+
+    public void SetDominantHand(DominantHand hand) { 
+        _dominantHand = hand; 
     }
 
     private void ConfigureCollisionShapes()
