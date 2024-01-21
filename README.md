@@ -1,6 +1,6 @@
 # NXR 
 ### C# XR toolkit for Godot 4!
-- Firarm system/behaviors
+- Firearm system/behaviors
 - Player system/behaviors
 - Snap-zones
 - Interactables
