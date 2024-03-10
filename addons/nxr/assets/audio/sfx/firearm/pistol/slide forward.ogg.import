@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bb8h2o6wbceqb"
+path="res://.godot/imported/slide forward.ogg-1b9d591a025a391403d585019a25525b.oggvorbisstr"
+
+[deps]
+
+source_file="res://addons/nxr/assets/audio/sfx/firearm/pistol/slide forward.ogg"
+dest_files=["res://.godot/imported/slide forward.ogg-1b9d591a025a391403d585019a25525b.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

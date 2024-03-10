@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/staging/Stage.cs" id="1_qe5p4"]
 [ext_resource type="Script" path="res://demo/scripts/loading.gd" id="2_csdmv"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/core/Origin.cs" id="3_8hrp4"]
-[ext_resource type="Texture2D" uid="uid://bs2m4hicq8kxp" path="res://assets/textures/reimagined-vertical-light.svg" id="3_vnnio"]
+[ext_resource type="Texture2D" uid="uid://bs2m4hicq8kxp" path="res://addons/nxr/assets/textures/reimagined-vertical-light.svg" id="3_vnnio"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kwlqx"]
 transparency = 1
