@@ -1,0 +1,112 @@
+[gd_scene load_steps=15 format=3 uid="uid://co8rubctqg8md"]
+
+[ext_resource type="Script" path="res://addons/nxr/scripts/player/PlayerSpawn.cs" id="1_qwo3m"]
+[ext_resource type="Texture2D" uid="uid://ngcd0scm03r1" path="res://demo2/assets/kenney_prototype-textures/PNG/Dark/texture_01.png" id="2_d1tc8"]
+[ext_resource type="Texture2D" uid="uid://1v12rj5j7b10" path="res://demo2/assets/kenney_prototype-textures/PNG/Light/texture_03.png" id="3_wqwil"]
+[ext_resource type="Texture2D" uid="uid://d27vock784vu4" path="res://demo2/assets/kenney_prototype-textures/PNG/Orange/texture_05.png" id="4_hui7r"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ibqk"]
+albedo_texture = ExtResource("2_d1tc8")
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3vc31"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_sgbto"]
+material = SubResource("StandardMaterial3D_3vc31")
+size = Vector2(100, 100)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yc7it"]
+size = Vector3(100.015, 0.566711, 100.016)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r2qb3"]
+albedo_texture = ExtResource("3_wqwil")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uuehb"]
+albedo_texture = ExtResource("4_hui7r")
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_d6aoa"]
+size = Vector3(1, 2, 0.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3cdhc"]
+size = Vector3(1, 1.99762, 0.103271)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rr6bx"]
+size = Vector3(0.2, 0.06, 0.05)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wp1kr"]
+size = Vector3(0.200333, 0.0600739, 0.0509338)
+
+[node name="Demo2" type="Node3D"]
+
+[node name="PlayerSpawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 4.252)
+script = ExtResource("1_qwo3m")
+
+[node name="Environment" type="Node3D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="Sun" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 0.387532, 0.921856, 0, -0.921856, 0.387532, 98.0886, 51.2642, 0)
+metadata/_edit_lock_ = true
+
+[node name="Geometry" type="Node3D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="Terrain" type="Node3D" parent="Geometry"]
+metadata/_edit_lock_ = true
+
+[node name="Ground" type="StaticBody3D" parent="Geometry/Terrain"]
+metadata/_edit_lock_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Geometry/Terrain/Ground"]
+material_override = SubResource("StandardMaterial3D_0ibqk")
+mesh = SubResource("PlaneMesh_sgbto")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Terrain/Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00492096, -0.277618, -0.00419998)
+shape = SubResource("BoxShape3D_yc7it")
+metadata/_edit_lock_ = true
+
+[node name="Door" type="Node3D" parent="Geometry"]
+metadata/_edit_lock_ = true
+
+[node name="DoorFrame" type="CSGBox3D" parent="Geometry/Door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00409985, 1.10452, 0.0024159)
+material_override = SubResource("StandardMaterial3D_r2qb3")
+size = Vector3(1.4, 2.2, 0.3)
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="Geometry/Door/DoorFrame"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00409985, -1.10452, -0.0024159)
+operation = 2
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Geometry/Door/DoorFrame/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.000579476)
+size = Vector3(1, 2, 0.35)
+
+[node name="Hinge" type="Node3D" parent="Geometry/Door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.49545, 1.08324, -0.146347)
+
+[node name="Door" type="StaticBody3D" parent="Geometry/Door/Hinge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.495, -0.0791252, 0.0491033)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Geometry/Door/Hinge/Door"]
+material_override = SubResource("StandardMaterial3D_uuehb")
+mesh = SubResource("BoxMesh_d6aoa")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Door/Hinge/Door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.000854492)
+shape = SubResource("BoxShape3D_3cdhc")
+
+[node name="Handle" type="StaticBody3D" parent="Geometry/Door/Hinge/Door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.33837, 0, 0.0775763)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Geometry/Door/Hinge/Door/Handle"]
+mesh = SubResource("BoxMesh_rr6bx")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Door/Hinge/Door/Handle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000144958, 0.000328064, 0.000778198)
+shape = SubResource("BoxShape3D_wp1kr")
