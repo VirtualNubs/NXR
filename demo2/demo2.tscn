@@ -1,9 +1,14 @@
-[gd_scene load_steps=15 format=3 uid="uid://co8rubctqg8md"]
+[gd_scene load_steps=20 format=3 uid="uid://co8rubctqg8md"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/player/PlayerSpawn.cs" id="1_qwo3m"]
+[ext_resource type="PackedScene" uid="uid://ctrtq0t2fqwtr" path="res://addons/nxr/scenes/player/nxr_player.tscn" id="2_14aq8"]
 [ext_resource type="Texture2D" uid="uid://ngcd0scm03r1" path="res://demo2/assets/kenney_prototype-textures/PNG/Dark/texture_01.png" id="2_d1tc8"]
 [ext_resource type="Texture2D" uid="uid://1v12rj5j7b10" path="res://demo2/assets/kenney_prototype-textures/PNG/Light/texture_03.png" id="3_wqwil"]
 [ext_resource type="Texture2D" uid="uid://d27vock784vu4" path="res://demo2/assets/kenney_prototype-textures/PNG/Orange/texture_05.png" id="4_hui7r"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/Interactable.cs" id="5_d3y3b"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="6_s5wb8"]
+[ext_resource type="PackedScene" uid="uid://ctltchlf2j2r4" path="res://addons/xr-simulator/XRSimulator.tscn" id="7_8c2jb"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="8_24u7y"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ibqk"]
 albedo_texture = ExtResource("2_d1tc8")
@@ -25,7 +30,6 @@ albedo_texture = ExtResource("3_wqwil")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uuehb"]
 albedo_texture = ExtResource("4_hui7r")
 uv1_triplanar = true
-uv1_world_triplanar = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_d6aoa"]
 size = Vector3(1, 2, 0.1)
@@ -33,17 +37,18 @@ size = Vector3(1, 2, 0.1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_3cdhc"]
 size = Vector3(1, 1.99762, 0.103271)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_ss58j"]
+size = Vector3(0.200562, 0.0585938, 0.0532837)
+
 [sub_resource type="BoxMesh" id="BoxMesh_rr6bx"]
 size = Vector3(0.2, 0.06, 0.05)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_wp1kr"]
-size = Vector3(0.200333, 0.0600739, 0.0509338)
 
 [node name="Demo2" type="Node3D"]
 
 [node name="PlayerSpawn" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 4.252)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 1.4343)
 script = ExtResource("1_qwo3m")
+_player = ExtResource("2_14aq8")
 
 [node name="Environment" type="Node3D" parent="."]
 metadata/_edit_lock_ = true
@@ -90,8 +95,15 @@ size = Vector3(1, 2, 0.35)
 [node name="Hinge" type="Node3D" parent="Geometry/Door"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.49545, 1.08324, -0.146347)
 
-[node name="Door" type="StaticBody3D" parent="Geometry/Door/Hinge"]
+[node name="Door" type="RigidBody3D" parent="Geometry/Door/Hinge" node_paths=PackedStringArray("PrimaryGrabPoint")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.495, -0.0791252, 0.0491033)
+freeze = true
+freeze_mode = 1
+script = ExtResource("5_d3y3b")
+PrimaryGrabPoint = NodePath("InteractableGrabPoint")
+
+[node name="InteractableGrab" type="Node" parent="Geometry/Door/Hinge/Door"]
+script = ExtResource("6_s5wb8")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Geometry/Door/Hinge/Door"]
 material_override = SubResource("StandardMaterial3D_uuehb")
@@ -101,12 +113,19 @@ mesh = SubResource("BoxMesh_d6aoa")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.000854492)
 shape = SubResource("BoxShape3D_3cdhc")
 
-[node name="Handle" type="StaticBody3D" parent="Geometry/Door/Hinge/Door"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.33837, 0, 0.0775763)
+[node name="InteractableGrabPoint" type="RigidBody3D" parent="Geometry/Door/Hinge/Door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.333842, 0.00365782, -0.0491033)
+freeze = true
+freeze_mode = 1
+script = ExtResource("8_24u7y")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Geometry/Door/Hinge/Door/Handle"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Door/Hinge/Door/InteractableGrabPoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00421143, -0.00292969, 0.125824)
+shape = SubResource("BoxShape3D_ss58j")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Geometry/Door/Hinge/Door/InteractableGrabPoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00452799, -0.00365782, 0.12668)
 mesh = SubResource("BoxMesh_rr6bx")
+skeleton = NodePath("")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Door/Hinge/Door/Handle"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000144958, 0.000328064, 0.000778198)
-shape = SubResource("BoxShape3D_wp1kr")
+[node name="XRSimulator" parent="." instance=ExtResource("7_8c2jb")]
