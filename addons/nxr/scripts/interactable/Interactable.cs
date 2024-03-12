@@ -62,14 +62,10 @@ public partial class Interactable : RigidBody3D
 
 
 	// grab point
-	[ExportGroup("Grab Points")]
-	[Export]
-	public Interactable PrimaryGrabPoint { set; get; }
-	[Export]
-	public Interactable SecondaryGrabPoint { set; get; }
-
-	public Transform3D PrimaryGrabPointOffset = new();
-	public Transform3D SecondaryGrabPointOffset = new();
+	public Node3D PrimaryGrabPoint;
+	public Node3D SecondaryGrabPoint;	
+	public Transform3D PrimaryGrabPointOffset = new(); 
+	public Transform3D SecondaryGrabPointOffset = new(); 
 
 	public Node3D InitParent = null; 
 
@@ -88,13 +84,15 @@ public partial class Interactable : RigidBody3D
 	public delegate void OnFullDroppedEventHandler();
 
 
-	public override void _Ready()
-	{
-		InitParent = (Node3D)GetParent();
-		InitTransform = Transform;
-		InitFreeze = Freeze;
-		InitGlobalTransform = Transform;
-	}
+    public override void _Ready()
+    {
+		PrimaryGrabPoint  ??= this;
+        SecondaryGrabPoint  ??= this; 
+		InitParent = (Node3D)GetParent(); 
+		InitTransform = Transform; 
+		InitFreeze = Freeze; 
+		InitGlobalTransform = Transform; 
+    }
 
     public void Grab(Interactor interactor)
 	{
