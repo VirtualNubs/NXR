@@ -57,16 +57,10 @@ public partial class InteractableGrab : Node
             _initLinearDamp = Interactable.LinearDamp;
             _initAngularDamp = Interactable.AngularDamp;
         }
-        else
-        {
-            GD.PrintErr($"{Name}: NXRInteractableGrab has no Interactable target. {GetParent().Name} is not an Interactable");
-        }
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        if (Interactable == null) { return; }
-
         if (_usePhysics)
         {
             PhysicsGrab();
