@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://co8rubctqg8md"]
+[gd_scene load_steps=23 format=3 uid="uid://ec50c21n35ve"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/player/PlayerSpawn.cs" id="1_qwo3m"]
 [ext_resource type="Texture2D" uid="uid://ngcd0scm03r1" path="res://demo2/assets/kenney_prototype-textures/PNG/Dark/texture_01.png" id="2_d1tc8"]
@@ -86,12 +86,6 @@ metadata/_edit_lock_ = true
 
 [node name="Door2" type="StaticBody3D" parent="Geometry"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.79294, 0, 0)
-
-[node name="Label3D" type="Label3D" parent="Geometry/Door2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.63915, -0.00518161)
-billboard = 2
-text = "Door Using
-JoltHingeJoint3D"
 
 [node name="DoorFrame" type="CSGBox3D" parent="Geometry/Door2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00409985, 1.10452, 0.0024159)
