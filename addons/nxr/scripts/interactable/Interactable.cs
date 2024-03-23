@@ -6,106 +6,97 @@ namespace NXRInteractable;
 [GlobalClass]
 public partial class Interactable : RigidBody3D
 {
-	[Export]
-	public bool Disabled = false; 
 
-
-	[Export]
-	public float Priority = 1; 
-	
-	[Export]
-	public HoldMode HoldMode = HoldMode.Hold;
-
+	#region Exported: 
+	[Export] public bool Disabled { get; set; } = false;
+	[Export(PropertyHint.Range, "0.1, 100")] public float Priority { get; set; } = 1;
+	[Export] public HoldMode HoldMode { get; set; } = HoldMode.Hold;
 
 
 	[ExportGroup("Grab Settings")]
-	
-	[Export]
-	public float MaxGrabDistance = 0.5f;
-	[Export]
-	public bool DistanceGrabEnabled = false; 
-	[Export]
-	public float MaxDistanceGrab = 4; 
+	[Export] public bool DistanceGrabEnabled { get; set; } = false;
+	[Export] public float DistanceGrabReach { get; set; } = 4;
+	[Export] public float GrabBreakDistance { get; set; } = 0.5f;
 
 
-	[ExportGroup("Actions")]
-	[Export]
-	public string GrabAction = "grip_click";
+	[ExportGroup("Action Settings")]
+	[Export] public string GrabAction { get; set; } = "grip_click";
+	[Export] public string DropAction { get; set; } = "grip_click";
 
-	
-	[ExportGroup("DropBehaviour")]
-	[Export]
-	private bool _switchOnDrop = false;
+
+	[ExportGroup("Drop Settings")]
+	[Export] private bool _switchOnDrop = false;
+
+
+	[ExportGroup("Haptic Settings")]
+	[Export(PropertyHint.Range, "0.0, 1")] private float _grabPulse = 0.1f;
+	[Export(PropertyHint.Range, "0.0, 1")] private float _dropPulse = 0.1f;
+
+
 	[ExportGroup("Offsets")]
-	[Export]
-	public Vector3 PositionOffset = new Vector3();
-	[Export]
-	public Vector3 RotationOffset = new Vector3();
+	[Export] public Vector3 PositionOffset { get; set; } = new Vector3();
+	[Export] public Vector3 RotationOffset { get; set; } = new Vector3();
+
+	#endregion
 
 
-
-	[ExportGroup("Haptics")]
-	[Export(PropertyHint.Range, "0.0, 1")]
-	private float _grabPulse = 0.1f;
-
-	[Export(PropertyHint.Range, "0.0, 1")]
-	private float _dropPulse = 0.1f;
-
-
-
-	public bool InitFreeze = false; 
-	public Transform3D InitTransform {set; get; } 
-	public Transform3D InitGlobalTransform {set; get; } 
+	#region Public: 
+	public Node3D InitParent { get; set; } = null;
+	public Transform3D InitTransform { set; get; }
+	public bool InitFreeze { get; set; } = false;
+	public Transform3D InitGlobalTransform { set; get; }
 	public Interactor PrimaryInteractor { set; get; }
 	public Interactor SecondaryInteractor { set; get; }
 
 
-
-	// grab point
 	public Node3D PrimaryGrabPoint;
-	public Node3D SecondaryGrabPoint;	
-	public Transform3D PrimaryGrabPointOffset = new(); 
-	public Transform3D SecondaryGrabPointOffset = new(); 
+	public Node3D SecondaryGrabPoint;
+	public Transform3D PrimaryGrabPointOffset = new();
+	public Transform3D SecondaryGrabPointOffset = new();
+	#endregion
 
-	public Node3D InitParent = null; 
 
-	private Transform3D _secondaryRelativeTransorm = new Transform3D();
-	private Transform3D _primaryRelativeTransform = new Transform3D();
+	#region Private: 
+	protected Transform3D _secondaryRelativeTransorm = new Transform3D();
+	protected Transform3D _primaryRelativeTransform = new Transform3D();
 	public Transform3D _primaryGrabTransorm = new Transform3D(); 
+	#endregion
 
 
-	[Signal]
-	public delegate void OnGrabbedEventHandler(Interactable interactable, Interactor interactor);
-
-	[Signal]
-	public delegate void OnDroppedEventHandler(Interactable interactable, Interactor interactor);
-
-	[Signal]
-	public delegate void OnFullDroppedEventHandler();
+	#region Signals: 
+	[Signal] public delegate void OnGrabbedEventHandler(Interactable interactable, Interactor interactor);
+	[Signal] public delegate void OnDroppedEventHandler(Interactable interactable, Interactor interactor);
+	[Signal] public delegate void OnFullDroppedEventHandler();
+	[Signal] public delegate void StateUpdatedEventHandler(PhysicsDirectBodyState3D state3D);
+	#endregion
 
 
-    public override void _Ready()
-    {
-		PrimaryGrabPoint  ??= this;
-        SecondaryGrabPoint  ??= this; 
-		InitParent = (Node3D)GetParent(); 
-		InitTransform = Transform; 
-		InitFreeze = Freeze; 
-		InitGlobalTransform = Transform; 
-    }
-
-    public void Grab(Interactor interactor)
+	public override void _Ready()
 	{
-		if (Disabled) return; 
+		InitParent = (Node3D)GetParent();
+		InitFreeze = Freeze;
+		PrimaryGrabPoint ??= this;
+		SecondaryGrabPoint ??= this;
+		InitTransform = Transform;
+		InitGlobalTransform = Transform;
+	}
 
-		interactor.GrabbedInteractable = this; 
+	public override void _IntegrateForces(PhysicsDirectBodyState3D state)
+	{
+		EmitSignal("StateUpdated", state);
+	}
+
+	public void Grab(Interactor interactor)
+	{
+		if (Disabled) return;
+
+		interactor.GrabbedInteractable = this;
 
 		if (!IsInstanceValid(PrimaryInteractor))
 		{
 			PrimaryInteractor = interactor;
 			PrimaryInteractor.Controller.Pulse(0.5f, _grabPulse, 0.1);
 			_primaryRelativeTransform = interactor.GlobalTransform.AffineInverse() * GlobalTransform;
-			_primaryGrabTransorm = interactor.GlobalTransform; 
 		}
 		else
 		{
@@ -121,10 +112,11 @@ public partial class Interactable : RigidBody3D
 	public void SecondaryGrab(Interactor interactor)
 	{
 
+		if (Disabled) return;
 
 		if (!IsInstanceValid(SecondaryInteractor))
 		{
-			interactor.GrabbedInteractable = this; 
+			interactor.GrabbedInteractable = this;
 			SecondaryInteractor = interactor;
 			SecondaryInteractor.Controller.Pulse(0.5f, _grabPulse, 0.1);
 			_secondaryRelativeTransorm = SecondaryInteractor.GlobalTransform.AffineInverse() * GlobalTransform;
@@ -162,11 +154,12 @@ public partial class Interactable : RigidBody3D
 			}
 		}
 
-		
-		if (!IsGrabbed()) { 
-			EmitSignal("OnFullDropped"); 
+		if (!IsGrabbed())
+		{
+			Freeze = InitFreeze;
 			LinearVelocity = interactor.Controller.GetGlobalVelocity();
-			AngularVelocity = interactor.Controller.GetAngularVelocity(); 
+			AngularVelocity = interactor.Controller.GetAngularVelocity();
+			EmitSignal("OnFullDropped");
 		}
 	}
 
@@ -182,18 +175,22 @@ public partial class Interactable : RigidBody3D
 		}
 	}
 
-	public Interactor GetPrimaryInteractor() { 
-		if (PrimaryInteractor != null) { 
-			return PrimaryInteractor; 
+	public Interactor GetPrimaryInteractor()
+	{
+		if (PrimaryInteractor != null)
+		{
+			return PrimaryInteractor;
 		}
-		return null; 
+		return null;
 	}
 
-	public Interactor GetSecondaryInteractor() { 
-		if (SecondaryInteractor != null) { 
-			return SecondaryInteractor; 
+	public Interactor GetSecondaryInteractor()
+	{
+		if (SecondaryInteractor != null)
+		{
+			return SecondaryInteractor;
 		}
-		return null; 
+		return null;
 	}
 
 	public Transform3D GetPrimaryRelativeXform()
@@ -210,9 +207,9 @@ public partial class Interactable : RigidBody3D
 	{
 		Vector3 rotOffset = RotationOffset * (Vector3.One * (Mathf.Pi / 180));
 		Transform3D offsetTransform = (GlobalTransform * GlobalTransform.AffineInverse());
-		offsetTransform.Basis *= Basis.FromEuler(rotOffset);
 		offsetTransform = offsetTransform.TranslatedLocal(PositionOffset);
-		return offsetTransform;
+		offsetTransform.Basis *= Basis.FromEuler(rotOffset);
+		return offsetTransform.Orthonormalized();
 	}
 
 	public bool IsGrabbed()
@@ -220,8 +217,15 @@ public partial class Interactable : RigidBody3D
 		return IsInstanceValid(PrimaryInteractor) || IsInstanceValid(SecondaryInteractor);
 	}
 
-	public bool IsTwoHanded() { 
-		return IsInstanceValid(PrimaryInteractor) && IsInstanceValid(SecondaryInteractor); 
+	public bool IsTwoHanded()
+	{
+		return IsInstanceValid(PrimaryInteractor) && IsInstanceValid(SecondaryInteractor);
+	}
+
+	public void SetPhysicState(Vector3 linearVelocity, Vector3 angularVelocity, PhysicsDirectBodyState3D state)
+	{
+		state.LinearVelocity = linearVelocity;
+		state.AngularVelocity = angularVelocity;
 	}
 
 	public bool IsInteractable()
