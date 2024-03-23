@@ -11,11 +11,11 @@ public partial class InteractableGrab : Node
 
 
     [Export]
-    protected bool _percise = false;
+    private bool _percise = false;
 
     [ExportGroup("TwoHandSettings")]
     [Export]
-    protected bool _twoHanded = false;
+    private bool _twoHanded = false;
     [Export]
     private LookUpVector _lookUpVector = LookUpVector.PrimaryInteractor;
     [Export]
@@ -31,19 +31,19 @@ public partial class InteractableGrab : Node
     private bool _initFreezeState = false;
 
     public Interactable Interactable;
-    protected Transform3D _primaryXform = new();
+    private Transform3D _primaryXform = new();
 
 
     private Vector3 lVelocity = Vector3.Zero;
     private Vector3 aVelocity = Vector3.Zero;
 
     [Export]
-    protected float _rotationSmoothing = 5.0f;
+    private float _rotationSmoothing = 5.0f;
     [Export]
-    protected float _positionSmoothing = 5.0f;
+    private float _positionSmoothing = 5.0f;
 
-    protected float _positionDelta = 0.0f;
-    protected float _rotationDelta = 0.0f;
+    private float _positionDelta = 0.0f; 
+    private float _rotationDelta = 0.0f; 
 
     public override void _Ready()
     {
@@ -77,7 +77,7 @@ public partial class InteractableGrab : Node
         {
             Interactable.Freeze = !_usePhysics;
             Interactable.LinearVelocity = Vector3.Zero;
-            _positionDelta = 0.0f;
+            _positionDelta = 0.0f; 
             _rotationDelta = 0.0f;
         }
     }
@@ -100,7 +100,7 @@ public partial class InteractableGrab : Node
     public Transform3D TwoHandXform()
     {
 
-        Transform3D interactableXform = Interactable.GlobalTransform;
+        Transform3D interactableXform = Interactable.GlobalTransform; 
         Transform3D lookXform = Interactable.PrimaryInteractor.GlobalTransform;
         Transform3D secondaryXform = Interactable.SecondaryInteractor.GlobalTransform;
         Vector3 up = Interactable.GlobalTransform.Basis.Y + GetUpVector();
@@ -145,7 +145,7 @@ public partial class InteractableGrab : Node
 
     }
 
-    protected virtual void KinematicGrab(float delta)
+    private void KinematicGrab(float delta)
     {
         if (IsInstanceValid(Interactable.PrimaryInteractor))
         {
@@ -157,7 +157,7 @@ public partial class InteractableGrab : Node
             Basis newRot = (interactor.GlobalTransform.Basis * rotOffset).Orthonormalized();
 
             _rotationDelta = Mathf.Lerp(_rotationDelta, 1.0f, delta * _rotationSmoothing);
-            _positionDelta = Mathf.Lerp(_positionDelta, 1.0f, delta * _positionSmoothing);
+            _positionDelta = Mathf.Lerp(_positionDelta, 1.0f, delta * _positionSmoothing); 
 
             _primaryXform.Basis = Interactable.GlobalTransform.Basis.Orthonormalized().Slerp(newRot.Orthonormalized(), _rotationDelta);
             _primaryXform.Origin = Interactable.GlobalTransform.Origin.Slerp(newPos, _positionDelta);
