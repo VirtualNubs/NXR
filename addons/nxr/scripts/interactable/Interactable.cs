@@ -60,7 +60,8 @@ public partial class Interactable : RigidBody3D
 	public Interactor PrimaryInteractor { set; get; }
 	public Interactor SecondaryInteractor { set; get; }
 
-
+	public delegate void IntegrateForcesDelegate(PhysicsDirectBodyState3D state);
+	public IntegrateForcesDelegate IntegrateForces { set; get; }
 
 	// grab point
 	public Node3D PrimaryGrabPoint;
@@ -74,8 +75,6 @@ public partial class Interactable : RigidBody3D
 	private Transform3D _primaryRelativeTransform = new Transform3D();
 	public Transform3D _primaryGrabTransorm = new Transform3D(); 
 
-	public delegate void IntegrateForcesDelegate(PhysicsDirectBodyState3D state);
-	public IntegrateForcesDelegate IntegrateForces;
 
 	[Signal]
 	public delegate void OnGrabbedEventHandler(Interactable interactable, Interactor interactor);
