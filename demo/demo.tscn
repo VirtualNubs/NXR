@@ -1027,7 +1027,6 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -5.632
 freeze = true
 script = ExtResource("10_8x156")
 _scene = ExtResource("9_yb3sr")
-MaxGrabDistance = 2.0
 
 [node name="shotgun" type="Node3D" parent="Geometry/EquipArea/PumpGrabSpawn"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.346509)

@@ -1,81 +1,90 @@
 using System;
+using System.Runtime;
+using System.Security.Cryptography;
 using Godot;
-using NXRInteractable; 
+using NXR;
+using NXRInteractable;
 
 namespace NXRFirearm;
 
 [GlobalClass]
 public partial class Firearm : Interactable
 {
-    [Export]
-    private FireMode _fireMode = FireMode.Single; 
-    [Export]
-    private float _fireRate = 0.1f;
-    
 
-    [Export]
-    private bool _startChambered = false; 
-    [Export]
-    private bool _chamberOnFire = true; 
+    #region Exported: 
+    [Export] public FireMode FireMode { get; set; } = FireMode.Single;
+    [Export] private float _fireRate = 0.1f;
+
+    [Export] private bool _startChambered = false;
+    [Export] private bool _chamberOnFire = true;
+
+
+    [ExportGroup("Burst Settings")]
+    [Export] private int _burstAmount = 3;
+    [Export] private float _burstTime = 0.5f;
 
 
     [ExportGroup("TwoHanded Settings")]
-    [Export]
-    private float _recoilMultiplier = 0.3f;  
+    [Export] private float _recoilMultiplier = 0.3f;
 
     [ExportGroup("Recoil Settings")]
-    [Export]
-    private Vector3 _recoilKick = new Vector3(0, 0, 0.01f);
-    [Export]
-    private Vector3 _recoilRise = new Vector3(15, 0, 0);
-    [Export]
-    private float _kickRecoverSpeed = 0.1f;
-    [Export]
-    private float _riseRecoverSpeed = 0.1f;
+    [Export] private Vector3 _recoilKick = new Vector3(0, 0, 0.05f);
+    [Export] private Vector3 _recoilRise = new Vector3(15, 0, 0);
+    [Export] private float _recoilTimeToPeak = 0.01f;
+    [Export] private float _kickRecoverSpeed = .25f;
+    [Export] private float _riseRecoverSpeed = .25f;
+    [Export] private Curve _yCurve;
 
-    [Export]
-    private Curve _yCurve; 
-
-    public bool Chambered = false; 
-
-    private Vector3 _initPositionOffset; 
-    private Vector3 _initRotationOffset;
-    private Timer _fireTimer = new();
-    private int _shotCount = 0; 
 
     [ExportGroup("Haptic Settings")]
-    [Export]
-    private float _hapticStrength = 0.5f; 
+    [Export] private float _hapticStrength = 0.3f;
+    #endregion
 
 
-    public bool BlockFire; 
-
-    [Signal]
-    public delegate void OnFireEventHandler(); 
-
-    [Signal]
-    public delegate void OnChamberedEventHandler(); 
-
-    [Signal]
-    public delegate void TryChamberEventHandler(); 
-    
-    [Signal]
-    public delegate void TryEjectEventHandler(); 
+    #region Public: 
+    public bool Chambered { get; set; } = false;
+    public bool BlockFire { get; set; } = false;
+    #endregion
 
 
+    #region Private: 
+    private bool _burstQueued = false;
+    private Vector3 _initPositionOffset;
+    private Vector3 _initRotationOffset;
+    private Timer _fireTimer = new();
+    private int _shotCount = 0;
+    private Tween _recoilTween;
+    #endregion
 
-    public override void _Ready() {
-        base._Ready(); 
 
-        _initPositionOffset = PositionOffset; 
-        _initRotationOffset = RotationOffset; 
+    #region Signals: 
+    [Signal] public delegate void OnFireEventHandler();
+    [Signal] public delegate void OnEjectEventHandler();
+    [Signal] public delegate void OnChamberedEventHandler();
+    [Signal] public delegate void TryChamberEventHandler();
+    [Signal] public delegate void TryEjectEventHandler();
+    #endregion
+
+
+    public override void _Ready()
+    {
+        base._Ready();
+
+        _initPositionOffset = PositionOffset;
+        _initRotationOffset = RotationOffset;
+
+        // timer setup 
         AddChild(_fireTimer);
         _fireTimer.WaitTime = _fireRate;
         _fireTimer.OneShot = true;
+        _fireTimer.ProcessCallback = Timer.TimerProcessCallback.Physics;
 
-        if (_startChambered) { 
-            Chambered = true; 
+        if (_startChambered)
+        {
+            Chambered = true;
         }
+
+        OnEject += EjectChambered;
     }
 
     public override void _Process(double delta)
@@ -86,42 +95,61 @@ public partial class Firearm : Interactable
         }
     }
 
-    public override void _PhysicsProcess(double delta)
+    public  void Fire()
     {
-        if (IsGrabbed()) {
-            RecoilReturn(); 
+        if (FireMode == FireMode.Burst) { 
+            FireActionBurst(); 
+        } else { 
+            FireAction(); 
         }
     }
-    public void Fire()
-    {   
-        if (BlockFire || !Chambered) return; 
-        
-        _shotCount += 1; 
-        Chambered = false; 
-        _fireTimer.Start();
-        Recoil(); 
 
+    private void FireAction() { 
         
+        if (Util.NodeIs(GetParent(), typeof(InteractableSnapZone))) return;
+        if (BlockFire || !Chambered) return;
+
+        _shotCount += 1;
+        Chambered = false;
+        _fireTimer.Start();
+
+        Recoil();
         GetPrimaryInteractor()?.Controller.Pulse(_hapticStrength, 1.0, 0.1);
         GetSecondaryInteractor()?.Controller.Pulse(_hapticStrength, 1.0, 0.1);
 
         if (_chamberOnFire) { EmitSignal("TryChamber"); }
-        EmitSignal("OnFire"); 
+
+        EmitSignal("OnFire");
+    }
+
+
+     public async void FireActionBurst()
+    {
+
+        _burstQueued = true;
+
+        for (int i = 0; i < _burstAmount; i++)
+        {
+            FireAction(); 
+            await ToSignal(GetTree().CreateTimer(_burstTime / _burstAmount), "timeout");
+        }
+
+        _burstQueued = false;
     }
 
     private bool CanFire()
     {
-        return _fireTimer.IsStopped() && IsInstanceValid(PrimaryInteractor) && Chambered; 
+        return _fireTimer.IsStopped() && IsInstanceValid(PrimaryInteractor) && Chambered;
     }
 
     private bool GetFireInput()
     {
-        switch (_fireMode)
+        switch (FireMode)
         {
             case FireMode.Single:
                 return PrimaryInteractor.Controller.ButtonOneShot("trigger_click");
             case FireMode.Burst:
-                return PrimaryInteractor.Controller.ButtonOneShot("trigger_click");
+                return PrimaryInteractor.Controller.ButtonOneShot("trigger_click") && !_burstQueued;
             case FireMode.Auto:
                 return PrimaryInteractor.Controller.GetFloat("trigger_click") > 0.5;
         }
@@ -132,54 +160,52 @@ public partial class Firearm : Interactable
     {
         if (PrimaryInteractor != null)
         {
-            return PrimaryInteractor.Controller.GetFloat("trigger"); 
+            return PrimaryInteractor.Controller.GetFloat("trigger");
         }
-        return 0.0f; 
+        return 0.0f;
     }
 
     private void Recoil()
-    {
+    {   
 
-        float recoilMultiplier = 1.0f; 
+        float recoilMultiplier = 1.0f;
+        float maxAngle = 90;
 
 
-        if (SecondaryInteractor != null) 
+        if (_recoilTween == null) _recoilTween = GetTree().CreateTween(); 
+
+        if (Mathf.Abs(RotationOffset.X) >= maxAngle) RotationOffset -= _recoilRise * 2.0f; // clamp rotatiion 
+        if (SecondaryInteractor != null) recoilMultiplier = _recoilMultiplier;
+
+        if (_yCurve != null)
         {
-            recoilMultiplier = _recoilMultiplier;
+            _shotCount = _shotCount >= _yCurve.PointCount ? 0 : _shotCount;
+            RotationOffset = new Vector3(RotationOffset.X, _yCurve.GetPointPosition(_shotCount).Y, RotationOffset.Z);
         }
 
-        Tween riseTween = GetTree().CreateTween();
-        
-        if (_yCurve != null) {
-            float sampled = _yCurve.SampleBaked(Mathf.Cos(_shotCount ) / _yCurve.BakeResolution); 
-            RotationOffset.Y = sampled; 
+        if (_recoilTween.IsRunning())
+        {
+            _recoilTween.Kill();
         }
 
-        riseTween.TweenProperty(this, "RotationOffset", RotationOffset + _recoilRise * recoilMultiplier, 0.1);
-        PositionOffset += _recoilKick * _recoilMultiplier; 
-        ApplyCentralImpulse(GlobalTransform.Basis.Z); 
-        ApplyTorqueImpulse(Basis.X); 
+        _recoilTween = GetTree().CreateTween();
+        _recoilTween.SetProcessMode(Tween.TweenProcessMode.Physics);
+
+        _recoilTween.TweenProperty(this, "RotationOffset", RotationOffset + _recoilRise * recoilMultiplier, _recoilTimeToPeak / 2);
+        _recoilTween.TweenProperty(this, "PositionOffset", PositionOffset + _recoilKick * recoilMultiplier, _recoilTimeToPeak / 2);
+
+
+        _recoilTween.SetEase(Tween.EaseType.Out);
+        _recoilTween.SetTrans(Tween.TransitionType.Spring);
+        _recoilTween.TweenProperty(this, "PositionOffset", _initPositionOffset, _kickRecoverSpeed);
+
+        _recoilTween.SetEase(Tween.EaseType.InOut);
+        _recoilTween.Parallel().TweenProperty(this, "RotationOffset", _initRotationOffset * recoilMultiplier, _riseRecoverSpeed);
     }
 
-    public async void BurstFire()
+   
+    private void EjectChambered()
     {
-        Fire(); 
-        await ToSignal(GetTree().CreateTimer(0.2), "timeout"); 
-        Fire();
-        await ToSignal(GetTree().CreateTimer(0.2), "timeout");
-        Fire();
-    }
-
-    private void RecoilReturn()
-    {
-        float recoverMultiplier = 1.0f; 
-
-        if (SecondaryInteractor == null) { 
-            recoverMultiplier = 0.5f; 
-        }
-
-        float positionLength = Mathf.Abs(_initPositionOffset.Length() - PositionOffset.Length()); 
-        PositionOffset = PositionOffset.Lerp(_initPositionOffset, _kickRecoverSpeed * recoverMultiplier);
-        RotationOffset = RotationOffset.Lerp(_initRotationOffset, _riseRecoverSpeed * recoverMultiplier);
+        Chambered = false;
     }
 }

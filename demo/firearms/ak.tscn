@@ -1,26 +1,28 @@
-[gd_scene load_steps=43 format=3 uid="uid://sfgdm1jksecs"]
+[gd_scene load_steps=45 format=3 uid="uid://sfgdm1jksecs"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_3xpfa"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="2_8v36k"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMagZone.cs" id="5_nrs13"]
 [ext_resource type="PackedScene" uid="uid://cicqk5srmto4a" path="res://demo/firearms/mags/ak_mag.tscn" id="6_qf2kd"]
-[ext_resource type="AudioStream" uid="uid://oj5vnml6nf3o" path="res://assets/audio/sfx/firearm/pistol/mag in.ogg" id="6_wydji"]
+[ext_resource type="AudioStream" uid="uid://oj5vnml6nf3o" path="res://addons/nxr/assets/audio/sfx/firearm/pistol/mag in.ogg" id="6_wydji"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmSlide.cs" id="8_1owmr"]
-[ext_resource type="AudioStream" uid="uid://daw4ahjy4dxeq" path="res://assets/audio/sfx/firearm/pistol/mag out.ogg" id="8_mt8bh"]
+[ext_resource type="AudioStream" uid="uid://daw4ahjy4dxeq" path="res://addons/nxr/assets/audio/sfx/firearm/pistol/mag out.ogg" id="8_mt8bh"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmLight.cs" id="9_4bba8"]
-[ext_resource type="AudioStream" uid="uid://2sbd6sdhq4ye" path="res://assets/audio/sfx/firearm/ak/slide_back.wav" id="9_iqy2m"]
+[ext_resource type="AudioStream" uid="uid://2sbd6sdhq4ye" path="res://addons/nxr/assets/audio/sfx/firearm/ak/slide_back.wav" id="9_iqy2m"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRay.cs" id="10_m1jlv"]
-[ext_resource type="AudioStream" uid="uid://ipgasn2jnaxr" path="res://assets/audio/sfx/firearm/ak/slide_forward.wav" id="10_w3qfc"]
+[ext_resource type="AudioStream" uid="uid://ipgasn2jnaxr" path="res://addons/nxr/assets/audio/sfx/firearm/ak/slide_forward.wav" id="10_w3qfc"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmParticlePlayer.cs" id="11_aoebd"]
-[ext_resource type="Texture2D" uid="uid://daigr38dvr8gw" path="res://assets/textures/puff.png" id="11_o8u1s"]
+[ext_resource type="Texture2D" uid="uid://daigr38dvr8gw" path="res://addons/nxr/assets/textures/puff.png" id="11_o8u1s"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmChamberVisualizer.cs" id="12_dm0gu"]
-[ext_resource type="PackedScene" uid="uid://blf1qjxlcgbvb" path="res://assets/models/guns/AK-47/ak.glb" id="12_gohi5"]
+[ext_resource type="PackedScene" uid="uid://blf1qjxlcgbvb" path="res://addons/nxr/assets/models/guns/AK-47/ak.glb" id="12_gohi5"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="12_v4fnm"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/audio/SignalAudioPlayer.cs" id="13_ko1h6"]
-[ext_resource type="Material" uid="uid://dr1bhnahf7eyq" path="res://assets/models/ammo/bullets/bullets.material" id="13_r7725"]
-[ext_resource type="AudioStream" uid="uid://dj2nmqkv8m7sc" path="res://assets/audio/sfx/firearm/sniper/sniper_shot.ogg" id="17_ej7gk"]
+[ext_resource type="Material" uid="uid://dr1bhnahf7eyq" path="res://addons/nxr/assets/models/ammo/bullets/bullets.material" id="13_r7725"]
+[ext_resource type="AudioStream" uid="uid://dj2nmqkv8m7sc" path="res://addons/nxr/assets/audio/sfx/firearm/sniper/sniper_shot.ogg" id="17_ej7gk"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmSpawner.cs" id="18_t3diq"]
 [ext_resource type="PackedScene" uid="uid://b2w3jidu8sxgl" path="res://demo/firearms/ammo/spent_casings/556_spent.tscn" id="19_wmxms"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="22_gdhij"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmFiremodeSelector.cs" id="23_6fiqr"]
 
 [sub_resource type="Curve" id="Curve_ur3b0"]
 min_value = -5.0
@@ -174,12 +176,10 @@ material = SubResource("StandardMaterial3D_ps7jg")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000165045, 0.00190675, 0.00244612)
 collision_layer = 8
 script = ExtResource("1_3xpfa")
-_fireMode = 2
 _fireRate = 0.12
 _startChambered = true
 _recoilKick = Vector3(0, 0, 0.2)
 _yCurve = SubResource("Curve_ur3b0")
-DistanceGrabEnabled = true
 
 [node name="InteractableGrabKinematic" type="Node" parent="."]
 script = ExtResource("2_8v36k")
@@ -245,7 +245,7 @@ _signal = "OnUnSnap"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00591835, 0.0259152)
 
 [node name="FirearmSlide" type="RigidBody3D" parent="." node_paths=PackedStringArray("Target")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00560485, 0.0210747, -0.0766559)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00560485, 0.0210747, -0.076656)
 collision_layer = 8
 freeze = true
 script = ExtResource("8_1owmr")
@@ -253,7 +253,6 @@ _setBackOnFire = true
 Target = NodePath("../AKMesh/AK_47/Ejection_Port")
 StartXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00560485, 0.0210747, -0.0766559)
 EndXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00560485, 0.0210747, 0.0549049)
-MaxGrabDistance = 0.1
 GrabAction = "trigger_click"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FirearmSlide"]
@@ -347,5 +346,15 @@ _signal = "OnFire"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0233324, 0.0389922, -0.0280647)
 script = ExtResource("18_t3diq")
 _scene = ExtResource("19_wmxms")
+
+[node name="InteractableGrabPoint" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0172258, -0.264257)
+freeze = true
+script = ExtResource("22_gdhij")
+_grabType = 1
+
+[node name="FirearmFiremodeSelector" type="Node" parent="."]
+script = ExtResource("23_6fiqr")
+ModeOrder = [2, 0]
 
 [editable path="AKMesh"]

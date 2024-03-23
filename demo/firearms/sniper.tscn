@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://dfl5qvof7chxv"]
+[gd_scene load_steps=55 format=3 uid="uid://dfl5qvof7chxv"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_hrx52"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="2_yg4sk"]
@@ -20,6 +20,7 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/audio/SignalAudioPlayer.cs" id="13_lfrcy"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmChamberVisualizer.cs" id="14_5l6u2"]
 [ext_resource type="Material" uid="uid://dr1bhnahf7eyq" path="res://addons/nxr/assets/models/ammo/bullets/bullets.material" id="15_ht73m"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="21_m6uyx"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_bvkxw"]
 radius = 5.83557
@@ -410,8 +411,6 @@ collision_layer = 8
 script = ExtResource("1_hrx52")
 _startChambered = true
 _chamberOnFire = false
-_recoilRise = Vector3(40, 0, 0)
-_riseRecoverSpeed = 0.05
 
 [node name="InteractableGrabKinematic" type="Node" parent="."]
 script = ExtResource("2_yg4sk")
@@ -620,6 +619,12 @@ max_polyphony = 10
 attenuation_filter_db = 0.0
 script = ExtResource("13_lfrcy")
 _signal = "OnFire"
+
+[node name="InteractableGrabPoint" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 1.86265e-09, 0, 1, 0, -1.86265e-09, 0, 1, 0.00368344, 0, -0.199642)
+freeze = true
+script = ExtResource("21_m6uyx")
+_grabType = 1
 
 [editable path="sniper/Sniper_Rifle/Scope/glass"]
 [editable path="sniper/Sniper_Rifle/Scope/glass2"]
