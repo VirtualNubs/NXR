@@ -1,9 +1,9 @@
-[gd_scene load_steps=48 format=3 uid="uid://dv28qodnevgfd"]
+[gd_scene load_steps=47 format=3 uid="uid://dv28qodnevgfd"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/Firearm.cs" id="1_4naqp"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="2_dxnb2"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/FirearmPump.cs" id="2_i3gte"]
-[ext_resource type="Material" uid="uid://ctb1cutloqcji" path="res://assets/models/guns/Shotgun/mat_shotgun.tres" id="4_1bdiw"]
+[ext_resource type="Material" uid="uid://ctb1cutloqcji" path="res://addons/nxr/assets/models/guns/Shotgun/mat_shotgun.tres" id="4_1bdiw"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="4_q4jrs"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMagLoadZone.cs" id="4_son5b"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMag.cs" id="5_t0fpk"]
@@ -11,14 +11,14 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="6_s1008"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmChamberVisualizer.cs" id="6_vygvn"]
 [ext_resource type="PackedScene" uid="uid://cmvybwirj715t" path="res://demo/scenes/part_hit.tscn" id="7_nray2"]
-[ext_resource type="Material" uid="uid://dr1bhnahf7eyq" path="res://assets/models/ammo/bullets/bullets.material" id="7_x1p2l"]
+[ext_resource type="Material" uid="uid://dr1bhnahf7eyq" path="res://addons/nxr/assets/models/ammo/bullets/bullets.material" id="7_x1p2l"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRay.cs" id="12_ap1x4"]
-[ext_resource type="Texture2D" uid="uid://daigr38dvr8gw" path="res://assets/textures/puff.png" id="13_w2cqu"]
+[ext_resource type="Texture2D" uid="uid://daigr38dvr8gw" path="res://addons/nxr/assets/textures/puff.png" id="13_w2cqu"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmParticlePlayer.cs" id="14_m6tgk"]
-[ext_resource type="AudioStream" uid="uid://bog2f0oke82h4" path="res://assets/audio/sfx/firearm/shotgun/pump_back.wav" id="16_q1hwb"]
+[ext_resource type="AudioStream" uid="uid://bog2f0oke82h4" path="res://addons/nxr/assets/audio/sfx/firearm/shotgun/pump_back.wav" id="16_q1hwb"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/audio/SignalAudioPlayer.cs" id="17_tmrva"]
-[ext_resource type="AudioStream" uid="uid://d0mnrdnbdet3u" path="res://assets/audio/sfx/firearm/shotgun/pump_forward.wav" id="18_43a8l"]
-[ext_resource type="AudioStream" uid="uid://baiev3bjv0a1t" path="res://assets/audio/sfx/firearm/shotgun/shot.wav" id="19_orlld"]
+[ext_resource type="AudioStream" uid="uid://d0mnrdnbdet3u" path="res://addons/nxr/assets/audio/sfx/firearm/shotgun/pump_forward.wav" id="18_43a8l"]
+[ext_resource type="AudioStream" uid="uid://baiev3bjv0a1t" path="res://addons/nxr/assets/audio/sfx/firearm/shotgun/shot.wav" id="19_orlld"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_i000j"]
 size = Vector3(0.0298283, 0.159043, 0.878885)
@@ -95,9 +95,6 @@ particles_anim_loop = false
 
 [sub_resource type="QuadMesh" id="QuadMesh_0xluh"]
 material = SubResource("StandardMaterial3D_bjch8")
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_ywvdo"]
-radius = 0.0537363
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r1c0t"]
 resource_name = "Mat"
@@ -277,10 +274,8 @@ shadow_mesh = SubResource("ArrayMesh_fjq5w")
 collision_layer = 8
 script = ExtResource("1_4naqp")
 _chamberOnFire = false
+_recoilMultiplier = 0.5
 _recoilKick = Vector3(0, 0, 0.5)
-_recoilRise = Vector3(45, 0, 0)
-_kickRecoverSpeed = 0.05
-_riseRecoverSpeed = 0.05
 
 [node name="InteractableGrabKinematic" type="Node" parent="."]
 script = ExtResource("2_dxnb2")
@@ -412,9 +407,6 @@ collision_layer = 8
 freeze = true
 script = ExtResource("4_q4jrs")
 _grabType = 1
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="GrabForegrip"]
-shape = SubResource("SphereShape3D_ywvdo")
 
 [node name="shotgun" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.346509)

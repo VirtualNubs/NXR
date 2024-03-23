@@ -6,26 +6,27 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmMagZone.cs" id="5_iyft0"]
 [ext_resource type="PackedScene" uid="uid://bo3g10fj20ul3" path="res://demo/firearms/mags/stanag.tscn" id="6_5aeej"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmSlide.cs" id="7_drbwx"]
-[ext_resource type="AudioStream" uid="uid://2sbd6sdhq4ye" path="res://assets/audio/sfx/firearm/ak/slide_back.wav" id="7_yalia"]
+[ext_resource type="AudioStream" uid="uid://2sbd6sdhq4ye" path="res://addons/nxr/assets/audio/sfx/firearm/ak/slide_back.wav" id="7_yalia"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmTrigger.cs" id="8_ny0ka"]
-[ext_resource type="AudioStream" uid="uid://ipgasn2jnaxr" path="res://assets/audio/sfx/firearm/ak/slide_forward.wav" id="9_o3557"]
+[ext_resource type="AudioStream" uid="uid://ipgasn2jnaxr" path="res://addons/nxr/assets/audio/sfx/firearm/ak/slide_forward.wav" id="9_o3557"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="9_u455c"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRay.cs" id="10_8vsy6"]
-[ext_resource type="Material" uid="uid://dr1bhnahf7eyq" path="res://assets/models/ammo/bullets/bullets.material" id="10_uh6la"]
+[ext_resource type="Material" uid="uid://dr1bhnahf7eyq" path="res://addons/nxr/assets/models/ammo/bullets/bullets.material" id="10_uh6la"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRayHitSpawner.cs" id="11_7v8ug"]
-[ext_resource type="Texture2D" uid="uid://daigr38dvr8gw" path="res://assets/textures/puff.png" id="11_tiy7n"]
+[ext_resource type="Texture2D" uid="uid://daigr38dvr8gw" path="res://addons/nxr/assets/textures/puff.png" id="11_tiy7n"]
 [ext_resource type="PackedScene" uid="uid://cmvybwirj715t" path="res://demo/scenes/part_hit.tscn" id="12_txgea"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmParticlePlayer.cs" id="12_v80tt"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmSpawner.cs" id="14_qy2vl"]
 [ext_resource type="PackedScene" uid="uid://b2w3jidu8sxgl" path="res://demo/firearms/ammo/spent_casings/556_spent.tscn" id="15_robx0"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmRail.cs" id="15_sd8oa"]
-[ext_resource type="PackedScene" uid="uid://b0l5qbqtfnr1n" path="res://assets/models/guns/M4A1/m4a1.glb" id="15_u1boa"]
-[ext_resource type="AudioStream" uid="uid://oj5vnml6nf3o" path="res://assets/audio/sfx/firearm/pistol/mag in.ogg" id="20_t7p8c"]
-[ext_resource type="AudioStream" uid="uid://daw4ahjy4dxeq" path="res://assets/audio/sfx/firearm/pistol/mag out.ogg" id="21_3eh0f"]
-[ext_resource type="Material" uid="uid://ckhn2nohm0vht" path="res://assets/models/guns/M4A1/mat_m4.tres" id="21_6ecd0"]
+[ext_resource type="PackedScene" uid="uid://b0l5qbqtfnr1n" path="res://addons/nxr/assets/models/guns/M4A1/m4a1.glb" id="15_u1boa"]
+[ext_resource type="AudioStream" uid="uid://oj5vnml6nf3o" path="res://addons/nxr/assets/audio/sfx/firearm/pistol/mag in.ogg" id="20_t7p8c"]
+[ext_resource type="AudioStream" uid="uid://daw4ahjy4dxeq" path="res://addons/nxr/assets/audio/sfx/firearm/pistol/mag out.ogg" id="21_3eh0f"]
+[ext_resource type="Material" uid="uid://ckhn2nohm0vht" path="res://addons/nxr/assets/models/guns/M4A1/mat_m4.tres" id="21_6ecd0"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/audio/SignalAudioPlayer.cs" id="21_k5okn"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmChamberVisualizer.cs" id="24_elglu"]
-[ext_resource type="AudioStream" uid="uid://dj2nmqkv8m7sc" path="res://assets/audio/sfx/firearm/sniper/sniper_shot.ogg" id="24_ml4kc"]
+[ext_resource type="AudioStream" uid="uid://dj2nmqkv8m7sc" path="res://addons/nxr/assets/audio/sfx/firearm/sniper/sniper_shot.ogg" id="24_ml4kc"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmFiremodeSelector.cs" id="27_y1f0x"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_i8hdp"]
 radius = 0.0203695
@@ -133,9 +134,6 @@ nodes/trigger/node = SubResource("AnimationNodeBlend2_xr7fb")
 nodes/trigger/position = Vector2(-220, 320)
 node_connections = [&"Add2", 0, &"Animation", &"Add2", 1, &"trigger", &"output", 0, &"Add2", &"trigger", 0, &"Animation 2", &"trigger", 1, &"Animation 3"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_lj4q2"]
-radius = 0.0537363
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_mmquv"]
 size = Vector3(0.0433025, 0.144541, 0.79179)
 
@@ -182,7 +180,6 @@ size = Vector3(0.0123338, 0.00726199, 0.0904828)
 collision_layer = 8
 freeze_mode = 1
 script = ExtResource("1_12tsm")
-_fireMode = 2
 _recoilKick = Vector3(0, 0, 0.2)
 DistanceGrabEnabled = true
 
@@ -290,15 +287,12 @@ script = ExtResource("9_u455c")
 _pose = "poses_rifle/secondary"
 _grabPose = 1
 
-[node name="GrabForegrip" type="RigidBody3D" parent="."]
+[node name="GrabPointSecondary" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0474252, -0.21525)
 collision_layer = 8
 freeze = true
 script = ExtResource("3_gvwdn")
 _grabType = 1
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="GrabForegrip"]
-shape = SubResource("SphereShape3D_lj4q2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00923935, -0.0814102)
@@ -522,5 +516,9 @@ max_polyphony = 10
 attenuation_filter_db = 0.0
 script = ExtResource("21_k5okn")
 _signal = "OnFire"
+
+[node name="FirearmFiremodeSelector" type="Node" parent="."]
+script = ExtResource("27_y1f0x")
+ModeOrder = [2, 0, 1]
 
 [editable path="m4a1"]
