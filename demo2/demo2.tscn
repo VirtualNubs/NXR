@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://ec50c21n35ve"]
+[gd_scene load_steps=22 format=3 uid="uid://ec50c21n35ve"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/player/PlayerSpawn.cs" id="1_qwo3m"]
 [ext_resource type="Texture2D" uid="uid://ngcd0scm03r1" path="res://demo2/assets/kenney_prototype-textures/PNG/Dark/texture_01.png" id="2_d1tc8"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://1v12rj5j7b10" path="res://demo2/assets/kenney_prototype-textures/PNG/Light/texture_03.png" id="3_wqwil"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/Interactable.cs" id="4_4nhdh"]
 [ext_resource type="Texture2D" uid="uid://d27vock784vu4" path="res://demo2/assets/kenney_prototype-textures/PNG/Orange/texture_05.png" id="4_hui7r"]
-[ext_resource type="PackedScene" path="res://addons/xr-simulator/XRSimulator.tscn" id="7_vwnni"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="8_8qmdt"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="8_qnp4a"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="9_t6bih"]
@@ -155,6 +154,3 @@ mesh = SubResource("BoxMesh_rr6bx")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Door2/Door/Handle"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000144958, 0.000328064, 0.000778198)
 shape = SubResource("BoxShape3D_wp1kr")
-
-[node name="XRSimulator" parent="." instance=ExtResource("7_vwnni")]
-is_camera_height_limited = false
