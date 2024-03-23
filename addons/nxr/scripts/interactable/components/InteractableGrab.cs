@@ -138,11 +138,11 @@ public partial class InteractableGrab : Node
             angularVelocity = change.GetEuler();
         }
 
-
-        float strength = 10;
-        Interactable.LinearVelocity = dir * 10.0f * strength;
-        Interactable.AngularVelocity = angularVelocity * 10.0f * strength;
-
+        Interactable.IntegrateForces = (PhysicsDirectBodyState3D state) =>
+        {
+            state.LinearVelocity = dir * Mathf.Clamp(dir.Length(), 1f, 10f) * 10f;
+            state.AngularVelocity = angularVelocity;
+        };
     }
 
     private void KinematicGrab(float delta)

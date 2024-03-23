@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 
@@ -73,6 +74,8 @@ public partial class Interactable : RigidBody3D
 	private Transform3D _primaryRelativeTransform = new Transform3D();
 	public Transform3D _primaryGrabTransorm = new Transform3D(); 
 
+	public delegate void IntegrateForcesDelegate(PhysicsDirectBodyState3D state);
+	public IntegrateForcesDelegate IntegrateForces;
 
 	[Signal]
 	public delegate void OnGrabbedEventHandler(Interactable interactable, Interactor interactor);
@@ -93,6 +96,14 @@ public partial class Interactable : RigidBody3D
 		InitFreeze = Freeze; 
 		InitGlobalTransform = Transform; 
     }
+
+	public override void _IntegrateForces(PhysicsDirectBodyState3D state)
+	{
+		if (IntegrateForces is not null)
+		{
+			IntegrateForces(state);
+		};
+	}
 
     public void Grab(Interactor interactor)
 	{
