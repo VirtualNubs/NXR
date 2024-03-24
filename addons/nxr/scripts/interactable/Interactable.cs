@@ -86,9 +86,11 @@ public partial class Interactable : RigidBody3D
 
 	public override void _IntegrateForces(PhysicsDirectBodyState3D state)
 	{
-		EmitSignal("StateUpdated", state);
+		if (IntegrateForces is not null)
+		{
+			IntegrateForces(state);
+		};
 	}
-
 	public void Grab(Interactor interactor)
 	{
 		if (Disabled) return;
