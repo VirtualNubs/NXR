@@ -15,7 +15,9 @@ public partial class InteractableGrabPoint : Interactable
 
     public override void _Ready()
     {
-         if (Util.NodeIs((Node3D)GetParent(), typeof(Interactable)))
+        base._Ready(); 
+        
+        if (Util.NodeIs((Node3D)GetParent(), typeof(Interactable)))
         {
             _interactable = (Interactable)GetParent();
             

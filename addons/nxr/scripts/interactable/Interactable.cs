@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 
@@ -48,6 +49,8 @@ public partial class Interactable : RigidBody3D
 	public Interactor PrimaryInteractor { set; get; }
 	public Interactor SecondaryInteractor { set; get; }
 
+	public delegate void IntegrateForcesDelegate(PhysicsDirectBodyState3D state);
+	public IntegrateForcesDelegate IntegrateForces { set; get; }
 
 	public Node3D PrimaryGrabPoint;
 	public Node3D SecondaryGrabPoint;
@@ -83,9 +86,11 @@ public partial class Interactable : RigidBody3D
 
 	public override void _IntegrateForces(PhysicsDirectBodyState3D state)
 	{
-		EmitSignal("StateUpdated", state);
+		if (IntegrateForces is not null)
+		{
+			IntegrateForces(state);
+		};
 	}
-
 	public void Grab(Interactor interactor)
 	{
 		if (Disabled) return;

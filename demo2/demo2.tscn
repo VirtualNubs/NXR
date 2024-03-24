@@ -1,0 +1,156 @@
+[gd_scene load_steps=22 format=3 uid="uid://ec50c21n35ve"]
+
+[ext_resource type="Script" path="res://addons/nxr/scripts/player/PlayerSpawn.cs" id="1_qwo3m"]
+[ext_resource type="Texture2D" uid="uid://ngcd0scm03r1" path="res://demo2/assets/kenney_prototype-textures/PNG/Dark/texture_01.png" id="2_d1tc8"]
+[ext_resource type="PackedScene" uid="uid://ctrtq0t2fqwtr" path="res://addons/nxr/scenes/player/nxr_player.tscn" id="2_mw3to"]
+[ext_resource type="Texture2D" uid="uid://1v12rj5j7b10" path="res://demo2/assets/kenney_prototype-textures/PNG/Light/texture_03.png" id="3_wqwil"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/Interactable.cs" id="4_4nhdh"]
+[ext_resource type="Texture2D" uid="uid://d27vock784vu4" path="res://demo2/assets/kenney_prototype-textures/PNG/Orange/texture_05.png" id="4_hui7r"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="8_8qmdt"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="8_qnp4a"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="9_t6bih"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ibqk"]
+albedo_texture = ExtResource("2_d1tc8")
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3vc31"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_sgbto"]
+material = SubResource("StandardMaterial3D_3vc31")
+size = Vector2(100, 100)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yc7it"]
+size = Vector3(100.015, 0.566711, 100.016)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r2qb3"]
+albedo_texture = ExtResource("3_wqwil")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b4dp1"]
+size = Vector3(0.207397, 2.20844, 0.300323)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eyapr"]
+size = Vector3(0.993286, 0.209167, 0.301514)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uuehb"]
+albedo_texture = ExtResource("4_hui7r")
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_d6aoa"]
+size = Vector3(1, 2, 0.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3cdhc"]
+size = Vector3(0.963135, 1.95058, 0.103271)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rr6bx"]
+size = Vector3(0.2, 0.06, 0.05)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wp1kr"]
+size = Vector3(0.200333, 0.0600739, 0.0509338)
+
+[node name="Demo2" type="Node3D"]
+
+[node name="PlayerSpawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 4.252)
+script = ExtResource("1_qwo3m")
+_player = ExtResource("2_mw3to")
+
+[node name="Environment" type="Node3D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="Sun" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 0.387532, 0.921856, 0, -0.921856, 0.387532, 98.0886, 51.2642, 0)
+metadata/_edit_lock_ = true
+
+[node name="Geometry" type="Node3D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="Terrain" type="Node3D" parent="Geometry"]
+metadata/_edit_lock_ = true
+
+[node name="Ground" type="StaticBody3D" parent="Geometry/Terrain"]
+metadata/_edit_lock_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Geometry/Terrain/Ground"]
+material_override = SubResource("StandardMaterial3D_0ibqk")
+mesh = SubResource("PlaneMesh_sgbto")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Terrain/Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00492096, -0.277618, -0.00419998)
+shape = SubResource("BoxShape3D_yc7it")
+metadata/_edit_lock_ = true
+
+[node name="Door2" type="StaticBody3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.79294, 0, 0)
+
+[node name="DoorFrame" type="CSGBox3D" parent="Geometry/Door2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00409985, 1.10452, 0.0024159)
+material_override = SubResource("StandardMaterial3D_r2qb3")
+size = Vector3(1.4, 2.2, 0.3)
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="Geometry/Door2/DoorFrame"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00409985, -1.10452, -0.0024159)
+operation = 2
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Geometry/Door2/DoorFrame/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.000579476)
+size = Vector3(1, 2, 0.35)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Door2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.600763, 1.10269, 0.00190735)
+shape = SubResource("BoxShape3D_b4dp1")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Geometry/Door2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.597683, 1.10269, 0.00190735)
+shape = SubResource("BoxShape3D_b4dp1")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Geometry/Door2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00335693, 2.10184, 0.00280762)
+shape = SubResource("BoxShape3D_eyapr")
+
+[node name="JoltHingeJoint3D" type="JoltHingeJoint3D" parent="Geometry/Door2"]
+limit_enabled = true
+limit_lower = -2.96706
+limit_spring_frequency = 10.0
+limit_spring_damping = 1.0
+node_a = NodePath("..")
+node_b = NodePath("../Door")
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.503769, 1, -0.147896)
+
+[node name="Door" type="RigidBody3D" parent="Geometry/Door2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000450134, 1.00411, -0.0972437)
+freeze = true
+script = ExtResource("4_4nhdh")
+
+[node name="InteractableGrab" type="Node" parent="Geometry/Door2/Door"]
+script = ExtResource("9_t6bih")
+_usePhysics = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Geometry/Door2/Door"]
+material_override = SubResource("StandardMaterial3D_uuehb")
+mesh = SubResource("BoxMesh_d6aoa")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Door2/Door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000610352, 0.00811005, 0.000854492)
+shape = SubResource("BoxShape3D_3cdhc")
+
+[node name="HandleHandPose" type="RemoteTransform3D" parent="Geometry/Door2/Door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.33837, 0, 0.0775763)
+script = ExtResource("8_qnp4a")
+_pose = "poses_default/grip"
+
+[node name="Handle" type="RigidBody3D" parent="Geometry/Door2/Door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.33837, 0, 0.0775763)
+collision_layer = 8
+freeze = true
+script = ExtResource("8_8qmdt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Geometry/Door2/Door/Handle"]
+mesh = SubResource("BoxMesh_rr6bx")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Door2/Door/Handle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000144958, 0.000328064, 0.000778198)
+shape = SubResource("BoxShape3D_wp1kr")
