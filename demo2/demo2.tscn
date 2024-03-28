@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://ec50c21n35ve"]
+[gd_scene load_steps=28 format=3 uid="uid://ec50c21n35ve"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/player/PlayerSpawn.cs" id="1_qwo3m"]
 [ext_resource type="Texture2D" uid="uid://ngcd0scm03r1" path="res://demo2/assets/kenney_prototype-textures/PNG/Dark/texture_01.png" id="2_d1tc8"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="8_8qmdt"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="8_qnp4a"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="9_t6bih"]
+[ext_resource type="PackedScene" uid="uid://c47iwb4c6irhj" path="res://demo/scenes/ui/ui_settings.tscn" id="10_2xnsf"]
+[ext_resource type="PackedScene" path="res://addons/xr-simulator/XRSimulator.tscn" id="10_lpjci"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ibqk"]
 albedo_texture = ExtResource("2_d1tc8")
@@ -50,10 +52,24 @@ size = Vector3(0.2, 0.06, 0.05)
 [sub_resource type="BoxShape3D" id="BoxShape3D_wp1kr"]
 size = Vector3(0.200333, 0.0600739, 0.0509338)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_4b6jf"]
+size = Vector3(1, 1, 0.0393677)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_3dao8"]
+viewport_path = NodePath("Geometry/Screen/2DViewport/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fc87g"]
+resource_local_to_scene = true
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_3dao8")
+
+[sub_resource type="QuadMesh" id="QuadMesh_xhy05"]
+resource_local_to_scene = true
+
 [node name="Demo2" type="Node3D"]
 
 [node name="PlayerSpawn" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 4.252)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.77435, 1.30555, 2.85337)
 script = ExtResource("1_qwo3m")
 _player = ExtResource("2_mw3to")
 
@@ -154,3 +170,25 @@ mesh = SubResource("BoxMesh_rr6bx")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Door2/Door/Handle"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000144958, 0.000328064, 0.000778198)
 shape = SubResource("BoxShape3D_wp1kr")
+
+[node name="Screen" type="StaticBody3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.723299, 0.83102, 0)
+
+[node name="2DViewport" type="Node3D" parent="Geometry/Screen"]
+
+[node name="SubViewport" type="SubViewport" parent="Geometry/Screen/2DViewport"]
+
+[node name="ui_settings" parent="Geometry/Screen/2DViewport/SubViewport" instance=ExtResource("10_2xnsf")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Screen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0143127)
+shape = SubResource("BoxShape3D_4b6jf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Geometry/Screen"]
+material_override = SubResource("StandardMaterial3D_fc87g")
+mesh = SubResource("QuadMesh_xhy05")
+skeleton = NodePath("../../..")
+
+[node name="XRSimulator" parent="." instance=ExtResource("10_lpjci")]
+disable_xr_in_editor = true
+is_camera_height_limited = false

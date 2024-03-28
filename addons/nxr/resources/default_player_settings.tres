@@ -5,3 +5,4 @@
 [resource]
 script = ExtResource("1_nek8e")
 DominantHand = 1
+RotationMode = 0
