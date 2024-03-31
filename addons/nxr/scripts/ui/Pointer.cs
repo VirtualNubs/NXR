@@ -82,17 +82,6 @@ public partial class Pointer : RayCast3D
 			vp = viewport.SubViewport;
 		}
 
-		/*
-		foreach (Node child in collider.GetChildren())
-		{
-			if (child is Viewport2DIn3D viewport)
-			{
-				_hitting_gui = true;
-				vp = viewport.GetSubViewport();
-			}
-		}
-		*/
-
 		if (vp is null)
 		{
 			_hitting_gui = false;
