@@ -27,9 +27,6 @@ text = "Example Menu"
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-text = "Example Check Button"
-
 [node name="CheckButton" type="CheckButton" parent="MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
+text = "Example Check Button"

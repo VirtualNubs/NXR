@@ -1,10 +1,17 @@
 using System;
-using System.Reflection.Metadata.Ecma335;
 using Godot;
 
+
+/// <summary>
+/// Handles rendering 2D UI in a 3D scene.
+/// </summary>
 [Tool]
 public partial class Viewport2DIn3D : Node3D
 {
+	/// <summary>
+	/// The UI scene. Usually a Control scene with common interactable elements
+	/// that the player can click with their trigger button.
+	/// </summary>
 	[Export]
 	public PackedScene SubScene
 	{
@@ -15,40 +22,71 @@ public partial class Viewport2DIn3D : Node3D
 			_dirty |= Dirty.SubScene;
 
 			if (!_isReady) return;
+
 			UpdateRender();
 		}
 	}
 
+	[Export]
+	public MeshInstance3D Screen { set; get; }
+
+	[Export]
+	public UpdateMode ViewportUpdateMode
+	{
+		set
+		{
+			_dirty |= Dirty.Update;
+
+			_updateMode = value;
+
+			UpdateRender();
+		}
+
+		get => _updateMode;
+	}
+
+	/// <summary>
+	/// Allows manual control of the flags used to keep the mesh rendering the viewport updated.
+	/// </summary>
 	[ExportGroup("Flag Controls")]
 	[Export]
-	public bool TriggerRedraw
+	public bool ReapplyRedraw
 	{
 		set => _dirty |= Dirty.Redraw;
 		get => false;
 	}
 	[Export]
-	public bool TriggerRematerial
+	public bool ReapplyMaterial
 	{
 		set => _dirty |= Dirty.Material;
 		get => false;
 	}
 	[Export]
-	public bool TriggerResurface
+	public bool ReapplySurface
 	{
 		set => _dirty |= Dirty.Surface;
 		get => false;
 	}
 	[Export]
-	public bool TriggerRealbedo
+	public bool ReapplyAlbedo
 	{
 		set => _dirty |= Dirty.Albedo;
 		get => false;
 	}
 	[Export]
-	public bool TriggerResubscene
+	public bool ReapplySubscene
 	{
 		set => _dirty |= Dirty.SubScene;
 		get => false;
+	}
+
+	public SubViewport SubViewport { set; get; }
+
+	public enum UpdateMode
+	{
+		Once,
+		Always,
+		Throttled
 	}
 
 	[Flags]
@@ -60,13 +98,9 @@ public partial class Viewport2DIn3D : Node3D
 		Size = 4,
 		Albedo = 8,
 		Update = 16,
-		Transparency = 32,
-		AlphaScissor = 64,
-		Unshaded = 128,
-		Filtered = 256,
-		Surface = 512,
-		Redraw = 1024,
-		All = 2047
+		Surface = 32,
+		Redraw = 64,
+		All = 127
 	}
 
 	private PackedScene _subScene;
@@ -75,22 +109,25 @@ public partial class Viewport2DIn3D : Node3D
 	private Dirty _dirty = Dirty.All;
 	private bool _isReady = false;
 	private StandardMaterial3D _screenMaterial;
-	private SubViewport _subViewport;
-	private MeshInstance3D _screen;
+	private StaticBody3D _collisionObject;
+	private Vector2 _screenSize;
+	private UpdateMode _updateMode = UpdateMode.Throttled;
 
 	public override void _Ready()
 	{
 		_isReady = true;
 
-		_subViewport = GetNode<SubViewport>("%SubViewport");
-		_screen = GetNode<MeshInstance3D>("%Screen");
+		SubViewport = GetNode<SubViewport>("%SubViewport");
+		_collisionObject = GetNode<StaticBody3D>("%CollisionObject");
 
-		UpdateRender();
+		Update();
 	}
 
 	public override void _Process(double delta)
 	{
-		if (Engine.IsEditorHint())
+		if (Screen is null) return;
+
+		if (Engine.IsEditorHint())  // Handle material updates while in editor
 		{
 			_timeSinceUpdate += delta;
 			if (_timeSinceUpdate >= 1.0)
@@ -98,30 +135,44 @@ public partial class Viewport2DIn3D : Node3D
 				_timeSinceUpdate = 0;
 
 				_dirty |= Dirty.Material;
-				UpdateRender();
+				_dirty |= Dirty.Size;
+
+				Update();
 			}
 		}
-		else
+		else if (_updateMode == UpdateMode.Throttled)
 		{
-			float frameTime = 1 / 30;
+			float frameTime = 1 / 30;   // 30 update fps
 			_timeSinceUpdate += delta;
 			if (_timeSinceUpdate > frameTime)
 			{
 				_timeSinceUpdate = 0;
 
-				_subViewport.RenderTargetUpdateMode = SubViewport.UpdateMode.Once;
+				CheckScreenProperties();
+
+				SubViewport.RenderTargetUpdateMode = SubViewport.UpdateMode.Once;
 			}
 		}
 	}
 
-	public SubViewport GetSubViewport() => _subViewport;
+	private void Update()
+	{
+		if (_dirty.HasFlag(Dirty.Size))
+		{
+			_dirty &= ~Dirty.Size;
+
+			_screenSize = (Screen.Mesh as PlaneMesh).Size;
+			(_collisionObject.GetChild<CollisionShape3D>(0).Shape as BoxShape3D).Size = new Vector3(_screenSize.X, _screenSize.Y, 0.01f);
+		}
+
+		UpdateRender();
+	}
 
 	private void UpdateRender()
 	{
-		if (Engine.IsEditorHint())
+		if (Engine.IsEditorHint())  // Get references if running in editor
 		{
-			_subViewport = GetNode<SubViewport>("%SubViewport");
-			_screen = GetNode<MeshInstance3D>("%Screen");
+			SubViewport = GetNode<SubViewport>("%SubViewport");
 		}
 
 		if (_dirty.HasFlag(Dirty.Material))
@@ -142,14 +193,14 @@ public partial class Viewport2DIn3D : Node3D
 
 			if (_subSceneInstance is not null && IsInstanceValid(_subSceneInstance))
 			{
-				_subViewport.RemoveChild(_subSceneInstance);
+				SubViewport.RemoveChild(_subSceneInstance);
 				_subSceneInstance.QueueFree();
 			}
 
 			if (_subScene is not null)
 			{
 				_subSceneInstance = _subScene.Instantiate<Control>();
-				_subViewport.AddChild(_subSceneInstance);
+				SubViewport.AddChild(_subSceneInstance);
 			}
 
 			_dirty |= Dirty.Redraw;
@@ -159,21 +210,49 @@ public partial class Viewport2DIn3D : Node3D
 		{
 			_dirty &= ~Dirty.Albedo;
 
-			_screenMaterial.AlbedoTexture = _subViewport.GetTexture();
+			_screenMaterial.AlbedoTexture = SubViewport.GetTexture();
 		}
 
 		if (_dirty.HasFlag(Dirty.Surface))
 		{
 			_dirty &= ~Dirty.Surface;
 
-			_screen.SetSurfaceOverrideMaterial(0, _screenMaterial);
+			Screen.SetSurfaceOverrideMaterial(0, _screenMaterial);
 		}
 
 		if (_dirty.HasFlag(Dirty.Redraw))
 		{
 			_dirty &= ~Dirty.Redraw;
 
-			if (Engine.IsEditorHint()) _subViewport.RenderTargetUpdateMode = SubViewport.UpdateMode.Once;
+			if (Engine.IsEditorHint()) SubViewport.RenderTargetUpdateMode = SubViewport.UpdateMode.Once;
+		}
+
+		if (_dirty.HasFlag(Dirty.Update))
+		{
+			_dirty &= ~Dirty.Update;
+
+			if (Engine.IsEditorHint() || _updateMode == UpdateMode.Once)
+			{
+				SubViewport.RenderTargetUpdateMode = SubViewport.UpdateMode.Once;
+			}
+			else if (_updateMode == UpdateMode.Always)
+			{
+				SubViewport.RenderTargetUpdateMode = SubViewport.UpdateMode.Always;
+			}
+			else if (_updateMode == UpdateMode.Throttled)
+			{
+				SubViewport.RenderTargetUpdateMode = SubViewport.UpdateMode.Once;
+			}
+		}
+	}
+
+	private void CheckScreenProperties()
+	{
+		if ((Screen.Mesh as PlaneMesh).Size != _screenSize)
+		{
+			_dirty |= Dirty.Size;
+
+			Update();
 		}
 	}
 }

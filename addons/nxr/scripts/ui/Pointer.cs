@@ -76,6 +76,13 @@ public partial class Pointer : RayCast3D
 
 		SubViewport vp = null;
 
+		if (collider.GetParent<Node>() is Viewport2DIn3D viewport)
+		{
+			_hitting_gui = true;
+			vp = viewport.SubViewport;
+		}
+
+		/*
 		foreach (Node child in collider.GetChildren())
 		{
 			if (child is Viewport2DIn3D viewport)
@@ -84,6 +91,7 @@ public partial class Pointer : RayCast3D
 				vp = viewport.GetSubViewport();
 			}
 		}
+		*/
 
 		if (vp is null)
 		{
@@ -91,7 +99,7 @@ public partial class Pointer : RayCast3D
 			return;
 		}
 
-		CollisionShape3D shape = (CollisionShape3D)collider.GetChild(1);
+		CollisionShape3D shape = (CollisionShape3D)collider.GetChild(0);
 		Vector3 shapeSize = (Vector3)shape.Shape.Get("size");
 		Vector3 localPoint = collider.ToLocal(GetCollisionPoint());
 		localPoint /= new Vector3(-shapeSize.X, shapeSize.Y, shapeSize.Z);
@@ -123,7 +131,7 @@ public partial class Pointer : RayCast3D
 
 	private void ReleaseMouse()
 	{
-		SubViewport vp = (SubViewport)_old_raycast_collider.GetChild(0);
+		SubViewport vp = _old_raycast_collider.GetParent<Viewport2DIn3D>().SubViewport;
 		InputEventMouseButton clickEvent = new InputEventMouseButton();
 		clickEvent.ButtonIndex = MouseButton.Left;
 		clickEvent.Position = _oldViewportPoint;
