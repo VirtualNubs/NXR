@@ -55,12 +55,12 @@ size = Vector3(0.200333, 0.0600739, 0.0509338)
 [sub_resource type="PlaneMesh" id="PlaneMesh_i667c"]
 size = Vector2(0.5, 0.5)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_xk3g8"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_itjfi"]
 viewport_path = NodePath("SubViewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_swp4a"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x8a41"]
 cull_mode = 2
-albedo_texture = SubResource("ViewportTexture_xk3g8")
+albedo_texture = SubResource("ViewportTexture_itjfi")
 
 [node name="Demo2" type="Node3D"]
 
@@ -176,7 +176,7 @@ Screen = NodePath("Screen")
 [node name="Screen" type="MeshInstance3D" parent="Geometry/Screen/Viewport2Din3D"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 mesh = SubResource("PlaneMesh_i667c")
-surface_material_override/0 = SubResource("StandardMaterial3D_swp4a")
+surface_material_override/0 = SubResource("StandardMaterial3D_x8a41")
 
 [node name="XRSimulator" parent="." instance=ExtResource("10_lpjci")]
 disable_xr_in_editor = true

@@ -27,9 +27,15 @@ public partial class Viewport2DIn3D : Node3D
 		}
 	}
 
+	/// <summary>
+	/// The mesh on which the SubViewport content will be drawn on.
+	/// </summary>
 	[Export]
 	public MeshInstance3D Screen { set; get; }
 
+	/// <summary>
+	/// How often the SubViewport will update.
+	/// </summary>
 	[Export]
 	public UpdateMode ViewportUpdateMode
 	{
@@ -46,7 +52,7 @@ public partial class Viewport2DIn3D : Node3D
 	}
 
 	/// <summary>
-	/// Allows manual control of the flags used to keep the mesh rendering the viewport updated.
+	/// Allows manual control of the flags in editor to trigger updates.
 	/// </summary>
 	[ExportGroup("Flag Controls")]
 	[Export]
@@ -127,7 +133,9 @@ public partial class Viewport2DIn3D : Node3D
 	{
 		if (Screen is null) return;
 
-		if (Engine.IsEditorHint())  // Handle material updates while in editor
+		CheckScreenProperties();
+
+		if (Engine.IsEditorHint())
 		{
 			_timeSinceUpdate += delta;
 			if (_timeSinceUpdate >= 1.0)
@@ -148,13 +156,14 @@ public partial class Viewport2DIn3D : Node3D
 			{
 				_timeSinceUpdate = 0;
 
-				CheckScreenProperties();
-
 				SubViewport.RenderTargetUpdateMode = SubViewport.UpdateMode.Once;
 			}
 		}
 	}
 
+	/// <summary>
+	/// Check all Dirty flags for any needed updates
+	/// </summary>
 	private void Update()
 	{
 		if (_dirty.HasFlag(Dirty.Size))
@@ -168,6 +177,9 @@ public partial class Viewport2DIn3D : Node3D
 		UpdateRender();
 	}
 
+	/// <summary>
+	/// Checking Dirty flags for render updates
+	/// </summary>
 	private void UpdateRender()
 	{
 		if (Engine.IsEditorHint())  // Get references if running in editor
@@ -246,6 +258,9 @@ public partial class Viewport2DIn3D : Node3D
 		}
 	}
 
+	/// <summary>
+	/// Monitoring Screen's size to see if the collision needs to be updated.
+	/// </summary>
 	private void CheckScreenProperties()
 	{
 		if ((Screen.Mesh as PlaneMesh).Size != _screenSize)
