@@ -209,7 +209,7 @@ public partial class Viewport2DIn3D : Node3D
 		{
 			_dirty &= ~Dirty.SubScene;
 
-			if (_subSceneInstance is not null && IsInstanceValid(_subSceneInstance))
+			if (IsInstanceValid(_subSceneInstance))
 			{
 				SubViewport.RemoveChild(_subSceneInstance);
 				_subSceneInstance.QueueFree();
