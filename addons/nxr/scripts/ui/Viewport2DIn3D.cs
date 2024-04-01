@@ -176,6 +176,7 @@ public partial class Viewport2DIn3D : Node3D
 			_dirty &= ~Dirty.Size;
 
 			_screenSize = (Screen.Mesh as PlaneMesh).Size;
+			if (Engine.IsEditorHint()) _collisionObject = GetNode<StaticBody3D>("%CollisionObject");
 			(_collisionObject.GetChild<CollisionShape3D>(0).Shape as BoxShape3D).Size = new Vector3(_screenSize.X, _screenSize.Y, 0.01f);
 		}
 
