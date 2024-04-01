@@ -148,8 +148,7 @@ public partial class Viewport2DIn3D : Node3D
 			{
 				_timeSinceUpdate = 0;
 
-				_dirty |= Dirty.Material;
-				_dirty |= Dirty.Size;
+				_dirty |= Dirty.Material | Dirty.Size;
 
 				Update();
 			}
