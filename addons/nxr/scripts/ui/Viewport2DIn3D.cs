@@ -86,8 +86,14 @@ public partial class Viewport2DIn3D : Node3D
 		get => false;
 	}
 
+	/// <summary>
+	/// The SubViewport that renders the 2D UI scene.
+	/// </summary>
 	public SubViewport SubViewport { set; get; }
 
+	/// <summary>
+	/// The UpdateMode that is passed down to the child SubViewport.
+	/// </summary>
 	public enum UpdateMode
 	{
 		Once,
