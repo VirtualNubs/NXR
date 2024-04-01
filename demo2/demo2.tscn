@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://ec50c21n35ve"]
+[gd_scene load_steps=28 format=3 uid="uid://ec50c21n35ve"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/player/PlayerSpawn.cs" id="1_qwo3m"]
 [ext_resource type="Texture2D" uid="uid://ngcd0scm03r1" path="res://demo2/assets/kenney_prototype-textures/PNG/Dark/texture_01.png" id="2_d1tc8"]
@@ -53,14 +53,17 @@ size = Vector3(0.2, 0.06, 0.05)
 size = Vector3(0.200333, 0.0600739, 0.0509338)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_i667c"]
-size = Vector2(0.5, 0.5)
+size = Vector2(1, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_lmay6"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_kahji"]
 viewport_path = NodePath("SubViewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2m3x6"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g1mwu"]
 cull_mode = 2
-albedo_texture = SubResource("ViewportTexture_lmay6")
+albedo_texture = SubResource("ViewportTexture_kahji")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7efga"]
+size = Vector3(1.27991, 0.774014, 0.269287)
 
 [node name="Demo2" type="Node3D"]
 
@@ -95,35 +98,35 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00492096, -0.277618, -0.004
 shape = SubResource("BoxShape3D_yc7it")
 metadata/_edit_lock_ = true
 
-[node name="Door2" type="StaticBody3D" parent="Geometry"]
+[node name="Door" type="StaticBody3D" parent="Geometry"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.79294, 0, 0)
 
-[node name="DoorFrame" type="CSGBox3D" parent="Geometry/Door2"]
+[node name="DoorFrame" type="CSGBox3D" parent="Geometry/Door"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00409985, 1.10452, 0.0024159)
 material_override = SubResource("StandardMaterial3D_r2qb3")
 size = Vector3(1.4, 2.2, 0.3)
 
-[node name="CSGCombiner3D" type="CSGCombiner3D" parent="Geometry/Door2/DoorFrame"]
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="Geometry/Door/DoorFrame"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00409985, -1.10452, -0.0024159)
 operation = 2
 
-[node name="CSGBox3D" type="CSGBox3D" parent="Geometry/Door2/DoorFrame/CSGCombiner3D"]
+[node name="CSGBox3D" type="CSGBox3D" parent="Geometry/Door/DoorFrame/CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.000579476)
 size = Vector3(1, 2, 0.35)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Door2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Door"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.600763, 1.10269, 0.00190735)
 shape = SubResource("BoxShape3D_b4dp1")
 
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="Geometry/Door2"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Geometry/Door"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.597683, 1.10269, 0.00190735)
 shape = SubResource("BoxShape3D_b4dp1")
 
-[node name="CollisionShape3D3" type="CollisionShape3D" parent="Geometry/Door2"]
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Geometry/Door"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00335693, 2.10184, 0.00280762)
 shape = SubResource("BoxShape3D_eyapr")
 
-[node name="JoltHingeJoint3D" type="JoltHingeJoint3D" parent="Geometry/Door2"]
+[node name="JoltHingeJoint3D" type="JoltHingeJoint3D" parent="Geometry/Door"]
 limit_enabled = true
 limit_lower = -2.96706
 limit_spring_frequency = 10.0
@@ -132,51 +135,68 @@ node_a = NodePath("..")
 node_b = NodePath("../Door")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.503769, 1, -0.147896)
 
-[node name="Door" type="RigidBody3D" parent="Geometry/Door2"]
+[node name="Door" type="RigidBody3D" parent="Geometry/Door"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000450134, 1.00411, -0.0972437)
 freeze = true
 script = ExtResource("4_4nhdh")
+GrabBreakDistance = 1.0
 
-[node name="InteractableGrab" type="Node" parent="Geometry/Door2/Door"]
+[node name="InteractableGrab" type="Node" parent="Geometry/Door/Door"]
 script = ExtResource("9_t6bih")
 _usePhysics = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Geometry/Door2/Door"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Geometry/Door/Door"]
 material_override = SubResource("StandardMaterial3D_uuehb")
 mesh = SubResource("BoxMesh_d6aoa")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Door2/Door"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Door/Door"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000610352, 0.00811005, 0.000854492)
 shape = SubResource("BoxShape3D_3cdhc")
 
-[node name="HandleHandPose" type="RemoteTransform3D" parent="Geometry/Door2/Door"]
+[node name="HandleHandPose" type="RemoteTransform3D" parent="Geometry/Door/Door"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.33837, 0, 0.0775763)
 script = ExtResource("8_qnp4a")
 _pose = "poses_default/grip"
 
-[node name="Handle" type="RigidBody3D" parent="Geometry/Door2/Door"]
+[node name="Handle" type="RigidBody3D" parent="Geometry/Door/Door"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.33837, 0, 0.0775763)
 collision_layer = 8
 freeze = true
 script = ExtResource("8_8qmdt")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Geometry/Door2/Door/Handle"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Geometry/Door/Door/Handle"]
 mesh = SubResource("BoxMesh_rr6bx")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Door2/Door/Handle"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Door/Door/Handle"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000144958, 0.000328064, 0.000778198)
 shape = SubResource("BoxShape3D_wp1kr")
 
-[node name="Screen" type="Node3D" parent="Geometry"]
+[node name="ScreenDemo" type="StaticBody3D" parent="Geometry"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.723299, 0.83102, 0)
 
-[node name="Viewport2Din3D" parent="Geometry/Screen" node_paths=PackedStringArray("Screen") instance=ExtResource("10_mydgx")]
+[node name="Viewport2Din3D" parent="Geometry/ScreenDemo" node_paths=PackedStringArray("Screen") instance=ExtResource("10_mydgx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.39807, 0.449554, 0.089081)
 Screen = NodePath("Screen")
 
-[node name="Screen" type="MeshInstance3D" parent="Geometry/Screen/Viewport2Din3D"]
+[node name="Screen" type="MeshInstance3D" parent="Geometry/ScreenDemo/Viewport2Din3D"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 mesh = SubResource("PlaneMesh_i667c")
-surface_material_override/0 = SubResource("StandardMaterial3D_2m3x6")
+surface_material_override/0 = SubResource("StandardMaterial3D_g1mwu")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Geometry/ScreenDemo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.395715, 0.108093, -0.00377932)
+size = Vector3(1.2804, 1.94446, 0.269897)
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="Geometry/ScreenDemo/CSGBox3D"]
+operation = 2
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Geometry/ScreenDemo/CSGBox3D/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.341347, 0.110483)
+size = Vector3(1, 1, 0.0585938)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/ScreenDemo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.396179, -0.445311, -0.00646973)
+shape = SubResource("BoxShape3D_7efga")
 
 [node name="XRSimulator" parent="." instance=ExtResource("10_lpjci")]
 disable_xr_in_editor = true
