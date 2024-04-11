@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://ec50c21n35ve"]
+[gd_scene load_steps=29 format=3 uid="uid://ec50c21n35ve"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/player/PlayerSpawn.cs" id="1_qwo3m"]
 [ext_resource type="Texture2D" uid="uid://ngcd0scm03r1" path="res://demo2/assets/kenney_prototype-textures/PNG/Dark/texture_01.png" id="2_d1tc8"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="9_t6bih"]
 [ext_resource type="PackedScene" path="res://addons/xr-simulator/XRSimulator.tscn" id="10_lpjci"]
 [ext_resource type="PackedScene" uid="uid://dgvxqyv0r7itt" path="res://addons/nxr/scenes/ui/Viewport2dIn3D.tscn" id="10_mydgx"]
+[ext_resource type="PackedScene" uid="uid://cmyjf4ehhee5c" path="res://demo2/scenes/menu_example.tscn" id="11_g2uh3"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ibqk"]
 albedo_texture = ExtResource("2_d1tc8")
@@ -53,14 +54,15 @@ size = Vector3(0.2, 0.06, 0.05)
 size = Vector3(0.200333, 0.0600739, 0.0509338)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_i667c"]
+resource_local_to_scene = true
 size = Vector2(1, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_kahji"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_ba228"]
 viewport_path = NodePath("SubViewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g1mwu"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_va20v"]
 cull_mode = 2
-albedo_texture = SubResource("ViewportTexture_kahji")
+albedo_texture = SubResource("ViewportTexture_ba228")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7efga"]
 size = Vector3(1.27991, 0.774014, 0.269287)
@@ -172,19 +174,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000144958, 0.000328064, 0.
 shape = SubResource("BoxShape3D_wp1kr")
 
 [node name="ScreenDemo" type="StaticBody3D" parent="Geometry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.723299, 0.83102, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.08731, 0.83102, 0)
 
 [node name="Viewport2Din3D" parent="Geometry/ScreenDemo" node_paths=PackedStringArray("Screen") instance=ExtResource("10_mydgx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.39807, 0.449554, 0.089081)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.449554, 0.089081)
+SubScene = ExtResource("11_g2uh3")
 Screen = NodePath("Screen")
 
 [node name="Screen" type="MeshInstance3D" parent="Geometry/ScreenDemo/Viewport2Din3D"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 mesh = SubResource("PlaneMesh_i667c")
-surface_material_override/0 = SubResource("StandardMaterial3D_g1mwu")
+surface_material_override/0 = SubResource("StandardMaterial3D_va20v")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Geometry/ScreenDemo"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.395715, 0.108093, -0.00377932)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.108093, -0.00377932)
 size = Vector3(1.2804, 1.94446, 0.269897)
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="Geometry/ScreenDemo/CSGBox3D"]
@@ -195,7 +198,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.341347, 0.110483)
 size = Vector3(1, 1, 0.0585938)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/ScreenDemo"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.396179, -0.445311, -0.00646973)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.445311, -0.00646973)
 shape = SubResource("BoxShape3D_7efga")
 
 [node name="XRSimulator" parent="." instance=ExtResource("10_lpjci")]
