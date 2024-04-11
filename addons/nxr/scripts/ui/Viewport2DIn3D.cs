@@ -23,7 +23,7 @@ public partial class Viewport2DIn3D : Node3D
 
 			if (!_isReady) return;
 
-			UpdateRender();
+			Update();
 		}
 	}
 
@@ -44,6 +44,7 @@ public partial class Viewport2DIn3D : Node3D
 		get => _screen;
 	}
 
+	[ExportGroup("SubViewport Settings")]
 	/// <summary>
 	/// How often the SubViewport will update.
 	/// </summary>
@@ -56,10 +57,24 @@ public partial class Viewport2DIn3D : Node3D
 
 			_updateMode = value;
 
-			UpdateRender();
+			Update();
 		}
 
 		get => _updateMode;
+	}
+	[Export]
+	public Vector2I SubViewportSize
+	{
+		set
+		{
+			_dirty |= Dirty.SubScene;
+
+			_subViewportSize = value;
+
+			Update();
+		}
+
+		get => _subViewportSize;
 	}
 
 	/// <summary>
@@ -136,6 +151,7 @@ public partial class Viewport2DIn3D : Node3D
 	private Vector2 _screenSize;
 	private UpdateMode _updateMode = UpdateMode.Throttled;
 	private MeshInstance3D _screen;
+	private Vector2I _subViewportSize = new(512, 512);
 
 	public override void _Ready()
 	{
@@ -234,6 +250,8 @@ public partial class Viewport2DIn3D : Node3D
 				_subSceneInstance = _subScene.Instantiate<Control>();
 				SubViewport.AddChild(_subSceneInstance);
 			}
+
+			SubViewport.Size = _subViewportSize;
 
 			_dirty |= Dirty.Redraw;
 		}
