@@ -32,7 +32,18 @@ public partial class Viewport2DIn3D : Node3D
 	/// The mesh on which the SubViewport content will be drawn on.
 	/// </summary>
 	[Export]
-	public MeshInstance3D Screen { set; get; }
+	public MeshInstance3D Screen
+	{
+		set
+		{
+			_screen = value;
+
+			_dirty |= Dirty.Material | Dirty.Size;
+
+			Update();
+		}
+		get => _screen;
+	}
 
 	/// <summary>
 	/// How often the SubViewport will update.
@@ -125,6 +136,7 @@ public partial class Viewport2DIn3D : Node3D
 	private StaticBody3D _collisionObject;
 	private Vector2 _screenSize;
 	private UpdateMode _updateMode = UpdateMode.Throttled;
+	private MeshInstance3D _screen;
 
 	public override void _Ready()
 	{

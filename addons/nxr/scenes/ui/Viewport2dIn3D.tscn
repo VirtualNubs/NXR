@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/ui/Viewport2DIn3D.cs" id="1_wjlj5"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4b6jf"]
+resource_local_to_scene = true
 size = Vector3(1, 1, 0.01)
 
 [node name="2DViewportIn3D" type="Node3D"]
