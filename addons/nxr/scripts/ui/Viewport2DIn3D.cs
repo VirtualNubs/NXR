@@ -39,6 +39,8 @@ public partial class Viewport2DIn3D : Node3D
 
 			_dirty |= Dirty.Material | Dirty.Size;
 
+			if (!_isReady) return;
+
 			Update();
 		}
 		get => _screen;
