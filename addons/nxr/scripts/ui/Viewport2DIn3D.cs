@@ -6,7 +6,6 @@ using Godot;
 /// Handles rendering 2D UI in a 3D scene.
 /// </summary>
 [Tool]
-[GlobalClass]
 public partial class Viewport2DIn3D : Node3D
 {
 	/// <summary>
