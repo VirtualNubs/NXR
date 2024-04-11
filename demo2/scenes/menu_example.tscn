@@ -12,7 +12,7 @@ grow_vertical = 2
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 0
 offset_right = 512.0
-offset_bottom = 649.0
+offset_bottom = 512.0
 
 [node name="CenterContainer" type="CenterContainer" parent="MarginContainer"]
 layout_mode = 2
