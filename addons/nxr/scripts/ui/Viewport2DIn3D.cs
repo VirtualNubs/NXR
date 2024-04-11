@@ -64,6 +64,11 @@ public partial class Viewport2DIn3D : Node3D
 
 		get => _updateMode;
 	}
+
+	/// <summary>
+	/// Controls the size of the child SubViewport. The width and height of the sub-viewport. Must be set to a value 
+	/// greater than or equal to 2 pixels on both dimensions. Otherwise, nothing will be displayed.
+	/// </summary>
 	[Export]
 	public Vector2I SubViewportSize
 	{
