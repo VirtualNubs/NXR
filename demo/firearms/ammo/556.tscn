@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/firearm/components/FirearmBullet.cs" id="1_hfmo4"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="2_53sb1"]
-[ext_resource type="Material" uid="uid://dr1bhnahf7eyq" path="res://assets/models/ammo/bullets/bullets.material" id="3_svgte"]
+[ext_resource type="Material" uid="uid://dr1bhnahf7eyq" path="res://addons/nxr/assets/models/ammo/bullets/bullets.material" id="3_svgte"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h8q34"]
 size = Vector3(0.0236022, 0.0223716, 0.0466176)
@@ -75,9 +75,10 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_jum46")
 
-[node name="FirearmBullet" type="RigidBody3D" groups=["44"]]
+[node name="FirearmBullet" type="RigidBody3D" node_paths=PackedStringArray("tip") groups=["44"]]
 collision_layer = 8
 script = ExtResource("1_hfmo4")
+tip = NodePath("5_56x45/5_56x45_Tip")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0257404)

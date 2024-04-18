@@ -187,7 +187,7 @@ draw_pass_1 = SubResource("QuadMesh_0xluh")
 script = ExtResource("9_eci7q")
 _restartOnFire = true
 
-[node name="FirearmSlide" type="RigidBody3D" parent="." node_paths=PackedStringArray("Target", "PrimaryGrabPoint", "SecondaryGrabPoint")]
+[node name="FirearmSlide" type="RigidBody3D" parent="." node_paths=PackedStringArray("Target")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0163067, 0.0042981)
 collision_layer = 8
 freeze = true
@@ -199,8 +199,6 @@ StartXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0163067, 0.0042981)
 EndXform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0163067, 0.0482371)
 Priority = 1.5
 GrabAction = "trigger_click"
-PrimaryGrabPoint = NodePath(".")
-SecondaryGrabPoint = NodePath(".")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FirearmSlide"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0268815, -0.0126632)
