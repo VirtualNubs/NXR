@@ -41,10 +41,11 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_fjq5w")
 
-[node name="FirearmBullet2" type="RigidBody3D" groups=["12g"]]
+[node name="FirearmBullet2" type="RigidBody3D" node_paths=PackedStringArray("tip") groups=["12g"]]
 collision_layer = 8
 mass = 0.28
 script = ExtResource("1_fmevu")
+tip = NodePath("fake tip")
 GrabAction = "trigger_click"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -61,3 +62,6 @@ transform = Transform3D(1, 0, 0, 0, 1.31134e-07, 1, 0, -1, 1.31134e-07, 0, 3.566
 mesh = SubResource("ArrayMesh_khp5g")
 skeleton = NodePath("")
 surface_material_override/0 = ExtResource("3_p6lhh")
+
+[node name="fake tip" type="MeshInstance3D" parent="."]
+visible = false
