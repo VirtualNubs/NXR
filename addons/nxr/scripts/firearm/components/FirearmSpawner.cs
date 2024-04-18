@@ -32,7 +32,7 @@ public partial class FirearmSpawner : Node3D
         float randZ = GD.Randf(); 
         
         inst.Rotation = new Vector3(randX, randY, randZ);
-        inst.updateTip(true);
+        inst.UpdateTip(true);
 
         if (Util.NodeIs(inst, typeof(RigidBody3D))) { 
             RigidBody3D body = (RigidBody3D)inst; 
@@ -51,7 +51,7 @@ public partial class FirearmSpawner : Node3D
         float randZ = GD.Randf(); 
         
         inst.Rotation = new Vector3(randX, randY, randZ); 
-        inst.updateTip(false);
+        inst.UpdateTip(false);
 
         if (Util.NodeIs(inst, typeof(RigidBody3D))) { 
             RigidBody3D body = (RigidBody3D)inst; 

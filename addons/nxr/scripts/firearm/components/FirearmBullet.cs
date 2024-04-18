@@ -7,13 +7,15 @@ namespace NXRFirearm;
 [GlobalClass]
 public partial class FirearmBullet : Interactable
 {
-	[Export] public MeshInstance3D tip;
+	[Export] public MeshInstance3D Tip;
 
 	public bool Spent = false;
 
-	public void updateTip(bool spent)
+	public void UpdateTip(bool spent)
 	{
-		tip.Visible = !spent;
+		if (Tip) == null return;
+
+		Tip.Visible = !spent;
 	}
 	
 }
