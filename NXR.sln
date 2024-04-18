@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NXR", "NXR.csproj", "{F14B47BF-A3BE-4A38-A9C2-E1AAF981A31A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NXR", "NXR.csproj", "{B1D75435-17C4-48AF-B374-BE741E01FE3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,11 +9,11 @@ Global
 	ExportRelease|Any CPU = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F14B47BF-A3BE-4A38-A9C2-E1AAF981A31A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F14B47BF-A3BE-4A38-A9C2-E1AAF981A31A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F14B47BF-A3BE-4A38-A9C2-E1AAF981A31A}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
-		{F14B47BF-A3BE-4A38-A9C2-E1AAF981A31A}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
-		{F14B47BF-A3BE-4A38-A9C2-E1AAF981A31A}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
-		{F14B47BF-A3BE-4A38-A9C2-E1AAF981A31A}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{B1D75435-17C4-48AF-B374-BE741E01FE3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1D75435-17C4-48AF-B374-BE741E01FE3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1D75435-17C4-48AF-B374-BE741E01FE3D}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{B1D75435-17C4-48AF-B374-BE741E01FE3D}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{B1D75435-17C4-48AF-B374-BE741E01FE3D}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{B1D75435-17C4-48AF-B374-BE741E01FE3D}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
 	EndGlobalSection
 EndGlobal
