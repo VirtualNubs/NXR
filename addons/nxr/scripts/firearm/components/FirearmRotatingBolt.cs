@@ -10,34 +10,30 @@ namespace NXRFirearm;
 public partial class FirearmRotatingBolt : FirearmMovable
 {
 
-    private Transform3D _initTransform = new();
-
-    private Transform3D _initGrab = new(); 
-
+    #region Private 
     private Transform3D _relativeGrab = new(); 
-
     private bool _setBack = false; 
     private float _rotationAngle = 0.0f; 
-
     private Firearm _firearm = null; 
+    private float _lerpSpeed = 0.5f; 
+    #endregion
 
-    [Signal]
-    public delegate void OnBoltBackEventHandler();
 
-    [Signal]
-    public delegate void OnBoltForwardEventHandler();
+    #region Signals
+    [Signal] public delegate void OnBoltBackEventHandler();
+    [Signal] public delegate void OnBoltForwardEventHandler();
+    #endregion
+
     
 
     public override void _Ready()
     {
         base._Ready();
-        _initTransform = Transform;
         OnGrabbed += OnGrab; 
 
-        if (Util.NodeIs(GetParent(), typeof(Firearm))) { 
-            _firearm = (Firearm)GetParent(); 
-        }
+        _firearm = FirearmUtil.GetFirearmFromParentOrOwner(this); 
     }
+
 
     public override void _Process(double delta)
     {
@@ -57,12 +53,13 @@ public partial class FirearmRotatingBolt : FirearmMovable
         }
     }
 
+
     public override void _PhysicsProcess(double delta)
     {
-        
         if (Engine.IsEditorHint()) { 
             RunTool(); 
         }
+
 
         if (PrimaryInteractor == null) return;
 
@@ -72,20 +69,25 @@ public partial class FirearmRotatingBolt : FirearmMovable
         // Don't rotate if position not at start 
         if (Position.IsEqualApprox(StartXform.Origin))
         {
+
             Transform3D xform = GlobalTransform * _relativeGrab; 
             Vector3 axis = Vector3.One; 
-            Vector3 grab = ToLocal(GetPrimaryInteractor().GlobalPosition); 
             Vector3 loc = ToLocal(xform.Origin); 
-            grab.Z = 0; 
+            Vector3 grab = ToLocal(GetPrimaryInteractor().GlobalPosition); 
+            grab.Z = 0;
             loc.Z = 0; 
 
-            Vector3 locDir = (loc - Position);  
-            Vector3 grabDir = (grab - Position); 
+            grab = grab.LimitLength(loc.Length()); 
 
-            float rotAngle = locDir.Normalized().SignedAngleTo(grabDir.Normalized(), axis);
-            rotAngle = Mathf.Clamp(rotAngle, -.1f, .1f); 
-            RotateZ(rotAngle * 2.0f);
+            Vector3 locDir = (loc - Position).Normalized();  
+            Vector3 grabDir = (grab - Position).Normalized(); 
+            float newAngle = locDir.SignedAngleTo(grabDir, axis);
+
+            _rotationAngle = Mathf.Lerp(_rotationAngle, newAngle, _lerpSpeed); 
+
+            RotateZ(_rotationAngle);    
         }
+
 
         // rotation clamp
         Vector3 newRot = Rotation;
@@ -109,8 +111,8 @@ public partial class FirearmRotatingBolt : FirearmMovable
         } 
         
         Position = newPos;
-
     }
+
 
     public void OnGrab(Interactable interactable, Interactor interactor) { 
         if (interactor == PrimaryInteractor) { 

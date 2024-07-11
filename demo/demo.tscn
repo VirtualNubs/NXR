@@ -1353,7 +1353,7 @@ autoplay = true
 transform = Transform3D(5.96046e-08, 0, -1, 0, 1, 0, 1, 0, 5.96046e-08, 7.92583, 1.47263, -5.79964)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Settings"]
-transform = Transform3D(1.55, 0, 0, 0, 1.55, 0, 0, 0, 1.55, 0, -0.283471, 0)
+transform = Transform3D(-1.55, 0, 2.11596e-07, 0, 1.55, 0, -2.11596e-07, 0, -1.55, 0, -0.283471, 0)
 
 [node name="SubViewport" type="SubViewport" parent="Settings/StaticBody3D"]
 
@@ -1363,7 +1363,6 @@ transform = Transform3D(1.55, 0, 0, 0, 1.55, 0, 0, 0, 1.55, 0, -0.283471, 0)
 shape = SubResource("BoxShape3D_byyyh")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Settings/StaticBody3D"]
-transform = Transform3D(-1, 0, -1.19209e-07, 0, 1, 0, 1.19209e-07, 0, -1, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_fj1th")
 mesh = SubResource("QuadMesh_qpu15")
 skeleton = NodePath("../..")

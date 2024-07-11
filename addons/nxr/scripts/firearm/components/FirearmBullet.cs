@@ -13,7 +13,7 @@ public partial class FirearmBullet : Interactable
 
 	public void UpdateTip(bool spent)
 	{
-		if (Tip) == null return;
+		if (Tip == null) return;
 
 		Tip.Visible = !spent;
 	}
