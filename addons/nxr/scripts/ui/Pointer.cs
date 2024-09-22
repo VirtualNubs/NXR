@@ -55,7 +55,7 @@ public partial class Pointer : RayCast3D
 		} 
 
 		if (_hittingGui) { 
-			Viewport2DIn3D vp3D = (Viewport2DIn3D)collider.GetOwner(); 
+			Viewport2DIn3D vp3D = (Viewport2DIn3D)collider.GetParent(); 
 			Visible = true; 
 		} else { 
 			Visible = false; 
@@ -70,7 +70,7 @@ public partial class Pointer : RayCast3D
 		}
 
 
-		if (!Util.NodeIs(collider.GetOwner(), typeof(Viewport2DIn3D))) return;
+		if (!Util.NodeIs(collider.GetParent(), typeof(Viewport2DIn3D))) return;
 
 		Viewport2DIn3D vp3D = (Viewport2DIn3D)collider.GetParent(); 
 		SubViewport vp = vp3D.SubViewport;
