@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://ec50c21n35ve"]
+[gd_scene load_steps=27 format=3 uid="uid://ec50c21n35ve"]
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/player/PlayerSpawn.cs" id="1_qwo3m"]
 [ext_resource type="Texture2D" uid="uid://ngcd0scm03r1" path="res://demo2/assets/kenney_prototype-textures/PNG/Dark/texture_01.png" id="2_d1tc8"]
@@ -9,7 +9,7 @@
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrabPoint.cs" id="8_8qmdt"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/hand/HandPose.cs" id="8_qnp4a"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/components/InteractableGrab.cs" id="9_t6bih"]
-[ext_resource type="PackedScene" uid="uid://dgvxqyv0r7itt" path="res://addons/nxr/scenes/ui/Viewport2dIn3D.tscn" id="10_mydgx"]
+[ext_resource type="PackedScene" uid="uid://b77pvypdjl8ha" path="res://addons/nxr/scenes/ui/Viewport2dIn3D.tscn" id="10_mydgx"]
 [ext_resource type="PackedScene" uid="uid://cmyjf4ehhee5c" path="res://demo2/scenes/menu_example.tscn" id="11_g2uh3"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ibqk"]
@@ -52,19 +52,14 @@ size = Vector3(0.2, 0.06, 0.05)
 [sub_resource type="BoxShape3D" id="BoxShape3D_wp1kr"]
 size = Vector3(0.200333, 0.0600739, 0.0509338)
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_i667c"]
-resource_local_to_scene = true
-size = Vector2(1, 1)
+[sub_resource type="QuadMesh" id="QuadMesh_ssagb"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_uvl21"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_o0bbk"]
 viewport_path = NodePath("SubViewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_37ipt"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jlt6d"]
 cull_mode = 2
-albedo_texture = SubResource("ViewportTexture_uvl21")
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_7efga"]
-size = Vector3(1.27991, 0.774014, 0.269287)
+albedo_texture = SubResource("ViewportTexture_o0bbk")
 
 [node name="Demo2" type="Node3D"]
 
@@ -128,6 +123,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00335693, 2.10184, 0.00280
 shape = SubResource("BoxShape3D_eyapr")
 
 [node name="JoltHingeJoint3D" type="JoltHingeJoint3D" parent="Geometry/Door"]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
 limit_enabled = true
 limit_lower = -2.96706
 limit_spring_frequency = 10.0
@@ -135,6 +139,7 @@ limit_spring_damping = 1.0
 node_a = NodePath("..")
 node_b = NodePath("../Door")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.503769, 1, -0.147896)
+script = null
 
 [node name="Door" type="RigidBody3D" parent="Geometry/Door"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000450134, 1.00411, -0.0972437)
@@ -172,30 +177,22 @@ mesh = SubResource("BoxMesh_rr6bx")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000144958, 0.000328064, 0.000778198)
 shape = SubResource("BoxShape3D_wp1kr")
 
-[node name="ScreenDemo" type="StaticBody3D" parent="Geometry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.08731, 0.83102, 0)
-
-[node name="Viewport2Din3D" parent="Geometry/ScreenDemo" node_paths=PackedStringArray("Screen") instance=ExtResource("10_mydgx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.449554, 0.089081)
-SubScene = ExtResource("11_g2uh3")
-Screen = NodePath("Screen")
-
-[node name="Screen" type="MeshInstance3D" parent="Geometry/ScreenDemo/Viewport2Din3D"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
-mesh = SubResource("PlaneMesh_i667c")
-surface_material_override/0 = SubResource("StandardMaterial3D_37ipt")
-
-[node name="CSGBox3D" type="CSGBox3D" parent="Geometry/ScreenDemo"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.108093, -0.00377932)
+[node name="CSGBox3D" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.08731, 0.939113, -0.00377932)
 size = Vector3(1.2804, 1.94446, 0.269897)
 
-[node name="CSGCombiner3D" type="CSGCombiner3D" parent="Geometry/ScreenDemo/CSGBox3D"]
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="Geometry/CSGBox3D"]
 operation = 2
 
-[node name="CSGBox3D" type="CSGBox3D" parent="Geometry/ScreenDemo/CSGBox3D/CSGCombiner3D"]
+[node name="CSGBox3D" type="CSGBox3D" parent="Geometry/CSGBox3D/CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.341347, 0.110483)
 size = Vector3(1, 1, 0.0585938)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/ScreenDemo"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.445311, -0.00646973)
-shape = SubResource("BoxShape3D_7efga")
+[node name="Viewport2Din3D" parent="Geometry/CSGBox3D" node_paths=PackedStringArray("Screen") instance=ExtResource("10_mydgx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.341461, 0.0928603)
+SubScene = ExtResource("11_g2uh3")
+Screen = NodePath("MeshInstance3D")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Geometry/CSGBox3D/Viewport2Din3D"]
+mesh = SubResource("QuadMesh_ssagb")
+surface_material_override/0 = SubResource("StandardMaterial3D_jlt6d")

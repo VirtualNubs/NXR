@@ -6,6 +6,7 @@ using Godot;
 /// Handles rendering 2D UI in a 3D scene.
 /// </summary>
 [Tool]
+[GlobalClass]
 public partial class Viewport2DIn3D : Node3D
 {
 	/// <summary>
@@ -23,7 +24,7 @@ public partial class Viewport2DIn3D : Node3D
 
 			if (!_isReady) return;
 
-			Update();
+			UpdateRender();
 		}
 	}
 
@@ -31,25 +32,13 @@ public partial class Viewport2DIn3D : Node3D
 	/// The mesh on which the SubViewport content will be drawn on.
 	/// </summary>
 	[Export]
-	public MeshInstance3D Screen
-	{
-		set
-		{
-			_screen = value;
+	public MeshInstance3D Screen { set; get; }
 
-			_dirty |= Dirty.Material | Dirty.Size;
-
-			if (!_isReady) return;
-
-			Update();
-		}
-		get => _screen;
-	}
-
-	[ExportGroup("SubViewport Settings")]
 	/// <summary>
 	/// How often the SubViewport will update.
 	/// </summary>
+
+
 	[Export]
 	public UpdateMode ViewportUpdateMode
 	{
@@ -59,29 +48,10 @@ public partial class Viewport2DIn3D : Node3D
 
 			_updateMode = value;
 
-			Update();
+			UpdateRender();
 		}
 
 		get => _updateMode;
-	}
-
-	/// <summary>
-	/// Controls the size of the child SubViewport. The width and height of the sub-viewport. Must be set to a value 
-	/// greater than or equal to 2 pixels on both dimensions. Otherwise, nothing will be displayed.
-	/// </summary>
-	[Export]
-	public Vector2I SubViewportSize
-	{
-		set
-		{
-			_dirty |= Dirty.SubScene;
-
-			_subViewportSize = value;
-
-			Update();
-		}
-
-		get => _subViewportSize;
 	}
 
 	/// <summary>
@@ -119,14 +89,10 @@ public partial class Viewport2DIn3D : Node3D
 		get => false;
 	}
 
-	/// <summary>
-	/// The SubViewport that renders the 2D UI scene.
-	/// </summary>
 	public SubViewport SubViewport { set; get; }
+	public StaticBody3D CollisionObject { set; get; }
 
-	/// <summary>
-	/// The UpdateMode that is passed down to the child SubViewport.
-	/// </summary>
+
 	public enum UpdateMode
 	{
 		Once,
@@ -154,18 +120,15 @@ public partial class Viewport2DIn3D : Node3D
 	private Dirty _dirty = Dirty.All;
 	private bool _isReady = false;
 	private StandardMaterial3D _screenMaterial;
-	private StaticBody3D _collisionObject;
 	private Vector2 _screenSize;
 	private UpdateMode _updateMode = UpdateMode.Throttled;
-	private MeshInstance3D _screen;
-	private Vector2I _subViewportSize = new(512, 512);
 
 	public override void _Ready()
 	{
 		_isReady = true;
 
 		SubViewport = GetNode<SubViewport>("%SubViewport");
-		_collisionObject = GetNode<StaticBody3D>("%CollisionObject");
+		CollisionObject = GetNode<StaticBody3D>("%CollisionObject");
 
 		Update();
 	}
@@ -183,7 +146,8 @@ public partial class Viewport2DIn3D : Node3D
 			{
 				_timeSinceUpdate = 0;
 
-				_dirty |= Dirty.Material | Dirty.Size;
+				_dirty |= Dirty.Material;
+				_dirty |= Dirty.Size;
 
 				Update();
 			}
@@ -194,6 +158,7 @@ public partial class Viewport2DIn3D : Node3D
 			_timeSinceUpdate += delta;
 			if (_timeSinceUpdate > frameTime)
 			{
+
 				_timeSinceUpdate = 0;
 
 				SubViewport.RenderTargetUpdateMode = SubViewport.UpdateMode.Once;
@@ -206,18 +171,20 @@ public partial class Viewport2DIn3D : Node3D
 	/// </summary>
 	private void Update()
 	{
+		UpdateRender();
+
 		if (_dirty.HasFlag(Dirty.Size))
 		{
 			_dirty &= ~Dirty.Size;
 
-			if (Screen is null) return;
+			if (Screen is not null)
+				_screenSize = (Screen.Mesh as PlaneMesh).Size;
 
-			_screenSize = (Screen.Mesh as PlaneMesh).Size;
-			if (Engine.IsEditorHint()) _collisionObject = GetNode<StaticBody3D>("%CollisionObject");
-			(_collisionObject.GetChild<CollisionShape3D>(0).Shape as BoxShape3D).Size = new Vector3(_screenSize.X, _screenSize.Y, 0.01f);
+			if (CollisionObject is null) return; 
+			if (CollisionObject.GetChild(0) is null) return; 
+			(CollisionObject.GetChild<CollisionShape3D>(0).Shape as BoxShape3D).Size = new Vector3(_screenSize.X, _screenSize.Y, 0.01f);
 		}
 
-		UpdateRender();
 	}
 
 	/// <summary>
@@ -246,7 +213,7 @@ public partial class Viewport2DIn3D : Node3D
 		{
 			_dirty &= ~Dirty.SubScene;
 
-			if (IsInstanceValid(_subSceneInstance))
+			if (_subSceneInstance is not null && IsInstanceValid(_subSceneInstance))
 			{
 				SubViewport.RemoveChild(_subSceneInstance);
 				_subSceneInstance.QueueFree();
@@ -257,8 +224,6 @@ public partial class Viewport2DIn3D : Node3D
 				_subSceneInstance = _subScene.Instantiate<Control>();
 				SubViewport.AddChild(_subSceneInstance);
 			}
-
-			SubViewport.Size = _subViewportSize;
 
 			_dirty |= Dirty.Redraw;
 		}
@@ -274,7 +239,7 @@ public partial class Viewport2DIn3D : Node3D
 		{
 			_dirty &= ~Dirty.Surface;
 
-			Screen.SetSurfaceOverrideMaterial(0, _screenMaterial);
+			Screen?.SetSurfaceOverrideMaterial(0, _screenMaterial);
 		}
 
 		if (_dirty.HasFlag(Dirty.Redraw))
@@ -303,16 +268,31 @@ public partial class Viewport2DIn3D : Node3D
 		}
 	}
 
+	private void CheckForPointer()
+	{
+		return;
+	}
+
 	/// <summary>
 	/// Monitoring Screen's size to see if the collision needs to be updated.
 	/// </summary>
 	private void CheckScreenProperties()
 	{
-		if ((Screen.Mesh as PlaneMesh).Size != _screenSize)
+		if (Screen != null && (Screen.Mesh as PlaneMesh).Size != _screenSize)
 		{
 			_dirty |= Dirty.Size;
 
 			Update();
 		}
+	}
+
+	public CollisionShape3D GetCollisionShape()
+	{
+		return CollisionObject.GetChild<CollisionShape3D>(0);
+	}
+
+	public Control GetSubsceneInstance()
+	{
+		return _subSceneInstance;
 	}
 }
