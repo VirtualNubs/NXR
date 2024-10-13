@@ -7,23 +7,15 @@ namespace NXR;
 [GlobalClass]
 public partial class InputRotator : Node3D
 {
-    [Export]
-    public Node3D Target; 
-
-    [Export]
-    private Vector3 _start = new();
-    [Export]
-    private Vector3 _end = new();
+    [Export] public Node3D Target; 
+    [Export] private Vector3 _start = new();
+    [Export]private Vector3 _end = new();
 
     [ExportGroup("tool settings")]
-    [Export]
-    private bool _setStart = false;
-    [Export]
-    private bool _setEnd = false;
-    [Export]
-    private bool _goStart = false;
-    [Export]
-    private bool _goEnd = false;
+    [Export] private bool _setStart = false;
+    [Export] private bool _setEnd = false;
+    [Export] private bool _goStart = false;
+    [Export] private bool _goEnd = false;
 
 
 

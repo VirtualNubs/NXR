@@ -6,8 +6,7 @@ using NXR;
 [GlobalClass]
 public partial class FirearmLight : OmniLight3D
 {
-    [Export]
-    public float Energy = 1.0f;
+    [Export] public float Energy = 1.0f;
 
     private Firearm _firearm;
 

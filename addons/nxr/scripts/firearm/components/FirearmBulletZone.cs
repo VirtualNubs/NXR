@@ -9,8 +9,7 @@ namespace NXRFirearm;
 public partial class FirearmBulletZone : InteractableSnapZone
 {
 	
-	[Export]
-	private bool chamberFirearm = true;
+	[Export] private bool chamberFirearm = true;
 
 	public FirearmBullet Bullet = null; 
     public override void _Ready()

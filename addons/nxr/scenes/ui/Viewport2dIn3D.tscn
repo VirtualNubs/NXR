@@ -4,7 +4,7 @@
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4b6jf"]
 resource_local_to_scene = true
-size = Vector3(1, 1, 0.01)
+size = Vector3(0, 0, 0.01)
 
 [node name="2DViewportIn3D" type="Node3D"]
 script = ExtResource("1_wjlj5")

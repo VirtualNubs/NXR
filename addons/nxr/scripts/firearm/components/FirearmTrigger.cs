@@ -1,32 +1,34 @@
-using System.Runtime.Serialization.Formatters;
 using Godot;
-using NXR;
 using NXRFirearm;
+
 
 
 [Tool]
 [GlobalClass]
-public partial class FirearmTrigger : FirearmMovable
+public partial class FirearmTrigger : FirearmClampedXform
 {
+
 
     private Firearm _firearm = null;
 
+
     public override void _Ready()
     {
-        if (Util.NodeIs(GetParent(), typeof(Firearm)))
-        {
-            _firearm = (Firearm)GetParent();
-        } else { 
-            GD.PushWarning("No Firearm Found!"); 
-        }
+
+        base._Ready();
+    }
+
+    public override void _Process(double delta)
+    {
+        RunTool(); 
     }
 
     public override void _PhysicsProcess(double delta)
     {
         RunTool(); 
 
-        if (Engine.IsEditorHint()) return; 
+        if (Engine.IsEditorHint() || Firearm == null) return; 
          
-        StartToEnd(_firearm.GetTriggerValue());
+        StartToEnd(Firearm.GetTriggerValue());
     }
 }

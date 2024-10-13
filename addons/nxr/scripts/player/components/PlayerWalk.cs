@@ -7,11 +7,8 @@ namespace NXRPlayer;
 public partial class PlayerWalk : PlayerBehaviour
 {   
 
-    [Export]
-    private MovementDirection _movementDirection = MovementDirection.Camera; 
-
-    [Export]
-    private float _walkSpeed = 50.0f;
+    [Export] private MovementDirection _movementDirection = MovementDirection.Camera; 
+    [Export] private float _walkSpeed = 50.0f;
 
 
     public override void _PhysicsProcess(double delta)

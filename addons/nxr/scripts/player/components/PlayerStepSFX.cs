@@ -11,11 +11,8 @@ public partial class PlayerStepSFX : AudioStreamPlayer3D
 
 	private Player _player;
 
-	[Export]
-	private Array<String> _surfaces;
-
-	[Export]
-	private Array<AudioStream> _streams;
+	[Export] private Array<String> _surfaces;
+	[Export] private Array<AudioStream> _streams;
 
 	private string _currentSurface = "";
 

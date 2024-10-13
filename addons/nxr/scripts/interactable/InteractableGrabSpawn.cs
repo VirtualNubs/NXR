@@ -5,12 +5,13 @@ namespace NXRInteractable;
 [GlobalClass]
 public partial class InteractableGrabSpawn : Interactable
 {
-	[Export]
-	public bool Disabled = false; 
+	[Export] public bool Disabled = false; 
+	[Export] private int _maxItems = 1;
+	[Export] private PackedScene _scene;
 
-	[Export]
-	private PackedScene _scene;
+
 	private Interactable _lastSpawned = null;
+
 
     public override void _Ready()
     {
@@ -29,6 +30,13 @@ public partial class InteractableGrabSpawn : Interactable
 	}
 
 	public void SpawnAndGrab(Interactor interactor) {
+
+
+		if (_lastSpawned != null) {
+			_lastSpawned.QueueFree(); 
+		}
+
+		
 		interactor.Drop(); 
 
 		Interactable inst = (Interactable)_scene.Instantiate(); 
@@ -36,6 +44,7 @@ public partial class InteractableGrabSpawn : Interactable
 		inst.GlobalPosition = this.GlobalPosition; 
 		interactor.Grab(inst); 
 		_lastSpawned = inst; 
+
 	}
 
 	public Interactable GetLastSpawned() { 

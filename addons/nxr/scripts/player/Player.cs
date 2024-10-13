@@ -8,44 +8,34 @@ namespace NXRPlayer;
 [GlobalClass]
 public partial class Player : CharacterBody3D
 {   
-    [Export]
-    public PlayerSettings PlayerSettings { get; set; } 
 
-    [Export]
-    private float _playerHeight = 1.8f; 
-
-    [Export]
-    public DominantHand _dominantHand = DominantHand.Left;
-
-    [Export]
-    private Controller _leftController;
-    [Export]
-    private Controller _rightController;
-
-    [Export]
-    private XROrigin3D _xrOrigin; 
-
-
-    [Export]
-    private bool _gravityEnabled = true;
-
+    #region Exported
+    [Export] public PlayerSettings PlayerSettings { get; set; } 
+    [Export] private float _playerHeight = 1.8f; 
+    [Export] public DominantHand _dominantHand = DominantHand.Left;
+    [Export] private Controller _leftController;
+    [Export] private Controller _rightController;
+    [Export] private XROrigin3D _xrOrigin; 
+    [Export] private bool _gravityEnabled = true;
+    [Export] private float _gravityMultiplier = 1.0f; 
 
 
     [ExportGroup("Collider Settings")]
-    [Export]
-    private bool _enableHeadCollider = true; 
-    [Export]
-    private bool _enableBodyCollider = true; 
+    [Export] private bool _enableHeadCollider = true; 
+    [Export] private bool _enableBodyCollider = true; 
 
 
 
     [ExportGroup("Step Settings")]
-    [Export]
-    private float _stepHeight = 0.4f;
+    [Export] private float _stepHeight = 0.4f;
+
+
     [Export(PropertyHint.Range, "0.01, 1.0")]
     private float _stepSmoothing = 0.2f; 
+    #endregion
 
 
+    #region private
     private Camera3D _camera;
     private RayCast3D _groundRay = new(); 
 
@@ -57,16 +47,18 @@ public partial class Player : CharacterBody3D
 
     private Node3D lastGroundNode; 
     private Transform3D lastGroundXform; 
+    #endregion
 
-    [Export]
-    private float _gravityMultiplier = 1.0f; 
 
     public override void _Ready()
     {
 
-        if (PlayerSettings == null) { 
-            PlayerSettings = new PlayerSettings(); 
+        if (PlayerSettings.SettingsExist("default_player_settings")) { 
+            PlayerSettings = PlayerSettings.LoadSettings(); 
+        } else { 
+            PlayerSettings = PlayerSettings = new PlayerSettings();
         }
+        
 
         if (GetViewport().GetCamera3D().GetClass() == "XRCamera3D")
         {
@@ -104,9 +96,9 @@ public partial class Player : CharacterBody3D
         }
     }
 
+
     public override void _PhysicsProcess(double delta)
     {
-
         if (IsOnGround())
         {
             Grounder();
@@ -124,6 +116,7 @@ public partial class Player : CharacterBody3D
         MoveAndSlide(); 
     }
 
+
     public void ApplyDampening(Vector3 velocity, float amount)
     {
         Accelerate((-1 * amount * Velocity.Length()) * velocity.Normalized());
@@ -135,11 +128,13 @@ public partial class Player : CharacterBody3D
         Velocity += vel; 
     }
 
+
     public void CenterOnNode(Node3D node) {
         Vector3 bodyOffset = GlobalPosition - GetCamera().GlobalPosition; 
 
         GlobalPosition = node.GlobalPosition + bodyOffset; 
     }
+
 
     public Controller GetDominantController()
     {
@@ -147,11 +142,13 @@ public partial class Player : CharacterBody3D
         return _rightController; 
     }
 
+
     public Controller GetSecondaryController()
     {
         if (PlayerSettings.DominantHand== DominantHand.Left) return _rightController;
         return _leftController;
     }
+
 
     public Vector2 GetDominantJoyAxis()
     {
@@ -159,45 +156,53 @@ public partial class Player : CharacterBody3D
         return GetDominantController().GetVector2("primary"); 
     }
 
+
     public Vector2 GetSecondaryJoyAxis()
     {
         if (GetSecondaryController() == null) return Vector2.Zero;
         return GetSecondaryController().GetVector2("primary");
     }
 
+
     public Vector3 GetGroundNormal()
     {
         return _groundRay.GetCollisionNormal(); 
     }
 
+
     public XROrigin3D GetXROrigin() { 
         return _xrOrigin; 
     }
 
+
     public float GetPlayerHeight() { 
         return _playerHeight; 
     }
+
+
     public bool IsOnGround()
     {
         return _groundRay.IsColliding() || IsOnFloor(); 
     }
+
 
     public Camera3D GetCamera()
     {
         return GetViewport().GetCamera3D(); 
     }
 
+
     public Array<StringName> GetGroundGroups() { 
         Node3D col = (Node3D)_groundRay.GetCollider(); 
         return col.GetGroups();  
     }
+
 
     private void Grounder()
     {
 
         if (IsOnCeiling()) return; 
         
-        Node3D coll = (Node3D)_groundRay.GetCollider(); 
         Vector3 pos = GlobalPosition;
         Vector3 camPos = _camera.GlobalPosition;
         float castDistance = Mathf.Abs(pos.Y - camPos.Y);
@@ -214,13 +219,16 @@ public partial class Player : CharacterBody3D
         );
     }
 
+
     public void SetPlayerHeight() { 
         _playerHeight = GetCamera().Position.Y; 
     }
 
+
     public void SetDominantHand(DominantHand hand) { 
         _dominantHand = hand; 
     }
+
 
     private void ConfigureCollisionShapes()
     {

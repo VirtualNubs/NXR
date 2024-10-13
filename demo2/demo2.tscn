@@ -54,12 +54,12 @@ size = Vector3(0.200333, 0.0600739, 0.0509338)
 
 [sub_resource type="QuadMesh" id="QuadMesh_ssagb"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_o0bbk"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_33f6v"]
 viewport_path = NodePath("SubViewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jlt6d"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hukca"]
 cull_mode = 2
-albedo_texture = SubResource("ViewportTexture_o0bbk")
+albedo_texture = SubResource("ViewportTexture_33f6v")
 
 [node name="Demo2" type="Node3D"]
 
@@ -149,7 +149,6 @@ GrabBreakDistance = 1.0
 
 [node name="InteractableGrab" type="Node" parent="Geometry/Door/Door"]
 script = ExtResource("9_t6bih")
-_usePhysics = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Geometry/Door/Door"]
 material_override = SubResource("StandardMaterial3D_uuehb")
@@ -195,4 +194,4 @@ Screen = NodePath("MeshInstance3D")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Geometry/CSGBox3D/Viewport2Din3D"]
 mesh = SubResource("QuadMesh_ssagb")
-surface_material_override/0 = SubResource("StandardMaterial3D_jlt6d")
+surface_material_override/0 = SubResource("StandardMaterial3D_hukca")

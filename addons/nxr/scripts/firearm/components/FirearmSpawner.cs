@@ -7,13 +7,13 @@ using NXRFirearm;
 [GlobalClass]
 public partial class FirearmSpawner : Node3D
 {   
-    [Export]
-    private PackedScene _scene; 
+    [Export] private PackedScene _scene; 
     private Firearm _firearm; 
 
     public override void _Ready()
     {
-        if (Util.NodeIs(GetParent(), typeof(Firearm)))
+        _firearm = FirearmUtil.GetFirearmFromParentOrOwner(this); 
+        if (_firearm != null)
         {
             _firearm = (Firearm)GetParent();
             _firearm.OnFire += OnFire; 

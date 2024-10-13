@@ -123,7 +123,6 @@ public partial class Pointer : RayCast3D
 		_oldCollider = null; 
 		_isActivatingGui = false; 
 
-
 		if (vp3D.GetSubsceneInstance().HasNode("NXRCursor")) { 
 			Control cursor = (Control)vp3D.GetSubsceneInstance().GetNode("NXRCursor"); 
 			cursor.Visible = false; 

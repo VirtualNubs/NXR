@@ -6,23 +6,10 @@ namespace NXRFirearm;
 
 [Tool]
 [GlobalClass]
-public partial class FirearmBreakAction : FirearmMovable
+public partial class FirearmBreakAction : FirearmClampedXform
 {
+	[Export] private Node3D _bulletQueue;
 
-	[Export]
-	private Firearm _firearm;
-
-	[Export]
-	private Node3D _bulletQueue;
-
-	public override void _Ready()
-	{
-
-		if (Util.NodeIs((Node)GetParent(), typeof(Firearm)))
-		{
-			_firearm = (Firearm)GetParent();
-		}
-	}
 
 	public override void _Process(double delta)
 	{
@@ -32,10 +19,10 @@ public partial class FirearmBreakAction : FirearmMovable
 			RunTool();
 		}
 
-		if (_firearm == null) return;
+		if (Firearm == null) return;
 
 
-		if (_firearm.GetPrimaryInteractor() != null && _firearm.GetPrimaryInteractor().Controller.ButtonOneShot("ax_button"))
+		if (Firearm.GetPrimaryInteractor() != null && Firearm.GetPrimaryInteractor().Controller.ButtonOneShot("ax_button"))
 		{
 			Open();
 		}
@@ -45,9 +32,9 @@ public partial class FirearmBreakAction : FirearmMovable
 			Close();
 		}
 
-		if (!IsClosed() && _firearm.GetSecondaryInteractor() != null)
+		if (!IsClosed() && Firearm.GetSecondaryInteractor() != null)
 		{
-			Vector3 dir = _firearm.GetSecondaryInteractor().GlobalPosition - Target.GlobalPosition;
+			Vector3 dir = Firearm.GetSecondaryInteractor().GlobalPosition - Target.GlobalPosition;
 			float angle = Target.GlobalTransform.Basis.Y.Dot(dir.Normalized());
 			angle = Mathf.Clamp(angle * 1.5f, -1, 1);
 
@@ -58,13 +45,14 @@ public partial class FirearmBreakAction : FirearmMovable
 		if (!IsClosed())
 		{
 			
-			_firearm.BlockFire = true;
+			Firearm.BlockFire = true;
 		}
 		else
 		{
-			_firearm.BlockFire = false;
+			Firearm.BlockFire = false;
 		}
 	}
+
 
 	private bool IsClosed()
 	{
@@ -95,9 +83,9 @@ public partial class FirearmBreakAction : FirearmMovable
 
 	private bool GetCloseInput()
 	{
-		if (_firearm.GetPrimaryInteractor() == null) return false;
-		Controller controller = _firearm.GetPrimaryInteractor().Controller;
-		Vector3 dir = _firearm.GetPrimaryInteractor().Controller.Transform.Basis.Y; 
+		if (Firearm.GetPrimaryInteractor() == null) return false;
+		Controller controller = Firearm.GetPrimaryInteractor().Controller;
+		Vector3 dir = Firearm.GetPrimaryInteractor().Controller.Transform.Basis.Y; 
 				
 		return controller.VelMatches(dir, 2f);
 	}

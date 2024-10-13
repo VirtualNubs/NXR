@@ -13,8 +13,7 @@ public partial class Firearm : Interactable
 
     #region Exported: 
     [Export] public FireMode FireMode { get; set; } = FireMode.Single;
-    [Export] private float _fireRate = 0.1f;
-
+    [Export] private int _roundPerMinute = 600;
     [Export] private bool _startChambered = false;
     [Export] private bool _chamberOnFire = true;
 
@@ -27,8 +26,9 @@ public partial class Firearm : Interactable
     [ExportGroup("TwoHanded Settings")]
     [Export] private float _recoilMultiplier = 0.3f;
 
+
     [ExportGroup("Recoil Settings")]
-    [Export] private Vector3 _recoilKick = new Vector3(0, 0, 0.05f);
+    [Export] private Vector3 _recoilKick = new Vector3(0, 0, 0.15f);
     [Export] private Vector3 _recoilRise = new Vector3(15, 0, 0);
     [Export] private float _recoilTimeToPeak = 0.01f;
     [Export] private float _kickRecoverSpeed = .25f;
@@ -63,6 +63,8 @@ public partial class Firearm : Interactable
     [Signal] public delegate void OnChamberedEventHandler();
     [Signal] public delegate void TryChamberEventHandler();
     [Signal] public delegate void TryEjectEventHandler();
+    [Signal] public delegate void TryEjectEmptyEventHandler();
+    [Signal] public delegate void TryEjectSpentEventHandler();
     #endregion
 
 
@@ -75,7 +77,7 @@ public partial class Firearm : Interactable
 
         // timer setup 
         AddChild(_fireTimer);
-        _fireTimer.WaitTime = _fireRate;
+        _fireTimer.WaitTime =  60.0 / _roundPerMinute;
         _fireTimer.OneShot = true;
         _fireTimer.ProcessCallback = Timer.TimerProcessCallback.Physics;
 
@@ -131,7 +133,7 @@ public partial class Firearm : Interactable
         for (int i = 0; i < _burstAmount; i++)
         {
             FireAction(); 
-            await ToSignal(GetTree().CreateTimer(_burstTime / _burstAmount), "timeout");
+            await ToSignal(GetTree().CreateTimer(60.0 / _roundPerMinute), "timeout");
         }
 
         _burstQueued = false;
@@ -180,7 +182,7 @@ public partial class Firearm : Interactable
         if (_yCurve != null)
         {
             _shotCount = _shotCount >= _yCurve.PointCount ? 0 : _shotCount;
-            RotationOffset = new Vector3(RotationOffset.X, _yCurve.GetPointPosition(_shotCount).Y, RotationOffset.Z);
+            RotationOffset = new Vector3(RotationOffset.X, _yCurve.GetPointPosition(_shotCount).Y * recoilMultiplier, RotationOffset.Z);
         }
 
         if (_recoilTween.IsRunning())

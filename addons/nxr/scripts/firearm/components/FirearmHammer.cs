@@ -6,18 +6,18 @@ using NXRFirearm;
 
 [Tool]
 [GlobalClass]
-public partial class FirearmHammer : FirearmMovable
+public partial class FirearmHammer : FirearmClampedXform
 {
 
-	[Export]
-	private bool _singleAction = false; 
+	[Export] private bool _singleAction = false; 
 
 	private Firearm _firearm; 
-	
 	private float _triggerValue = 0f; 
 	private bool _hammerReset = false; 
 	private bool _lockedBack = false; 
 	private float _threshold = 0.9f; 
+
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{

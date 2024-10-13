@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using Godot;
 
 namespace NXRInteractable;
@@ -35,13 +36,13 @@ public partial class Interactable : RigidBody3D
 
 
 	[ExportGroup("Offsets")]
-	[Export] public Vector3 PositionOffset { get; set; } = new Vector3();
-	[Export] public Vector3 RotationOffset { get; set; } = new Vector3();
-
+	public Vector3 PositionOffset { get; set; } = new Vector3();
+	public Vector3 RotationOffset { get; set; } = new Vector3();
 	#endregion
 
 
 	#region Public: 
+	public Node3D PreviousParent { get; set; }
 	public Node3D InitParent { get; set; } = null;
 	public Transform3D InitTransform { set; get; }
 	public bool InitFreeze { get; set; } = false;
@@ -56,13 +57,14 @@ public partial class Interactable : RigidBody3D
 	public Node3D SecondaryGrabPoint;
 	public Transform3D PrimaryGrabPointOffset = new();
 	public Transform3D SecondaryGrabPointOffset = new();
+	public bool Hovered = false;
+	public Transform3D PrimaryGrabXform = new Transform3D();
 	#endregion
 
 
 	#region Private: 
 	protected Transform3D _secondaryRelativeTransorm = new Transform3D();
 	protected Transform3D _primaryRelativeTransform = new Transform3D();
-	public Transform3D _primaryGrabTransorm = new Transform3D(); 
 	#endregion
 
 
@@ -76,13 +78,16 @@ public partial class Interactable : RigidBody3D
 
 	public override void _Ready()
 	{
-		InitParent = (Node3D)GetParent();
-		InitFreeze = Freeze;
-		PrimaryGrabPoint ??= this;
-		SecondaryGrabPoint ??= this;
 		InitTransform = Transform;
 		InitGlobalTransform = Transform;
+		InitFreeze = Freeze;
+		InitParent = (Node3D)GetParent();
+		PreviousParent = InitParent;
+
+		PrimaryGrabPoint ??= this;
+		SecondaryGrabPoint ??= this;
 	}
+
 
 	public override void _IntegrateForces(PhysicsDirectBodyState3D state)
 	{
@@ -91,6 +96,8 @@ public partial class Interactable : RigidBody3D
 			IntegrateForces(state);
 		};
 	}
+
+
 	public void Grab(Interactor interactor)
 	{
 		if (Disabled) return;
@@ -101,6 +108,7 @@ public partial class Interactable : RigidBody3D
 		{
 			PrimaryInteractor = interactor;
 			PrimaryInteractor.Controller.Pulse(0.5f, _grabPulse, 0.1);
+			PrimaryGrabXform = interactor.GlobalTransform;
 			_primaryRelativeTransform = interactor.GlobalTransform.AffineInverse() * GlobalTransform;
 		}
 		else
@@ -130,6 +138,7 @@ public partial class Interactable : RigidBody3D
 		// emit after to access available interactors
 		EmitSignal("OnGrabbed", this, interactor);
 	}
+
 	public void Drop(Interactor interactor)
 	{
 		// emit before so we can access any set interactor before setting null 
@@ -139,6 +148,7 @@ public partial class Interactable : RigidBody3D
 		{
 			PrimaryInteractor.Controller.Pulse(0.5f, _dropPulse, 0.1);
 			PrimaryInteractor = null;
+			PrimaryGrabXform = interactor.GlobalTransform;
 		}
 
 		if (interactor == SecondaryInteractor)

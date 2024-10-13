@@ -8,13 +8,10 @@ using System.Linq;
 [GlobalClass]
 public partial class PolygonPath : CsgPolygon3D
 {
-    [Export]
-    private float _radius = 5.0f;
-    [Export(PropertyHint.Range, "3, 50")]
-    private int _resolution = 10;
-
-    [Export]
-    CurveTexture _curve;
+    [Export] private float _radius = 5.0f;
+    [Export(PropertyHint.Range, "3, 50")] private int _resolution = 10;
+    [Export] CurveTexture _curve;
+    
     public override void _Process(double delta)
     {
         Godot.Vector2[] circle = new  Godot.Vector2[_resolution];

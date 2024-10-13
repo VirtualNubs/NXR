@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://addons/nxr/scripts/player/Player.cs" id="1_rc1uy"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/core/Origin.cs" id="2_3x8s4"]
-[ext_resource type="Resource" uid="uid://dqooh1vsmo8b8" path="res://addons/nxr/resources/default_player_settings.tres" id="2_775an"]
+[ext_resource type="Resource" uid="uid://qhqij5086ak1" path="res://addons/nxr/resources/default_player_settings.tres" id="2_775an"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/core/Controller.cs" id="3_ub7va"]
 [ext_resource type="PackedScene" uid="uid://8ap3o7qw7wri" path="res://addons/nxr/scenes/ui/UIPointer.tscn" id="4_2rouu"]
 [ext_resource type="Script" path="res://addons/nxr/scripts/interactable/Interactor.cs" id="4_480fq"]
@@ -72,10 +72,9 @@ collision_mask = 9
 script = ExtResource("4_480fq")
 Controller = NodePath("../LeftController")
 
-[node name="PhysicsHand" parent="XROrigin3D/LeftInteractor" node_paths=PackedStringArray("Controller") instance=ExtResource("5_utiyv")]
+[node name="PhysicsHand" parent="XROrigin3D/LeftInteractor" node_paths=PackedStringArray("Interactor") instance=ExtResource("5_utiyv")]
 transform = Transform3D(-0.96279, 0.131946, -0.235851, 0.0982031, 0.983868, 0.149535, -0.251777, -0.12081, 0.960215, 0, -0.048, 0.00305932)
-Controller = NodePath("../../LeftController")
-_blendTime = 0.0
+Interactor = NodePath("..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/LeftInteractor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.729379)
@@ -91,7 +90,6 @@ Controller = NodePath("../RightController")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.729379)
 shape = SubResource("BoxShape3D_tyjap")
 
-[node name="HandRight" parent="XROrigin3D/RightInteractor" node_paths=PackedStringArray("Controller") instance=ExtResource("5_utiyv")]
+[node name="HandRight" parent="XROrigin3D/RightInteractor" node_paths=PackedStringArray("Interactor") instance=ExtResource("5_utiyv")]
 transform = Transform3D(0.96266, -0.132707, 0.235956, 0.0989945, 0.983804, 0.149432, -0.251965, -0.120494, 0.960206, 0, -0.048, 0)
-Controller = NodePath("../../RightController")
-_blendTime = 0.0
+Interactor = NodePath("..")

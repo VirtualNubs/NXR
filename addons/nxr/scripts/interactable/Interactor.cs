@@ -13,14 +13,14 @@ public partial class Interactor : Area3D
 
 	#region Exported: 
 	[Export] public Controller Controller { get; private set; }
-	[Export] public float Smoothing { get; set; } = 20;
-	[Export] public bool UpdateTransform { get; set ; } = true;
-
+	[Export] public float Smoothing { get; set; } = 0f;
+	[Export] public bool UpdateTransform { get; set; } = true;
 	#endregion
 
 
 	#region Public: 
 	public Interactable GrabbedInteractable { get; set; }
+	public RigidBody3D InteractorBody = new RigidBody3D();
 	#endregion
 
 
@@ -28,13 +28,20 @@ public partial class Interactor : Area3D
 	protected Interactable _distanceInteractable;
 	protected bool _distanceGrabbing = false;
 	private float _distanceGrabDelta = 0.0f;
+	private float _distancePointBias = 0.95f;
 	#endregion
+
+
+	[Signal] public delegate void GrabbedEventHandler(Interactable interactable);
+	[Signal] public delegate void DroppedEventHandler(Interactable interactable);
 
 
 	public override void _Ready()
 	{
 		Controller.ButtonPressed += Interact;
 		Controller.ButtonReleased += InteractDrop;
+		BodyExited += BodyExit;
+		InteractorBody.FreezeMode = RigidBody3D.FreezeModeEnum.Static;
 	}
 
 
@@ -43,31 +50,42 @@ public partial class Interactor : Area3D
 
 		if (UpdateTransform)
 		{
-			GlobalTransform = GlobalTransform.InterpolateWith(Controller.GlobalTransform, Smoothing * (float)delta);
+			GlobalTransform = GlobalTransform.InterpolateWith(Controller.GlobalTransform, Mathf.Clamp(1 - Smoothing, 0.001f, 1.0f));
 		}
-
-		DistanceGrab(delta);
+		
+		if (_distanceInteractable != null) { 
+			_distanceInteractable.LinearVelocity = Vector3.Zero; 
+			_distanceInteractable.GlobalPosition = _distanceInteractable.GlobalPosition.Lerp(GlobalPosition, (float)delta * 10.0f); 
+			_distanceInteractable.GlobalBasis = _distanceInteractable.GlobalBasis.Slerp(GlobalBasis, (float)delta * 10.0f); 
+			if (_distanceInteractable.GlobalPosition.DistanceTo(GlobalPosition) < _distanceInteractable.GrabBreakDistance) { 
+				Grab(_distanceInteractable); 
+				_distanceInteractable = null; 
+				
+			}
+		}
 	}
+
 
 	public override void _Process(double delta)
 	{
-
-		if (IsInstanceValid(GrabbedInteractable) && GrabbedInteractable.HoldMode == HoldMode.Toggle && Controller.ButtonOneShot(GrabbedInteractable.GrabAction))
-		{
-			Drop();
-		}
-
-		if (!_distanceGrabbing)
-		{
-			DistanceDrop();
+		if (HoveredInteractables().Count > 0 && !HoveredInteractables()[0].IsGrabbed()) { 
+			HoveredInteractables()[0].Hovered = true; 
 		}
 	}
+
 
 	private void Interact(String buttonName)
 	{
 
-		if (IsInstanceValid(GrabbedInteractable)) { return; }
+		if (IsInstanceValid(GrabbedInteractable)) {
+			
+			if (GrabbedInteractable.HoldMode == HoldMode.Toggle && GrabbedInteractable.DropAction == buttonName) { 
+				Drop(); 
+			}
 
+			return; 
+		}
+		
 		foreach (Interactable hovered in HoveredInteractables())
 		{
 
@@ -83,68 +101,35 @@ public partial class Interactor : Area3D
 					return;
 				}
 
-				if (interactable.DistanceGrabEnabled && dist < interactable.DistanceGrabReach)
+
+				if (interactable.PrimaryInteractor == null && interactable.DistanceGrabEnabled && dist < interactable.DistanceGrabReach)
 				{
 					_distanceInteractable = interactable;
-					_distanceGrabbing = true;
+					
+					
 					return;
 				}
 			}
 		}
 	}
 
-	private void DistanceGrab(double delta)
-	{
-		if (_distanceGrabbing && IsInstanceValid(_distanceInteractable))
-		{
-
-			Transform3D xform = _distanceInteractable.GlobalTransform;
-			xform.Origin = xform.Origin.Slerp(GlobalTransform.Origin, _distanceGrabDelta);
-
-			_distanceInteractable.GlobalTransform = xform;
-
-			float dist = GlobalPosition.DistanceTo(_distanceInteractable.GlobalPosition);
-
-			if (dist <= _distanceInteractable.GrabBreakDistance)
-			{
-				Grab(_distanceInteractable);
-			}
-
-			_distanceGrabDelta += (float)delta;
-
-		}
-	}
-
-	private void DistanceDrop()
-	{
-		if (!IsInstanceValid(GrabbedInteractable)) return;
-
-		float dist = 0;
-
-		if (this == GrabbedInteractable.PrimaryInteractor)
-		{
-			dist = GrabbedInteractable.PrimaryGrabPoint.GlobalPosition.DistanceTo(GlobalPosition);
-		}
-		else
-		{
-			dist = GrabbedInteractable.SecondaryGrabPoint.GlobalPosition.DistanceTo(GlobalPosition);
-		}
-
-		if (dist > GrabbedInteractable.GrabBreakDistance)
-		{
-			Drop();
-		}
-	}
-
+	
 	private void InteractDrop(String buttonName)
 	{
-		if (!IsInstanceValid(GrabbedInteractable)) return;
 
-		if (buttonName == GrabbedInteractable.GrabAction && GrabbedInteractable.HoldMode == HoldMode.Hold)
+		if (GrabbedInteractable != null && buttonName == GrabbedInteractable.GrabAction && GrabbedInteractable.HoldMode == HoldMode.Hold)
 		{
 			Drop();
+			return; 
+		}
+		
+		if (_distanceInteractable != null && buttonName == _distanceInteractable.GrabAction)
+		{
+			_distanceInteractable.LinearVelocity = Vector3.Zero; 
+			_distanceInteractable  = null; 
 		}
 	}
+
 
 	private List<Interactable> HoveredInteractables()
 	{
@@ -155,41 +140,75 @@ public partial class Interactor : Area3D
 		{
 			if (Util.NodeIs(node, typeof(Interactable)))
 			{
-				interactables.Add((Interactable)node);
+				Interactable interactable = (Interactable)node;
+				Vector3 dir = interactable.GlobalPosition - GlobalPosition; 
+				float dist = GlobalPosition.DistanceTo(interactable.GlobalPosition);
+				float dot = -GlobalBasis.Z.Dot(dir.Normalized()); 
+				bool closeGrab = dist <= interactable.GrabBreakDistance; 
+				bool distanceGrab = interactable.DistanceGrabEnabled && dist <= interactable.DistanceGrabReach && dot >= _distancePointBias; 
+
+				if (closeGrab || distanceGrab)
+				{
+					interactables.Add((Interactable)node);
+				} else if (interactable != null) { 
+					interactable.Hovered = false; 
+				}
 			}
 		}
 
 		// sort closest hovered interactable 
-		interactables = interactables.OrderBy(x =>
+		interactables = interactables.OrderBy(x => {
+			float distanceToGrab = 1f;
+
+			if (x.GetPrimaryInteractor() == null)
 			{
-				float distanceToGrab = 1f;
+				distanceToGrab = x.PrimaryGrabPoint.GlobalPosition.DistanceTo(GlobalPosition);
+			} else
+			{
+				distanceToGrab = x.SecondaryGrabPoint.GlobalPosition.DistanceTo(GlobalPosition);
+			}
 
-				if (x.GetPrimaryInteractor() == null)
-				{
-					distanceToGrab = x.PrimaryGrabPoint.GlobalPosition.DistanceTo(GlobalPosition);
-				}
-				else
-				{
-					distanceToGrab = x.SecondaryGrabPoint.GlobalPosition.DistanceTo(GlobalPosition);
-				}
+			return distanceToGrab / x.Priority;
+		}).ToList();
 
-				return distanceToGrab / x.Priority;
-			}).ToList();
-
+		
 		return interactables;
 	}
+
 
 	public void Grab(Interactable interactable)
 	{
 		GrabbedInteractable = interactable;
 		interactable.Grab(this);
 		_distanceGrabbing = false;
+
+		EmitSignal("Grabbed", interactable);
 	}
+
 
 	public void Drop()
 	{
+		Interactable interactable = GrabbedInteractable; ;
+
 		GrabbedInteractable.Drop(this);
 		GrabbedInteractable = null;
 		_distanceGrabDelta = 0.0f;
+
+		EmitSignal("Dropped", interactable);
+	}
+
+	private void BodyExit(Node3D body)
+	{
+
+		if (Util.NodeIs(body, typeof(Interactable)))
+		{
+			Interactable interactable = (Interactable)body;
+
+			interactable.Hovered = false;
+		}
+	}
+	
+	private void DistanceGrabFinished() { 
+		Grab(_distanceInteractable); 
 	}
 }
