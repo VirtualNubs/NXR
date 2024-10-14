@@ -13,6 +13,7 @@ using System.Linq;
 public partial class InteractableSnapZone : Area3D
 {
 
+
 	[Export] private SnapMode _snapMode = SnapMode.OnEnter;
 	[Export] public bool Locked = false;
 	[Export] public bool DropOnSnap = false; 
@@ -67,6 +68,7 @@ public partial class InteractableSnapZone : Area3D
 			if (Util.NodeIs(child, typeof(Interactable)))
 			{
 				HoveredInteractable = (Interactable)child;
+				Connect(HoveredInteractable); 
 				Snap(HoveredInteractable);
 
 				return;
@@ -99,9 +101,7 @@ public partial class InteractableSnapZone : Area3D
 		if (IsInstanceValid(LastSnappedInteractable) && LastSnappedInteractable != null) { 
 			if (GetOverlappingBodies().Contains(LastSnappedInteractable)) {
 				Connect(LastSnappedInteractable); 
-			} else { 
-				Disconnect(LastSnappedInteractable); 
-			}
+			} 
 		}
 
 		if(!IsInstanceValid(SnappedInteractable) && SnappedInteractable != null) { 
@@ -124,6 +124,7 @@ public partial class InteractableSnapZone : Area3D
 		{
 			SnappedInteractable.Reparent(SnappedInteractable.PreviousParent, true);
 		}
+
 
 
 		_rt.RemotePath = "";
@@ -206,6 +207,7 @@ public partial class InteractableSnapZone : Area3D
 		
 		if (HoveredInteractable != null && interactable != HoveredInteractable) { 
 			Disconnect(HoveredInteractable); 
+			
 		}
 
 		HoveredInteractable = interactable;
@@ -222,7 +224,7 @@ public partial class InteractableSnapZone : Area3D
 	private void Exited(Node3D body)
 	{
 		if (!CanSnap) return; 
-	
+		GD.Print("booma"); 
 		if (body == HoveredInteractable && body != SnappedInteractable) { 
 			Disconnect(HoveredInteractable); 
 		}
@@ -381,6 +383,7 @@ public partial class InteractableSnapZone : Area3D
 		}
 		if (grabConnected)
 		{
+
 			interactable.Disconnect("OnGrabbed", Callable.From(grabAction));
 		}
 	}
