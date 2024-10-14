@@ -47,8 +47,8 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_rhv65")
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_cyow2"]
-points = PackedVector3Array(-1.02953, -5.20011, 12.7134, 1.02953, -5.20011, 12.7134, -0.429104, 1.21013, 14.462, -1.02953, -3.43377, 13.1952, -1.02953, -3.28259, -3.59684, 1.02953, -3.43377, 13.1952, 0.428903, 1.21013, 14.462, 1.02953, -3.28259, -3.59684, -0.429104, 2.61176, 9.49933, -1.02953, 2.37602, 9.43616, -1.02953, 0.975249, 14.3953, -1.02953, 0.304757, 14.213, -1.02953, -1.35311, 13.7619, -1.02953, -0.502396, -3.97401, 1.02953, -1.35311, 13.7619, 1.02953, 0.304757, 14.213, 1.02953, 0.975249, 14.3953, 1.02953, 2.37602, 9.43616, 0.428903, 2.61176, 9.49933, 1.02953, -0.502396, -3.97401, -0.429104, 3.08922, 7.63334, -1.02953, 2.85007, 7.58281, -1.02953, 2.99271, -3.97401, 1.02953, 2.85007, 7.58281, 0.428903, 3.08922, 7.63334, 1.02953, 2.99271, -3.97401, -0.429104, 3.45991, 5.33966, -1.02953, 3.21649, 5.3162, -1.02953, 3.2814, -3.59684, 1.02953, 3.21649, 5.3162, 0.428903, 3.45991, 5.33966, 1.02953, 3.2814, -3.59684, -0.429104, 3.52568, 3.52782, -1.02953, 3.2814, 3.52241, -0.485539, 3.52568, -2.11524, 1.02953, 3.2814, 3.52241, 0.428903, 3.52568, 3.52782, 0.485337, 3.52568, -2.11524)
+[sub_resource type="BoxShape3D" id="BoxShape3D_85ykv"]
+size = Vector3(2.87695, 8.22119, 17.8871)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6brtp"]
 
@@ -136,8 +136,8 @@ mesh = SubResource("ArrayMesh_n5rdb")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
-shape = SubResource("ConvexPolygonShape3D_cyow2")
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, -0.00125244, 0.0528091)
+shape = SubResource("BoxShape3D_85ykv")
 
 [node name="HandPose" type="RemoteTransform3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0168261, -0.17426)
@@ -479,6 +479,6 @@ skeleton = NodePath("")
 surface_material_override/0 = ExtResource("10_oymf2")
 
 [node name="InteractableGrabPoint" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -0.000977337, 1, 0, -1, -0.000977337, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, -0.000977337, 1, 0, -1, -0.000977337, 0, 5.71424e-05, 0.0584674)
 freeze = true
 script = ExtResource("7_da1jw")

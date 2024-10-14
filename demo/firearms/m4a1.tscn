@@ -256,11 +256,8 @@ _scene = ExtResource("15_robx0")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.000758566, -0.0304003, -0.0511286)
 collision_mask = 9
 script = ExtResource("5_iyft0")
-_disableMag = true
-_snapMode = 2
 AllowedGroups = PackedStringArray("stanag")
 _tweenTime = 0.0
-_snapDistance = 0.02
 
 [node name="FirearmMag" parent="FirearmMagZone" instance=ExtResource("6_5aeej")]
 

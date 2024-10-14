@@ -30,7 +30,7 @@ animation = &"poses_default/trigger"
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_f7e42"]
 filters = ["GloveR/GeneralSkeleton:RightIndexDistal", "GloveR/GeneralSkeleton:RightIndexIntermediate", "GloveR/GeneralSkeleton:RightIndexProximal"]
 
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_ejl40"]
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_w47vb"]
 resource_local_to_scene = true
 graph_offset = Vector2(-485.165, -84.5823)
 nodes/Add2/node = SubResource("AnimationNodeAdd2_q77jc")
@@ -50,37 +50,37 @@ nodes/trigger/node = SubResource("AnimationNodeBlend2_f7e42")
 nodes/trigger/position = Vector2(-140, -40)
 node_connections = [&"Add2", 0, &"trigger", &"Add2", 1, &"grip", &"grip", 0, &"Animation 3", &"grip", 1, &"Animation 4", &"output", 0, &"Add2", &"trigger", 0, &"Animation 2", &"trigger", 1, &"Animation"]
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_egv36"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_keiac"]
 resource_local_to_scene = true
 animation = &"poses_default/idle"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8m3th"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_f1v8g"]
 resource_local_to_scene = true
 animation = &"poses_default/idle"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_h3jud"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_b2uss"]
 resource_local_to_scene = true
 animation = &"poses_default/idle"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ssyhs"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c42wv"]
 resource_local_to_scene = true
 animation = &"poses_default/idle"
 
-[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_4obfo"]
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_w3tie"]
 resource_local_to_scene = true
-blend_point_0/node = SubResource("AnimationNodeAnimation_egv36")
+blend_point_0/node = SubResource("AnimationNodeAnimation_keiac")
 blend_point_0/pos = Vector2(0, 1)
-blend_point_1/node = SubResource("AnimationNodeAnimation_8m3th")
+blend_point_1/node = SubResource("AnimationNodeAnimation_f1v8g")
 blend_point_1/pos = Vector2(0, -1)
-blend_point_2/node = SubResource("AnimationNodeAnimation_h3jud")
+blend_point_2/node = SubResource("AnimationNodeAnimation_b2uss")
 blend_point_2/pos = Vector2(1, 0)
-blend_point_3/node = SubResource("AnimationNodeAnimation_ssyhs")
+blend_point_3/node = SubResource("AnimationNodeAnimation_c42wv")
 blend_point_3/pos = Vector2(-1, 0)
 
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_uv3qp"]
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_lo8i4"]
 resource_local_to_scene = true
 graph_offset = Vector2(-618.5, 94.2)
-nodes/PoseSpace/node = SubResource("AnimationNodeBlendSpace2D_4obfo")
+nodes/PoseSpace/node = SubResource("AnimationNodeBlendSpace2D_w3tie")
 nodes/PoseSpace/position = Vector2(-240, 100)
 nodes/output/position = Vector2(140, 120)
 node_connections = [&"output", 0, &"PoseSpace"]
@@ -103,9 +103,9 @@ advance_mode = 2
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_b1v18"]
 resource_local_to_scene = true
 states/End/position = Vector2(791, 93)
-states/IdleTree/node = SubResource("AnimationNodeBlendTree_ejl40")
+states/IdleTree/node = SubResource("AnimationNodeBlendTree_w47vb")
 states/IdleTree/position = Vector2(433, 93)
-states/PoseTree/node = SubResource("AnimationNodeBlendTree_uv3qp")
+states/PoseTree/node = SubResource("AnimationNodeBlendTree_lo8i4")
 states/PoseTree/position = Vector2(613, 93)
 states/Start/position = Vector2(219, 93)
 transitions = ["IdleTree", "PoseTree", SubResource("AnimationNodeStateMachineTransition_m8dny"), "PoseTree", "IdleTree", SubResource("AnimationNodeStateMachineTransition_v7006"), "Start", "IdleTree", SubResource("AnimationNodeStateMachineTransition_326re")]

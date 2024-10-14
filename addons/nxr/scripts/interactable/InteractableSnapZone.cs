@@ -224,7 +224,6 @@ public partial class InteractableSnapZone : Area3D
 	private void Exited(Node3D body)
 	{
 		if (!CanSnap) return; 
-		GD.Print("booma"); 
 		if (body == HoveredInteractable && body != SnappedInteractable) { 
 			Disconnect(HoveredInteractable); 
 		}
