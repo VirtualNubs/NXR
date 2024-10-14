@@ -166,7 +166,7 @@ _interactable = NodePath("..")
 _pose = "poses_pistol/pgrip"
 
 [node name="HandPose" type="RemoteTransform3D" parent="." node_paths=PackedStringArray("_interactable")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0107525, -0.158911)
+transform = Transform3D(-2.44633e-08, 0.559656, 0.828725, -1, -4.37114e-08, 0, 3.62247e-08, -0.828725, 0.559656, -0.12942, -0.0386162, -0.103121)
 script = ExtResource("3_uejcv")
 _interactable = NodePath("..")
 _pose = "poses_pistol/sgrip"
@@ -205,6 +205,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0268815, -0.0126632)
 shape = SubResource("BoxShape3D_losrt")
 
 [node name="HandPose" type="RemoteTransform3D" parent="FirearmSlide" node_paths=PackedStringArray("_interactable")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.189062)
 script = ExtResource("3_uejcv")
 _interactable = NodePath("..")
 _pose = "poses_pistol/slide"

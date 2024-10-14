@@ -43,6 +43,7 @@ node_connections = [&"Add2", 0, &"trigger", &"Add2", 1, &"grip", &"grip", 0, &"A
 animation = &"poses_default/idle"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8m3th"]
+resource_local_to_scene = true
 animation = &"poses_pistol/pgrip"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_h3jud"]
@@ -63,7 +64,7 @@ blend_point_3/pos = Vector2(-1, 0)
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_l4ry5"]
 resource_local_to_scene = true
-graph_offset = Vector2(-658.09, 5.71126)
+graph_offset = Vector2(-647.809, -8.62613)
 nodes/PoseSpace/node = SubResource("AnimationNodeBlendSpace2D_y0qgp")
 nodes/PoseSpace/position = Vector2(-240, 100)
 nodes/output/position = Vector2(140, 120)
@@ -90,7 +91,7 @@ states/End/position = Vector2(791, 93)
 states/IdleTree/node = SubResource("AnimationNodeBlendTree_t204i")
 states/IdleTree/position = Vector2(433, 93)
 states/PoseTree/node = SubResource("AnimationNodeBlendTree_l4ry5")
-states/PoseTree/position = Vector2(613, 98)
+states/PoseTree/position = Vector2(614, 99)
 states/Start/position = Vector2(219, 93)
 transitions = ["IdleTree", "PoseTree", SubResource("AnimationNodeStateMachineTransition_m8dny"), "PoseTree", "IdleTree", SubResource("AnimationNodeStateMachineTransition_v7006"), "Start", "IdleTree", SubResource("AnimationNodeStateMachineTransition_326re")]
 graph_offset = Vector2(53, 15)

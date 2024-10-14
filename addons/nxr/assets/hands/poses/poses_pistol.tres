@@ -1465,6 +1465,7 @@ tracks/51/loop_wrap = true
 tracks/51/keys = PackedFloat32Array(0, 1, 0.706524, 6.47993e-06, 8.68672e-06, 0.707689)
 
 [resource]
+resource_local_to_scene = true
 _data = {
 "mag": SubResource("Animation_t0ep5"),
 "pgrip": SubResource("Animation_6krx7"),

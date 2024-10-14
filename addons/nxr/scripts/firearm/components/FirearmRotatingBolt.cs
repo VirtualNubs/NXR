@@ -42,6 +42,7 @@ public partial class FirearmRotatingBolt : FirearmClampedXform
             OnGrabbed += OnGrab;
             OnDropped += OnDrop;
         }
+        GD.Print(Firearm); 
     }
 
 

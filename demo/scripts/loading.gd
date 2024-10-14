@@ -3,6 +3,9 @@ extends Node3D
 @export var stage: Node3D
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	if get_parent() is Stage: 
+		stage = get_parent()
 	if stage: 
 		stage.connect("ProgressUpdated", progress_updated)
 		stage.connect("Loaded", loaded)

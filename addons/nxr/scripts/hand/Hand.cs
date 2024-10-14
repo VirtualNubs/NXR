@@ -87,7 +87,7 @@ public partial class Hand : RigidBody3D
 
 
 		Vector2 startPos = GetPoseBlendSace().GetBlendPointPosition(2);
-		GetPoseBlendSace().SetBlendPointPosition(2, new Vector2(startPos.X, startY));
+		GetPoseBlendSace().SetBlendPointPosition(2, new Vector2(0, startY));
 
 		String[] blendStripped = blend.Split(":");
 

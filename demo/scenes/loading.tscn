@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://demo/scripts/loading.gd" id="1_5d4fw"]
 [ext_resource type="Texture2D" uid="uid://bs2m4hicq8kxp" path="res://addons/nxr/assets/textures/reimagined-vertical-light.svg" id="2_m3rj0"]
-[ext_resource type="Script" path="res://addons/nxr/scripts/core/Origin.cs" id="3_wdt3p"]
+[ext_resource type="Script" path="res://addons/nxr/scripts/core/XRInitialize.cs" id="3_rps0i"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kwlqx"]
 transparency = 1
@@ -70,14 +70,14 @@ albedo_color = Color(0, 0, 0.0666667, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_msswl"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_cxfow"]
-viewport_path = NodePath("Loading/SubViewport")
+[sub_resource type="ViewportTexture" id="ViewportTexture_uwebf"]
+viewport_path = NodePath("SubViewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lofoy"]
 resource_local_to_scene = true
 transparency = 1
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_cxfow")
+albedo_texture = SubResource("ViewportTexture_uwebf")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_1sd51"]
 resource_local_to_scene = true
@@ -145,9 +145,8 @@ _data = {
 "loading": SubResource("Animation_6qlbd")
 }
 
-[node name="Loading" type="Node3D" node_paths=PackedStringArray("stage")]
+[node name="Loading" type="Node3D"]
 script = ExtResource("1_5d4fw")
-stage = NodePath("")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.945, -6.815)
@@ -155,7 +154,6 @@ shaded = true
 texture = ExtResource("2_m3rj0")
 
 [node name="XROrigin3D" type="XROrigin3D" parent="."]
-script = ExtResource("3_wdt3p")
 
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
 
@@ -168,6 +166,7 @@ radius = 0.667247
 libraries = {
 "": SubResource("AnimationLibrary_b6dls")
 }
+autoplay = "queue"
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="."]
 flip_faces = true
@@ -190,7 +189,6 @@ anchor_right = 12.8
 anchor_bottom = 0.675
 theme_override_styles/background = SubResource("StyleBoxEmpty_xk38c")
 theme_override_styles/fill = SubResource("StyleBoxEmpty_msswl")
-value = 100.0
 metadata/_edit_use_anchors_ = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -210,3 +208,6 @@ libraries = {
 "": SubResource("AnimationLibrary_mdkkf")
 }
 autoplay = "loading"
+
+[node name="XRInitialize" type="Node" parent="."]
+script = ExtResource("3_rps0i")

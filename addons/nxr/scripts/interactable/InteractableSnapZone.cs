@@ -13,7 +13,6 @@ using System.Linq;
 public partial class InteractableSnapZone : Area3D
 {
 
-
 	[Export] private SnapMode _snapMode = SnapMode.OnEnter;
 	[Export] public bool Locked = false;
 	[Export] public bool DropOnSnap = false; 
@@ -127,7 +126,6 @@ public partial class InteractableSnapZone : Area3D
 		}
 
 
-
 		_rt.RemotePath = "";
 		SnappedInteractable.Freeze = false;
 		LastSnappedInteractable = SnappedInteractable; 
@@ -215,8 +213,8 @@ public partial class InteractableSnapZone : Area3D
 
 		if (_snapMode == SnapMode.OnEnter)
 		{
-			Snap(HoveredInteractable);
 			HoveredInteractable.FullDrop();
+			Snap(HoveredInteractable);
 		}
 	}
 	

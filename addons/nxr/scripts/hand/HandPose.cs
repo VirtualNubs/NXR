@@ -102,6 +102,7 @@ public partial class HandPose : RemoteTransform3D
 
 	private void Pose(Hand hand)
 	{
+
 		_poseXform = _initXform; 
 
 		if (hand.Scale.X < 0 || hand.Scale.X < 0)
