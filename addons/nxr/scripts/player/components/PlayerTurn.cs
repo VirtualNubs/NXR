@@ -6,19 +6,14 @@ namespace NXRPlayer;
 [GlobalClass]
 public partial class PlayerTurn : PlayerBehaviour
 {
-    [Export]
-    private RotationMode _rotationMode = RotationMode.Snap;
+    [Export] private RotationMode _rotationMode = RotationMode.Snap;
+    [Export(PropertyHint.Range, "1, 360")]private float _smoothTurnSpeed = 200;
+    [Export(PropertyHint.Range, "1, 360")] private int _snapTurnDegrees = 15; 
+    [Export] float _threshold = 0.5f;
 
-    [Export(PropertyHint.Range, "1, 360")]
-    private float _smoothTurnSpeed = 200;
-
-    [Export(PropertyHint.Range, "1, 360")]
-    private int _snapTurnDegrees = 15; 
-
-    [Export]
-    float _threshold = 0.5f;
 
     private bool _snapQueued = true; 
+
 
     public override void _Ready()
     {

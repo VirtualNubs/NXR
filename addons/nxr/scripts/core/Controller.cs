@@ -13,8 +13,7 @@ public partial class Controller : XRController3D
 {
 
 
-	[Export]
-	private float _linearVelocityStrength = 20f; 
+	[Export] private float _linearVelocityStrength = 20f; 
 	private float _angulerVelocityStrength = 20f; 
 	private List<String> _buttonStates = new List<String>();
 	private Array<Vector3> _localVels = new Array<Vector3>(); 
@@ -26,14 +25,12 @@ public partial class Controller : XRController3D
 	private List<Transform3D> velocityXformsGlobal = new(); 
 	private List<Transform3D> velocityXformsLocal = new(); 
 
-    public override void _Ready()
-    {
-    }
 
     public override void _PhysicsProcess(double delta)
     {
 		_globalVelocityXform = GetTransformVelocity(GlobalTransform, velocityXformsGlobal); 
 		_localVelocityXform = GetTransformVelocity(Transform, velocityXformsLocal); 
+		
     }
 
     public void Pulse(double freq, double amp, double time)

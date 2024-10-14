@@ -26,6 +26,7 @@ public partial class Pointer : RayCast3D
 	{
 		Node3D collider = (Node3D)GetCollider(); 
 
+
 		if (_oldCollider != null && collider != _oldCollider) { 
 			ReleaseMouse(); 
 		}
@@ -54,11 +55,13 @@ public partial class Pointer : RayCast3D
 		} 
 
 		if (_hittingGui) { 
+			Viewport2DIn3D vp3D = (Viewport2DIn3D)collider.GetParent(); 
 			Visible = true; 
 		} else { 
 			Visible = false; 
 		}
 	}
+
 
 	private void TrySendInputToGUI(Node3D collider) { 
 		if (collider.GetChildCount() <= 0) { 
@@ -67,13 +70,14 @@ public partial class Pointer : RayCast3D
 		}
 
 
+		if (!Util.NodeIs(collider.GetParent(), typeof(Viewport2DIn3D))) return;
 
-		if (!Util.NodeIs(collider.GetChild(0), typeof(SubViewport))) return;
+		Viewport2DIn3D vp3D = (Viewport2DIn3D)collider.GetParent(); 
+		SubViewport vp = vp3D.SubViewport;
+		CollisionShape3D shape = vp3D.GetCollisionShape(); 
 
-		SubViewport vp = (SubViewport)collider.GetChild(0); 
 		_hittingGui = true; 
 
-		CollisionShape3D shape = (CollisionShape3D)collider.GetChild(1); 
 		Vector3 shapeSize = (Vector3)shape.Shape.Get("size");  
 		Vector3 localPoint = collider.ToLocal(GetCollisionPoint()); 
 		localPoint /= new Vector3(shapeSize.X, shapeSize.Y, shapeSize.Z); 
@@ -87,6 +91,13 @@ public partial class Pointer : RayCast3D
 		vp.PushInput(eventMotion); 
 
 		bool desiredActivateGUI = _controller.GetFloat("trigger") > 0;
+
+		
+		if (vp3D.GetSubsceneInstance().HasNode("NXRCursor")) { 
+			Control cursor = (Control)vp3D.GetSubsceneInstance().GetNode("NXRCursor"); 
+			cursor.Visible = true; 
+			cursor.Position = viewportPoint; 
+		}
 
 		if (desiredActivateGUI != _isActivatingGui) { 
 			InputEventMouseButton clickEvent = new InputEventMouseButton(); 
@@ -103,12 +114,18 @@ public partial class Pointer : RayCast3D
 
 
 	private void ReleaseMouse() { 
-		SubViewport vp = (SubViewport)_oldCollider.GetChild(0); 
+		Viewport2DIn3D vp3D = (Viewport2DIn3D)_oldCollider.GetParent(); 
+		SubViewport vp = vp3D.SubViewport;
 		InputEventMouseButton clickEvent = new InputEventMouseButton(); 
 		clickEvent.ButtonIndex = MouseButton.Left;
 		clickEvent.Position = _oldViewportPoint; 
 		vp.PushInput(clickEvent); 
 		_oldCollider = null; 
 		_isActivatingGui = false; 
+
+		if (vp3D.GetSubsceneInstance().HasNode("NXRCursor")) { 
+			Control cursor = (Control)vp3D.GetSubsceneInstance().GetNode("NXRCursor"); 
+			cursor.Visible = false; 
+		}
 	}
 }

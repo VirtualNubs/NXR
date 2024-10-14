@@ -1,174 +1,132 @@
 using System;
-using System.Text.RegularExpressions;
+using System.Linq;
 using Godot;
+using Godot.NativeInterop;
+using NXRInteractable;
 
 namespace NXR;
-
 
 [GlobalClass]
 public partial class Hand : RigidBody3D
 {
 
-	[Export]
-	private string _idleAnimation = "";
+	#region Exported 
+	[Export] public Interactor Interactor;
+	[Export] private AnimationTree _animTree;
 
-	[Export]
-	public Controller Controller;
-
-	[Export]
-	private float _blendTime = 0.1f;
-
-	[Export]
-	private AnimationPlayer _animPlayer;
-
-	[Export]
-	private AnimationTree _animTree;
-
-	private Transform3D _initTransform;
-	private AnimationTree _currentAnimTree;
+	[ExportGroup("Tool Setting")]
+	[Export] private bool _mirrorX = false;
+	[Export] private bool _mirrorY = false;
+	[Export] private bool _mirrorZ = false;
+	[Export] private bool _updateMirror = false;
+	[Export] Skeleton3D _handSkeleton;
+	#endregion
 
 
-	[ExportGroup("Physics Hand Settings")]
-	[Export]
-    bool _physicsEnabled = false; 
+	#region  Private 
+	protected Transform3D _initTransform;
+	protected Vector3 _initRotation;
+	protected Vector3 _initOffset;
+	protected AnimationTree _currentAnimTree;
+	protected string _lastBlendName;
+	protected string _poseSpaceName = "PoseSpace";
+	private Tween _resetTween; 
+	#endregion
 
-	[Export]
-	float linearStrength = 20.0f; 
-	float angularStrength = 20.0f; 
-	private Vector3 lVelocity = Vector3.Zero; 
-	private Vector3 aVelocity = Vector3.Zero; 
-
-	[Export]
-	private CollisionShape3D _collider; 
-
-
-    [Export]
-    public Node3D HandNode = null; 
-
-
-	private Transform3D _controllerOffsetXform = new(); 
 
 	public override void _Ready()
 	{
 		Transform = Transform.Orthonormalized();
 		_initTransform = Transform;
+		_initRotation = Rotation;
+		Freeze = true;
+
+		if (IsInstanceValid(Interactor))
+		{
+			_initOffset = Interactor.GlobalPosition - GlobalPosition;
+		}
 
 		if (IsInstanceValid(_animTree))
 		{
 			_currentAnimTree = _animTree;
 		}
 
-		if (IsInstanceValid(Controller))
+		if (IsInstanceValid(Interactor))
 		{
-			Controller.InputFloatChanged += InputFloat;
-			Controller.InputVector2Changed += InputVec;
+			Interactor.Controller.InputFloatChanged += InputFloat;
+			Interactor.Controller.InputVector2Changed += InputVec2;
+			Interactor.Controller.ButtonPressed += ButtonPresed;
+			Interactor.Controller.ButtonReleased += ButtonReleased;
 		}
-
-        if (!_physicsEnabled) { 
-            Freeze = true; 
-        }
-
-        if (HandNode == null) { 
-            HandNode = this; 
-        }
-
-		_initTransform = HandNode.Transform;
 	}
 
-    public override void _PhysicsProcess(double delta)
-    {
-        if (_collider != null) { 
-			_collider.GlobalPosition = HandNode.GlobalPosition;
-		}
 
-		if (!_physicsEnabled && Controller != null) { 
-			//GlobalTransform = Controller.GlobalTransform;  
-		}
-    }
-    public override void _IntegrateForces(PhysicsDirectBodyState3D state)
+	public override void _Process(double delta)
 	{
-        if (!_physicsEnabled) return; 
 
-        if (Controller == null) return; 
+		if (Engine.IsEditorHint()) return;
 
-		float snapDist = Controller.GlobalPosition.DistanceTo(GlobalPosition);
-		float dist = Controller.GlobalPosition.DistanceTo(GlobalPosition) * 200;
-		
-		Vector3 dir = Controller.GlobalPosition - GlobalPosition;
-		Quaternion currentRotation = GlobalTransform.Basis.GetRotationQuaternion();
-		Quaternion previousRotation = Controller.GlobalTransform.Basis.GetRotationQuaternion();
-		Quaternion rotationChange = currentRotation * previousRotation.Inverse();
-		Vector3 angularVelocity = rotationChange.Inverse().GetEuler();
-
-        if (snapDist > 0.5) { 
-            GlobalPosition = Controller.GlobalTransform.Origin; 
-        }
-
-		lVelocity = lVelocity.Lerp(dir * linearStrength , 0.5f); 
-		aVelocity = aVelocity.Lerp(angularVelocity * angularStrength, 0.5f); 
-
-		float distStrength = (linearStrength / dist); 
-		distStrength = Mathf.Clamp(distStrength, 0.001f, 1.0f); 
-
-		state.LinearVelocity = state.LinearVelocity.Lerp(lVelocity, distStrength);
-		state.AngularVelocity = state.AngularVelocity.Lerp(aVelocity, distStrength); 
-	}
-
-	public void SetHandPose(String pose)
-	{
-		_currentAnimTree.Active = false;
-
-		if (!IsInstanceValid(_animPlayer))
+		if (
+			IsInstanceValid(Interactor) &&
+			Interactor.GrabbedInteractable != null &&
+			!IsInstanceValid(Interactor.GrabbedInteractable
+			))
 		{
-			GD.PushWarning("No animation player found!");
-			return;
+			//ResetHand();
 		}
-
-		if (!_animPlayer.HasAnimation(pose)) { 
-			GD.PushWarning("No animation with that name fuond!");
-			return; 
-		}
-
-		_animPlayer.Advance(0);
-		_animPlayer.Play(pose, _blendTime);
 	}
 
-	public void SetCurrentTree(AnimationTree tree)
+
+	public void SetHandPose(String pose, String blend, float startY = 0)
 	{
-		_currentAnimTree.Active = false;
-		tree.Active = false;
-		tree.AnimPlayer = "";
+		AnimationNodeAnimation poseAnim = (AnimationNodeAnimation)GetPoseBlendSace().GetBlendPointNode(2);
+		AnimationNodeAnimation blendAnim = (AnimationNodeAnimation)GetPoseBlendSace().GetBlendPointNode(0);
 
-		_currentAnimTree = tree;
-		_currentAnimTree.AnimPlayer = _animPlayer.GetPath();
-		_currentAnimTree.Active = true;
-		_currentAnimTree.Advance(0);
+		_resetTween?.Stop(); 
+		_animTree.Set("parameters/PoseTree/PoseSpace/blend_position", Vector2.Zero);
+
+
+		Vector2 startPos = GetPoseBlendSace().GetBlendPointPosition(2);
+		GetPoseBlendSace().SetBlendPointPosition(2, new Vector2(startPos.X, startY));
+
+		String[] blendStripped = blend.Split(":");
+
+		_lastBlendName = blendStripped[0];
+
+
+		if (blendStripped.Last() != "")
+		{
+			blendAnim.Animation = blendStripped.Last();
+		}
+		else
+		{
+			blendAnim.Animation = pose;
+		}
+
+		poseAnim.Animation = pose;
+
+
+		if (GetPoseTree().GetNode(_poseSpaceName) != null && blendStripped[0] != _poseSpaceName)
+		{
+			GetPoseTree().RenameNode(_poseSpaceName, blendStripped[0]);
+			_poseSpaceName = blendStripped[0];
+		}
+
+		GetPlayback().Travel("PoseTree");
 	}
+
+
 
 	public void ResetHand(bool resetTransform = true)
 	{
-
-		if (_animPlayer == null)
-		{
-			GD.PushWarning("No AnimationPlayer Found!");
-			return;
-		}
-
 		if (resetTransform)
 		{
-			HandNode.Transform = _initTransform;
+			ResetTween();
 		}
 
-		if (_idleAnimation != "" && _animPlayer.HasAnimation(_idleAnimation))
-		{
-			_animPlayer.Play(_idleAnimation);
-		}
-
-		if (IsInstanceValid(_animTree))
-		{
-			SetCurrentTree(_animTree);
-		}
+		GetPlayback().Travel("IdleTree");
 	}
+
 
 	private void InputFloat(String inputName, double value)
 	{
@@ -177,20 +135,80 @@ public partial class Hand : RigidBody3D
 			return;
 		}
 
-		_currentAnimTree.Set(string.Format("parameters/{0}/blend_amount", inputName), (float)value);
-		_currentAnimTree.Set(string.Format("parameters/{0}/blend_position", inputName), (float)value);
+		Vector2 input = new(0, (float)value);
+		_animTree.Set(string.Format("parameters/IdleTree/{0}/blend_amount", inputName), (float)value);
+		_animTree.Set(string.Format("parameters/IdleTree/{0}/blend_position", inputName), (float)value);
+		_animTree.Set(string.Format("parameters/PoseTree/{0}/blend_position", inputName), input);
 	}
 
-	private void InputVec(String inputName, Vector2 value)
+
+	private void InputVec2(String inputName, Vector2 value)
+	{
+		_animTree.Set(string.Format("parameters/PoseTree/{0}/blend_position", inputName), value);
+	}
+
+
+	private void ButtonPresed(string button)
+	{
+		string name = button + "_pressed";
+		_animTree.Set(string.Format("parameters/IdleTree/{0}/blend_amount", name), 1);
+		_animTree.Set(string.Format("parameters/IdleTree/{0}/blend_position", name), 1);
+		_animTree.Set(string.Format("parameters/PoseTree/{0}/blend_position", name), 1);
+	}
+
+
+	private void ButtonReleased(string button)
+	{
+		string name = button + "_pressed";
+		_animTree.Set(string.Format("parameters/IdleTree/{0}/blend_amount", name), 0);
+		_animTree.Set(string.Format("parameters/IdleTree/{0}/blend_position", name), 0);
+		_animTree.Set(string.Format("parameters/PoseTree/{0}/blend_position", name), 0);
+	}
+
+
+	private AnimationNodeBlendTree GetPoseTree()
+	{
+		AnimationNodeStateMachine stateMachine = (AnimationNodeStateMachine)_animTree.TreeRoot;
+		AnimationNodeBlendTree poseTree = (AnimationNodeBlendTree)stateMachine.GetNode("PoseTree");
+		return poseTree;
+	}
+
+	private AnimationNodeBlendTree GetIdleTree()
+	{
+		AnimationNodeStateMachine stateMachine = (AnimationNodeStateMachine)_animTree.TreeRoot;
+		AnimationNodeBlendTree poseTree = (AnimationNodeBlendTree)stateMachine.GetNode("IdleTree");
+		return poseTree;
+	}
+
+	private AnimationNodeStateMachine GetBaseStateMachine()
+	{
+		return (AnimationNodeStateMachine)_animTree.TreeRoot;
+	}
+
+	private AnimationNodeStateMachinePlayback GetPlayback()
+	{
+		return (AnimationNodeStateMachinePlayback)_animTree.Get("parameters/playback");
+	}
+
+
+	private AnimationNodeBlendSpace2D GetPoseBlendSace()
 	{
 
+		if (GetPoseTree().HasNode(_poseSpaceName))
+		{
+
+			return (AnimationNodeBlendSpace2D)GetPoseTree().GetNode(_poseSpaceName);
+		}
+
+		return null;
 	}
 
-	public bool IsHand() { 
-		return true; 
+	private void ResetTween()
+	{
+		_resetTween = GetTree().CreateTween();
+		_resetTween.SetProcessMode(Tween.TweenProcessMode.Physics); 
+		if (_resetTween != null) { 
+			_resetTween.TweenProperty(this, "transform", _initTransform, 0.2f);
+		}
 	}
-
-    public bool IsPhysicsHand() { 
-        return _physicsEnabled;
-    }
 }

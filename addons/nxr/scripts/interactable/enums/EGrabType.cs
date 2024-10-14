@@ -3,6 +3,6 @@ namespace NXRInteractable;
 
 public enum GrabType
 {
-    Primary, 
-    Secondary
+    Static, 
+    Physics
 }

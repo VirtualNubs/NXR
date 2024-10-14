@@ -5,25 +5,29 @@ using System.Linq;
 
 namespace NXRFirearm;
 
+
+/// <summary>
+/// This class is used when using Bullet.cs for queing the next bullet to be shot
+/// </summary>
+
 [GlobalClass]
 public partial class FirearmBulletZoneQueue : Node3D
 {
-	[Export]
-	private Firearm _firearm;
+	[Export] private Firearm _firearm;
 	private List<FirearmBulletZone> _bulletZones = new();
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+
+		
 		foreach (Node3D child in GetChildren())
 		{
 			if (Util.NodeIs(child, typeof(FirearmBulletZone))) _bulletZones.Add((FirearmBulletZone)child);
 		}
 
-		if (Util.NodeIs((Node)GetParent(), typeof(Firearm)))
-		{
-			_firearm = (Firearm)GetParent();
-		}
+		_firearm = FirearmUtil.GetFirearmFromParentOrOwner(this); 
+
 		if (_firearm != null)
 		{
 			_firearm.OnFire += OnFire;

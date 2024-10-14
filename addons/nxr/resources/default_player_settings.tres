@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PlayerSettings" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="PlayerSettings" load_steps=2 format=3 uid="uid://qhqij5086ak1"]
 
 [ext_resource type="Script" path="res://addons/nxr/resources/scripts/PlayerSettings.cs" id="1_nek8e"]
 

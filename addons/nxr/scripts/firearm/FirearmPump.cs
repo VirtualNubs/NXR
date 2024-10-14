@@ -6,30 +6,28 @@ using NXR;
 
 [Tool]
 [GlobalClass]
-public partial class FirearmPump : FirearmMovable
+public partial class FirearmPump : FirearmClampedXform
 {
     
     private Firearm _firearm; 
     private bool back = false;
     private bool _emptyShellIn = false; 
 
-    [Signal]
-    public delegate void PumpedBackEventHandler(); 
+    [Signal]public delegate void PumpedBackEventHandler(); 
+    [Signal] public delegate void PumpedForwardEventHandler(); 
 
-    [Signal]
-    public delegate void PumpedForwardEventHandler(); 
 
 
     public override void _Ready()
     {
-         if (Util.NodeIs(GetParent(), typeof(Firearm)))
+        if (Util.NodeIs(GetParent(), typeof(Firearm)))
         {
             _firearm = (Firearm)GetParent();
             _firearm.OnFire += OnFire; 
         }
     }
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
+
     public override void _Process(double delta)
 	{
         
@@ -63,10 +61,11 @@ public partial class FirearmPump : FirearmMovable
         }
 
         if (_emptyShellIn && AtEnd()) { 
-            _firearm.EmitSignal("TryEject"); 
+            _firearm.EmitSignal("TryEjectSpent"); 
             _emptyShellIn = false; 
         }
 	}
+
 
     public override void _PhysicsProcess(double delta)
     {
@@ -80,6 +79,7 @@ public partial class FirearmPump : FirearmMovable
             Position = newPos;
 		}
     }
+
 
     private void OnFire() { 
         _emptyShellIn = true; 

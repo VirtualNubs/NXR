@@ -5,19 +5,14 @@ using System;
 
 [Tool]
 [GlobalClass]
-public partial class FirearmCylinder : FirearmMovable
+public partial class FirearmCylinder : FirearmClampedXform
 {
-	[Export]
-	private Firearm _firearm; 
-	
-	[Export]
-	private Node3D _bulletQueue; 
+	[Export] private Firearm _firearm; 
+	[Export]private Node3D _bulletQueue; 
+	[Export] private Node3D _cylinderMesh; 
+	[Export] private float _step; 
 
-	[Export]
-	private Node3D _cylinderMesh; 
 
-	[Export]
-	private float _step; 
 	private Vector3 newRotation; 
 
     public override void _Ready()

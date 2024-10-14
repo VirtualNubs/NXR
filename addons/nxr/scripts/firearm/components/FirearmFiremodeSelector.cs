@@ -2,30 +2,28 @@ using Godot;
 using Godot.Collections;
 using NXR;
 using NXRFirearm;
-
+using System;
 
 [GlobalClass]
 public partial class FirearmFiremodeSelector : Node
 {
 
-
-	[Export]public int CurrentMode { get; set; } = 0;
-	[Export]private string _action = "primary_click";
-	[Export]public Array<FireMode> ModeOrder { get; set; } = new Array<FireMode>();
-	
-	private Firearm _firearm;
+	[Export] private Firearm _firearm;
+	[Export] private string _action = "primary_click";
+	[Export] public Array<FireMode> ModeOrder { get; set; } = new Array<FireMode>();
 
 
-	// Called when the node enters the scene tree for the first time.
+	private int _currentMode { get; set; } = 0;
+
+
+
 	public override void _Ready()
 	{
-		if (Util.NodeIs(GetParent(), typeof(Firearm))) _firearm = (Firearm)GetParent();
-		if (Util.NodeIs(Owner, typeof(Firearm))) _firearm = (Firearm)Owner;
-
-		_firearm.FireMode = ModeOrder[CurrentMode];
+		_firearm ??= FirearmUtil.GetFirearmFromParentOrOwner(this); 
+		_firearm.FireMode = ModeOrder[0];
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
+
 	public override void _Process(double delta)
 	{
 
@@ -35,15 +33,15 @@ public partial class FirearmFiremodeSelector : Node
 		if (_firearm.GetPrimaryInteractor().Controller.ButtonOneShot(_action))
 		{
 
-			if (CurrentMode < ModeOrder.Count - 1)
+			if (_currentMode < ModeOrder.Count - 1)
 			{
-				CurrentMode += 1;
+				_currentMode += 1;
 			}
 			else
 			{
-				CurrentMode = 0;
+				_currentMode = 0;
 			}
-			_firearm.FireMode = ModeOrder[CurrentMode];
+			_firearm.FireMode = ModeOrder[_currentMode];
 		}
 	}
 }

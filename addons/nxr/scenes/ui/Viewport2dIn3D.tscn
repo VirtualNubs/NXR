@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://b77pvypdjl8ha"]
+
+[ext_resource type="Script" path="res://addons/nxr/scripts/ui/Viewport2DIn3D.cs" id="1_wjlj5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4b6jf"]
+resource_local_to_scene = true
+size = Vector3(0, 0, 0.01)
+
+[node name="2DViewportIn3D" type="Node3D"]
+script = ExtResource("1_wjlj5")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+unique_name_in_owner = true
+render_target_update_mode = 1
+
+[node name="CollisionObject" type="StaticBody3D" parent="."]
+unique_name_in_owner = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionObject"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.000320384)
+shape = SubResource("BoxShape3D_4b6jf")

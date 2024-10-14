@@ -1,43 +1,51 @@
+using System.Security.Cryptography.X509Certificates;
 using Godot;
 using NXR;
 using NXRFirearm;
 using NXRInteractable;
 
+
 namespace NXRFirearm;
+
 
 [GlobalClass]
 public partial class FirearmMagZone : InteractableSnapZone
 {
-    [Export]
-    private Firearm _firearm = null;
-    public FirearmMag CurrentMag = null;
-
-    [Export]
-    private bool _disableMag = false;
+    [Export] private bool _disableMag = false;
 
     [ExportGroup("Eject Settings")]
-    [Export]
-    private string _ejectAction = "ax_button";
-    [Export]
-    private float _ejectForce = 3f;
+    [Export] public bool EjectEnabled = true; 
+    [Export] private string _ejectAction = "ax_button";
+    [Export] private float _ejectForce = 3f;
 
+
+    
+    public FirearmMag CurrentMag = null;
     public bool MagIn = false;
 
 
-    [Signal]
-    public delegate void OnEjectEventHandler();
+    private Firearm _firearm = null;
+
+
+    [Signal] public delegate void TryEjectEventHandler();
+    [Signal] public delegate void MagEnteredEventHandler(); 
+    [Signal] public delegate void MagExitEventHandler(); 
+
 
     public override void _Ready()
     {
+
         OnSnap += OnSnapped;
         OnUnSnap += OnUnSnapped;
+        TryEject += TriedEject; 
 
         base._Ready();
 
-        if (Util.NodeIs((Node)GetParent(), typeof(Firearm)))
-        {
-            _firearm = (Firearm)GetParent();
+        _firearm = FirearmUtil.GetFirearmFromParentOrOwner(this);
+        if (_firearm != null) { 
             _firearm.TryChamber += TryChamber;
+            _firearm.OnGrabbed += FirearmGrabbed; 
+            _firearm.OnFullDropped += FirearmDropped; 
         }
     }
 
@@ -45,20 +53,21 @@ public partial class FirearmMagZone : InteractableSnapZone
     {
         base._Process(delta);
 
-        if (_firearm != null && _firearm.GetPrimaryInteractor() != null)
+
+        if (_firearm == null || _firearm.GetPrimaryInteractor() == null) return; 
+        
+      
+        if (_firearm.GetPrimaryInteractor().Controller.ButtonOneShot(_ejectAction))
         {
-            if (_ejectAction != null && _firearm.GetPrimaryInteractor().Controller.ButtonOneShot(_ejectAction) && CurrentMag != null)
-            {
-                CurrentMag.LinearVelocity = Vector3.Zero; 
-                Eject(CurrentMag);
-                EmitSignal("OnEject");
-            }
+            EmitSignal("TryEject");
         }
     }
+
 
     private void OnSnapped(Interactable mag)
     {
         if (!Util.NodeIs(mag, typeof(FirearmMag))) return;
+
 
         if (_disableMag)
         {
@@ -67,8 +76,15 @@ public partial class FirearmMagZone : InteractableSnapZone
         }
 
         CurrentMag = (FirearmMag)mag;
-        mag.InitParent = (Node3D)Owner.GetParent();
+        mag.InitParent = _firearm.InitParent;
+        mag.PreviousParent = _firearm.InitParent;
+        mag.InitFreeze = _firearm.InitFreeze; 
+        
+        
+        if (!_firearm.IsGrabbed()) mag.Disabled = true; 
+        EmitSignal("MagEntered"); 
     }
+
 
     private void OnUnSnapped()
     {
@@ -76,6 +92,7 @@ public partial class FirearmMagZone : InteractableSnapZone
             Interactable mag = (Interactable)CurrentMag;
             mag.Disabled = false;
             CurrentMag = null;
+            EmitSignal("MagExit"); 
         }
     }
 
@@ -109,6 +126,25 @@ public partial class FirearmMagZone : InteractableSnapZone
             _firearm.Chambered = true;
             CurrentMag.RemoveBullet(1);
             _firearm.EmitSignal("OnChambered");
+        }
+    }
+
+    private void TriedEject() { 
+        if (CurrentMag == null || !EjectEnabled) return;
+
+        Eject(CurrentMag); 
+    }
+
+
+    private void FirearmGrabbed(Interactable interactable, Interactor interactor) { 
+        if (CurrentMag != null) { 
+            CurrentMag.Disabled = false; 
+        }
+    }
+
+    private void FirearmDropped() { 
+         if (CurrentMag != null) { 
+            CurrentMag.Disabled = true; 
         }
     }
 

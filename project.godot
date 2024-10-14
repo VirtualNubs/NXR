@@ -12,7 +12,7 @@ config_version=5
 
 config/name="NXR"
 run/main_scene="res://demo/scenes/stage.tscn"
-config/features=PackedStringArray("4.2", "Forward Plus")
+config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [dotnet]
@@ -26,6 +26,10 @@ movie_writer/movie_file="C:/Users/joshu/mov.avi"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godotopenxrvendors/plugin.cfg", "res://addons/nxr/plugin.cfg")
+
+[filesystem]
+
+import/blender/enabled=false
 
 [physics]
 

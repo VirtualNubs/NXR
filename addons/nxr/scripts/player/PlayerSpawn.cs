@@ -4,8 +4,7 @@ using NXR;
 [GlobalClass]
 public partial class PlayerSpawn : Marker3D
 {
-	[Export]
-	private PackedScene _player; 
+	[Export] private PackedScene _player; 
 
 	public override void _Ready()
 	{

@@ -7,60 +7,61 @@ namespace NXRFirearm;
 
 [Tool]
 [GlobalClass]
-public partial class FirearmMagZoneTrack : FirearmMovable
+public partial class FirearmMagZoneTrack : FirearmClampedXform
 {
+	[Export] private float pullStrength = 2.0f;
 
 	private bool _unsnapQueued = false;
-
-	[Export]
-	private float pullStrength = 2.0f; 
-	float t = 0.0f;
-
-	private FirearmMagZone _zone; 
+	private FirearmMagZone _zone;
+	private float t = 0.0f;
 
 
-    public override void _Ready()
-    {
-        if (!Util.NodeIs(GetChild(0), typeof(FirearmMagZone))) return;
+	public override void _Ready()
+	{
+		if (!Util.NodeIs(GetChild(0), typeof(FirearmMagZone))) return;
 
 		_zone = (FirearmMagZone)GetChild(0);
-		_zone.OnEject += OnEject;
+		_zone.TryEject += TryEject;
+		_zone.EjectEnabled = false;
 
-		if (_zone.CurrentMag != null) { 
-			Transform = StartXform; 
-		}
-    }
-    public override void _Process(double delta)
+		Transform = StartXform;
+
+		Freeze = true;
+	}
+
+
+	public override void _Process(double delta)
 	{
 		RunTool();
 
 
-		if (_zone == null) return; 
+		if (_zone == null) return;
 
-		if (_zone._snappedInteractable != null && _zone._snappedInteractable.IsGrabbed())
+		if (_zone.SnappedInteractable != null && _zone.SnappedInteractable.IsGrabbed())
 		{
 
 			Node3D parent = (Node3D)Target.GetParent();
-			Vector3 grabPos = _zone._snappedInteractable.GetPrimaryInteractor().Controller.GlobalPosition;
+			Vector3 grabPos = _zone.SnappedInteractable.GetPrimaryInteractor().Controller.GlobalPosition;
 			Vector3 locGrab = parent.ToLocal(grabPos);
 			Transform3D newXform = Transform;
 
-			float distGrab = grabPos.DistanceTo(StartXform.Origin);
 			newXform.Origin = locGrab;
 			newXform.Origin = newXform.Origin.Clamp(GetMinOrigin(), GetMaxOrigin());
+			t += (float)delta;
 
-			t += (float)delta; 
-			
-			StartToEnd(MiddlePositionRatio(locGrab) * 2); 
+			StartToEnd(MiddlePositionRatio(locGrab));
 		}
 
 
 		float distEnd = Transform.Origin.DistanceTo(EndXform.Origin);
 		float distStart = Transform.Origin.DistanceTo(StartXform.Origin);
 
-		if (!AtEnd()) { 
+		if (!AtEnd())
+		{
 			_zone.CanUnsnap = false;
-		} else{ 
+		}
+		else
+		{
 			_zone.CanUnsnap = true;
 		}
 
@@ -73,31 +74,35 @@ public partial class FirearmMagZoneTrack : FirearmMovable
 			if (_zone.CurrentMag != null) _zone.CurrentMag.CanChamber = false;
 		}
 
-		if (_zone.CurrentMag == null) { 
-			Transform =EndXform; 
+		if (_zone.CurrentMag == null)
+		{
+			Transform = EndXform;
 		}
-		if (!AtStart() && _zone._snappedInteractable != null && !_zone._snappedInteractable.IsGrabbed()) { 
-			OnEject(); 
+		if (AtStart() && _zone.SnappedInteractable.IsGrabbed())
+		{
+			_zone.SnappedInteractable.FullDrop();
 		}
 	}
 
-	private async void OnEject() { 
-		Tween tween = GetTree().CreateTween(); 
 
-		tween.TweenProperty(this, "transform", EndXform, 0.1f);  
+	private async void TryEject()
+	{
+		Tween tween = GetTree().CreateTween();
+		tween.TweenProperty(this, "transform", EndXform, 0.1f);
 
-		await ToSignal(tween, "finished"); 
+		await ToSignal(tween, "finished");
 
-		if (_zone.GetFirearm() != null && _zone.GetFirearm().PrimaryInteractor != null) { 
+		if (_zone.GetFirearm() != null && _zone.GetFirearm().PrimaryInteractor != null)
+		{
 			Vector3 anguler = _zone.CurrentMag.AngularVelocity = _zone.GetFirearm().PrimaryInteractor.Controller.GetAngularVelocity();
-			float angLength = anguler.LimitLength(3).Length(); 
+			float angLength = anguler.LimitLength(3).Length();
 
-			_zone.CurrentMag.LinearVelocity = _zone.GetFirearm().PrimaryInteractor.Controller.GetGlobalVelocity() * (angLength); 
-			_zone.CurrentMag.AngularVelocity = anguler; 
+			_zone.CurrentMag.LinearVelocity = _zone.GetFirearm().PrimaryInteractor.Controller.GetGlobalVelocity() * (angLength);
+			_zone.CurrentMag.AngularVelocity = anguler;
 		}
-
-		_zone.Unsnap(); 
+		_zone.Unsnap();
 	}
+
 
 	private async void Exit(InteractableSnapZone zone)
 	{
@@ -107,6 +112,6 @@ public partial class FirearmMagZoneTrack : FirearmMovable
 
 		await ToSignal(tween, "finished");
 
-		zone.Unsnap(true);
+		zone.Unsnap();
 	}
 }

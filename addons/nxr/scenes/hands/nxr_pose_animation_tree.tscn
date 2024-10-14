@@ -1,0 +1,163 @@
+[gd_scene load_steps=20 format=3 uid="uid://b0sm6otdgk7nv"]
+
+[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_q77jc"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ct02v"]
+animation = &"poses_default/idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ch14r"]
+animation = &"poses_default/idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yfmwl"]
+animation = &"poses_default/grip"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qm82a"]
+animation = &"poses_default/trigger"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_sbxia"]
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_f7e42"]
+filters = ["GloveR/GeneralSkeleton:RightIndexDistal", "GloveR/GeneralSkeleton:RightIndexIntermediate", "GloveR/GeneralSkeleton:RightIndexProximal"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_t204i"]
+resource_local_to_scene = true
+graph_offset = Vector2(-747.619, -139.887)
+nodes/Add2/node = SubResource("AnimationNodeAdd2_q77jc")
+nodes/Add2/position = Vector2(60, 100)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_qm82a")
+nodes/Animation/position = Vector2(-360, 40)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_ct02v")
+"nodes/Animation 2/position" = Vector2(-360, -100)
+"nodes/Animation 3/node" = SubResource("AnimationNodeAnimation_ch14r")
+"nodes/Animation 3/position" = Vector2(-359.408, 245.924)
+"nodes/Animation 4/node" = SubResource("AnimationNodeAnimation_yfmwl")
+"nodes/Animation 4/position" = Vector2(-360, 400)
+nodes/grip/node = SubResource("AnimationNodeBlend2_sbxia")
+nodes/grip/position = Vector2(-140, 220)
+nodes/output/position = Vector2(280, 120)
+nodes/trigger/node = SubResource("AnimationNodeBlend2_f7e42")
+nodes/trigger/position = Vector2(-140, -40)
+node_connections = [&"Add2", 0, &"trigger", &"Add2", 1, &"grip", &"grip", 0, &"Animation 3", &"grip", 1, &"Animation 4", &"output", 0, &"Add2", &"trigger", 0, &"Animation 2", &"trigger", 1, &"Animation"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_egv36"]
+animation = &"poses_default/idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8m3th"]
+animation = &"poses_pistol/pgrip"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_h3jud"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ssyhs"]
+animation = &"poses_default/grip"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_y0qgp"]
+resource_local_to_scene = true
+blend_point_0/node = SubResource("AnimationNodeAnimation_egv36")
+blend_point_0/pos = Vector2(0, 1)
+blend_point_1/node = SubResource("AnimationNodeAnimation_8m3th")
+blend_point_1/pos = Vector2(0, 0)
+blend_point_2/node = SubResource("AnimationNodeAnimation_h3jud")
+blend_point_2/pos = Vector2(1, 0)
+blend_point_3/node = SubResource("AnimationNodeAnimation_ssyhs")
+blend_point_3/pos = Vector2(-1, 0)
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_l4ry5"]
+resource_local_to_scene = true
+graph_offset = Vector2(-658.09, 5.71126)
+nodes/PoseSpace/node = SubResource("AnimationNodeBlendSpace2D_y0qgp")
+nodes/PoseSpace/position = Vector2(-240, 100)
+nodes/output/position = Vector2(140, 120)
+node_connections = [&"output", 0, &"PoseSpace"]
+
+[sub_resource type="Curve" id="Curve_i22md"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.34127, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_m8dny"]
+xfade_time = 0.1
+xfade_curve = SubResource("Curve_i22md")
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_v7006"]
+xfade_time = 0.1
+xfade_curve = SubResource("Curve_i22md")
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_326re"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_ovybh"]
+resource_local_to_scene = true
+states/End/position = Vector2(791, 93)
+states/IdleTree/node = SubResource("AnimationNodeBlendTree_t204i")
+states/IdleTree/position = Vector2(433, 93)
+states/PoseTree/node = SubResource("AnimationNodeBlendTree_l4ry5")
+states/PoseTree/position = Vector2(613, 98)
+states/Start/position = Vector2(219, 93)
+transitions = ["IdleTree", "PoseTree", SubResource("AnimationNodeStateMachineTransition_m8dny"), "PoseTree", "IdleTree", SubResource("AnimationNodeStateMachineTransition_v7006"), "Start", "IdleTree", SubResource("AnimationNodeStateMachineTransition_326re")]
+graph_offset = Vector2(53, 15)
+
+[node name="AnimationTree" type="AnimationTree"]
+deterministic = false
+root_node = NodePath("../combat_gloves_r")
+tree_root = SubResource("AnimationNodeStateMachine_ovybh")
+anim_player = NodePath("../AnimationPlayer")
+parameters/current_length = 0.0
+parameters/current_position = 0.0
+parameters/current_delta = 0.0
+parameters/End/current_length = null
+parameters/End/current_position = null
+parameters/End/current_delta = null
+parameters/IdleTree/current_length = 0.0
+parameters/IdleTree/current_position = 0.0
+parameters/IdleTree/current_delta = 0.0
+parameters/IdleTree/Add2/current_length = 0.0
+parameters/IdleTree/Add2/current_position = 0.0
+parameters/IdleTree/Add2/current_delta = 0.0
+parameters/IdleTree/Add2/add_amount = 1.0
+parameters/IdleTree/Animation/current_length = 0.0
+parameters/IdleTree/Animation/current_position = 0.0
+parameters/IdleTree/Animation/current_delta = 0.0
+"parameters/IdleTree/Animation 2/current_length" = 0.0
+"parameters/IdleTree/Animation 2/current_position" = 0.0
+"parameters/IdleTree/Animation 2/current_delta" = 0.0
+"parameters/IdleTree/Animation 3/current_length" = 0.0
+"parameters/IdleTree/Animation 3/current_position" = 0.0
+"parameters/IdleTree/Animation 3/current_delta" = 0.0
+"parameters/IdleTree/Animation 4/current_length" = 0.0
+"parameters/IdleTree/Animation 4/current_position" = 0.0
+"parameters/IdleTree/Animation 4/current_delta" = 0.0
+parameters/IdleTree/grip/current_length = 0.0
+parameters/IdleTree/grip/current_position = 0.0
+parameters/IdleTree/grip/current_delta = 0.0
+parameters/IdleTree/grip/blend_amount = 0.0
+parameters/IdleTree/output/current_length = 0.0
+parameters/IdleTree/output/current_position = 0.0
+parameters/IdleTree/output/current_delta = 0.0
+parameters/IdleTree/trigger/current_length = 0.0
+parameters/IdleTree/trigger/current_position = 0.0
+parameters/IdleTree/trigger/current_delta = 0.0
+parameters/IdleTree/trigger/blend_amount = 0.0
+parameters/PoseTree/current_length = 1.0
+parameters/PoseTree/current_position = 1.0
+parameters/PoseTree/current_delta = 0.0
+parameters/PoseTree/PoseSpace/current_length = 1.0
+parameters/PoseTree/PoseSpace/current_position = 1.0
+parameters/PoseTree/PoseSpace/current_delta = 0.0
+parameters/PoseTree/PoseSpace/blend_position = Vector2(-0.0111288, 0.603478)
+parameters/PoseTree/PoseSpace/0/current_length = 1.0
+parameters/PoseTree/PoseSpace/0/current_position = 1.0
+parameters/PoseTree/PoseSpace/0/current_delta = 0.0
+parameters/PoseTree/PoseSpace/1/current_length = 1.0
+parameters/PoseTree/PoseSpace/1/current_position = 1.0
+parameters/PoseTree/PoseSpace/1/current_delta = 0.0
+parameters/PoseTree/PoseSpace/2/current_length = 0.001
+parameters/PoseTree/PoseSpace/2/current_position = 0.001
+parameters/PoseTree/PoseSpace/2/current_delta = 0.0
+parameters/PoseTree/PoseSpace/3/current_length = 0.001
+parameters/PoseTree/PoseSpace/3/current_position = 0.001
+parameters/PoseTree/PoseSpace/3/current_delta = 0.0
+parameters/PoseTree/output/current_length = 1.0
+parameters/PoseTree/output/current_position = 1.0
+parameters/PoseTree/output/current_delta = 0.0
+parameters/Start/current_length = 0.0
+parameters/Start/current_position = 0.0
+parameters/Start/current_delta = 0.0

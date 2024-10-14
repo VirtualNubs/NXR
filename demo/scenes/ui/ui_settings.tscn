@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c47iwb4c6irhj"]
 
 [ext_resource type="Script" path="res://demo/scripts/ui/ui_settings.gd" id="1_j7mrh"]
-[ext_resource type="Resource" uid="uid://dqooh1vsmo8b8" path="res://addons/nxr/resources/default_player_settings.tres" id="2_wllv1"]
+[ext_resource type="Resource" uid="uid://qhqij5086ak1" path="res://addons/nxr/resources/default_player_settings.tres" id="2_wllv1"]
 
 [node name="ui_settings" type="Control"]
 layout_mode = 3

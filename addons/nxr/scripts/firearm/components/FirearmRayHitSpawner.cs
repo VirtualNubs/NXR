@@ -6,13 +6,13 @@ using System;
 [GlobalClass]
 public partial class FirearmRayHitSpawner : Node
 {
-	[Export]
-	private PackedScene _scene; 
-	private FirearmRay _ray; 
-	// Called when the node enters the scene tree for the first time.
+	[Export] private PackedScene _scene; 
+	[Export] private FirearmRay _ray; 
+
+	
 	public override void _Ready()
 	{
-		if (Util.NodeIs(GetParent(), typeof(FirearmRay))) { 
+		if (_ray == null && Util.NodeIs(GetParent(), typeof(FirearmRay))) { 
 			_ray = (FirearmRay)GetParent(); 
 			_ray.OnHit += OnHit; 
 		}
@@ -23,5 +23,6 @@ public partial class FirearmRayHitSpawner : Node
 		_ray.AddChild(inst); 
 
 		inst.GlobalPosition = at; 
+		inst.LookAt(_ray.GlobalPosition, Vector3.Up); 
 	}
 }

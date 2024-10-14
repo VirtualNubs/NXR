@@ -5,75 +5,69 @@ using NXR;
 
 [Tool]
 [GlobalClass]
-public partial class FirearmSlide : FirearmMovable
+public partial class FirearmSlide : FirearmClampedXform
 {
-    [Export]
-    private bool _setBackOnFire = false; 
-    [Export]
-    private bool _setBackOnEmpty = false; 
+    #region Exported
+    [Export]private bool _setBackOnFire = false; 
+    [Export]private bool _setBackOnEmpty = false; 
+    [Export] private string _releaseAction = ""; 
+    #endregion
 
-    [Export]
-    private Node3D  _firearmNode; 
-    protected Firearm _firearm = null; 
+
+    #region Private
     protected bool back = false; 
     private Transform3D _relativeGrabXform; 
-
     protected Transform3D _relativeXform = new(); 
-
     private bool lockedBack = false; 
+    #endregion
 
 
-    [Signal]
-    public delegate void SlideBackEventHandler(); 
-    [Signal]
-    public delegate void SlideForwardEventHandler(); 
+    #region Signals 
+    [Signal] public delegate void SlideBackEventHandler(); 
+    [Signal] public delegate void SlideForwardEventHandler(); 
+    #endregion
+
 
 
     public override void _Ready()
     {
         base._Ready(); 
         
-        if (Util.NodeIs(_firearmNode, typeof(Firearm)))
-        {
-            _firearm = (Firearm)_firearmNode;
-        }
+        if (Firearm == null) return; 
 
+        Firearm.OnFire += OnFire;
+        Firearm.OnChambered += Chambered; 
+        Firearm.TryChamber += TryChambered; 
 
-         if (Util.NodeIs(GetParent(), typeof(Firearm)))
-        {
-            _firearm = (Firearm)GetParent();
-        }
-        
-        if (_firearm == null) return; 
-
-        _firearm.OnFire += OnFire;
-        _firearm.OnChambered += Chambered; 
-        _firearm.TryChamber += TryChambered; 
-
-        this.OnDropped += OnDrop;
-        this.OnGrabbed += Grabbed;
+        OnDropped += OnDrop;
+        OnGrabbed += Grabbed;
     }
+
 
     public override void _Process(double delta)
     {
         RunTool(); 
       
-        if (_firearm == null) return;
+        if (Firearm == null) return;
         
         if (AtEnd() && !back && IsGrabbed()) {
             
-            if (_firearm.Chambered) { 
-                _firearm.EmitSignal("TryEject"); 
-                _firearm.Chambered = false; 
+            if (Firearm.Chambered) { 
+                Firearm.EmitSignal("TryEject"); 
+                Firearm.Chambered = false; 
             } 
             back = true;  
             EmitSignal("SlideBack"); 
         }
 
         if (!AtEnd() && back) { 
-            _firearm.EmitSignal("TryChamber"); 
+            Firearm.EmitSignal("TryChamber"); 
             back = false; 
             EmitSignal("SlideForward"); 
+        }
+
+        if (GetReleaseInput() == true && IsBack()) { 
+            Firearm.EmitSignal("TryChamber"); 
         }
     }
 
@@ -93,13 +87,16 @@ public partial class FirearmSlide : FirearmMovable
 
     }
 
+
     public bool IsBack() { 
         return Position.IsEqualApprox(EndXform.Origin); 
     }
 
+
     public bool IsForward() { 
         return Position.IsEqualApprox(StartXform.Origin); 
     }
+
 
     public void OnFire()
     {
@@ -121,8 +118,9 @@ public partial class FirearmSlide : FirearmMovable
         }
     }
 
+
      private void TryChambered() { 
-        if (IsBack() && !_firearm.Chambered ) { 
+        if (IsBack() && !Firearm.Chambered ) { 
             ReturnTween();
         }
     }
@@ -136,5 +134,11 @@ public partial class FirearmSlide : FirearmMovable
 
         Tween returnTween = GetTree().CreateTween();
         returnTween.TweenProperty(this, "position", StartXform.Origin, 0.1f);
+    }
+
+
+    private bool GetReleaseInput() { 
+        if (Firearm.GetPrimaryInteractor() == null) return false; 
+        return Firearm.GetPrimaryInteractor().Controller.ButtonOneShot(_releaseAction); 
     }
 }

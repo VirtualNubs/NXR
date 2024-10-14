@@ -7,30 +7,32 @@ using System.Runtime.CompilerServices;
 namespace NXRFirearm;
 
 [Tool]
-public partial class FirearmMovable : Interactable
+public partial class FirearmClampedXform : Interactable
 {
 	[ExportGroup("Tool Settings")]
-	[Export]
-	public Node3D Target;
+	[Export] public Node3D Target;
+	[Export] private bool _setStartXform = false;
+	[Export] private bool _setEndXform = false;
+	[Export] public bool _goStart = false;
+	[Export]public bool _goEnd = false;	
 
-	[Export]
-	private bool _setStartXform = false;
-	[Export]
-	private bool _setEndXform = false;
-
-	[Export]
-	public bool _goStart = false;
-	[Export]
-	public bool _goEnd = false;
 
 	[ExportGroup("Transforms")]
-	[Export]
-	public Transform3D StartXform;
-	[Export]
-	public Transform3D EndXform;
+	[Export] public Transform3D StartXform;
+	[Export] public Transform3D EndXform;
+
+
+	public Firearm Firearm { get; set; }
 	private bool _snapped = false;
+	private Vector3 _targetScale = Vector3.One; 
 
 
+	public override void _Ready() { 
+		base._Ready(); 
+
+		Firearm ??= FirearmUtil.GetFirearmFromParentOrOwner(this);
+	}
+	
 	public void RunTool()
 	{
 
@@ -39,6 +41,11 @@ public partial class FirearmMovable : Interactable
 			if (Target == null)
 			{
 				Target = this;
+				
+			}
+
+			if (Target == this) { 
+				_snapped = false;
 			}
 
 			if (Target != this)
@@ -47,38 +54,39 @@ public partial class FirearmMovable : Interactable
 				if (GlobalPosition != Target.GlobalPosition && !_snapped)
 				{
 					GlobalPosition = Target.GlobalPosition;
+					GlobalBasis = Target.GlobalBasis; 
+					
 					_snapped = true;
 				}
 			}
 
 			if (_setStartXform)
 			{
-				StartXform = Transform.Orthonormalized();
+				StartXform = Transform;
 				_setStartXform = false;
 			}
 			if (_setEndXform)
 			{
-				EndXform = Transform.Orthonormalized();
+				EndXform = Transform;
 				_setEndXform = false;
 			}
 
 			if (_goStart)
 			{
-				Transform = StartXform.Orthonormalized();
+				Transform = StartXform;
 				_goStart = false;
 			}
 
 			if (_goEnd)
 			{
-				Transform = EndXform.Orthonormalized();
+				Transform = EndXform;
 				_goEnd = false;
 			}
 		}
 
-		if(Target != this) {
-			Target.GlobalPosition = GlobalPosition;
-			Target.RotationDegrees = RotationDegrees;
-		}
+		Target.GlobalPosition = GlobalPosition;
+		Target.GlobalRotation = GlobalRotation;
+		Scale = Vector3.One; 
 	
 	}
 
@@ -115,7 +123,7 @@ public partial class FirearmMovable : Interactable
 	{
 		Vector3 startEuler = StartXform.Basis.GetEuler();
 		Vector3 endEuler = EndXform.Basis.GetEuler();
-
+		
 		float x = startEuler.X < endEuler.X ? startEuler.X : endEuler.X;
 		float y = startEuler.Y < endEuler.X ? startEuler.Y : endEuler.Y;
 		float z = startEuler.Z < endEuler.Z ? startEuler.Z : endEuler.Z;
@@ -131,6 +139,11 @@ public partial class FirearmMovable : Interactable
 		float y = startEuler.Y > endEuler.X ? startEuler.Y : endEuler.Y;
 		float z = startEuler.Z > endEuler.Z ? startEuler.Z : endEuler.Z;
 		return new Vector3(x, y, z);
+	}
+
+	public Vector3 GetSampledPosition(Vector3 pos) { 
+		Vector3 clamped = pos.Clamp(GetMinOrigin(), GetMaxOrigin()); 
+		return clamped; 
 	}
 
 	public bool AtStart()
@@ -159,8 +172,9 @@ public partial class FirearmMovable : Interactable
 	public void EndToStart(float t)
 	{
 		t = Mathf.Clamp(t, 0, 1);
-		Transform = EndXform.InterpolateWith(StartXform, t);
+		Transform = EndXform.InterpolateWith(StartXform, t).Orthonormalized();
 	}
+
 
 	public float MiddlePositionRatio(Vector3 pos, bool invert = false)
 	{

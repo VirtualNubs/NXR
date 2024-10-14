@@ -5,34 +5,19 @@ using Godot;
 
 public partial class BezierCurve3D : Path3D
 {
-    [Export]
-    public bool update = true;
-
-    [Export]
-    public float UpdateTime = 0.1f; 
-
-    [Export]
-    public int Resolution = 10;
-
-    [Export]
-    private Vector3 StartPoint = Vector3.Zero;
-
-    [Export]
-    public Vector3 MidPoint = new Vector3(0, 0.5f, -0.5f); 
-
-    [Export]
-    public Vector3 EndPoint = Vector3.Forward;
+    [Export] public bool update = true;
+    [Export] public float UpdateTime = 0.1f; 
+    [Export] public int Resolution = 10;
+    [Export] private Vector3 StartPoint = Vector3.Zero;
+    [Export] public Vector3 MidPoint = new Vector3(0, 0.5f, -0.5f); 
+    [Export] public Vector3 EndPoint = Vector3.Forward;
 
 
     [ExportGroup("Animate")]
-    [Export]
-    public float SinSpeed = 0.0f;
-    [Export(PropertyHint.Range, "0.0, 5")]
-    public float SinAmplitude = 0.0f;
-    [Export]
-    public float CosSpeed = 0.0f;
-    [Export(PropertyHint.Range, "0.0, 5")]
-    public float CosAmplitude = 0.0f;
+    [Export]  public float SinSpeed = 0.0f;
+    [Export(PropertyHint.Range, "0.0, 5")] public float SinAmplitude = 0.0f;
+    [Export] public float CosSpeed = 0.0f;
+    [Export(PropertyHint.Range, "0.0, 5")] public float CosAmplitude = 0.0f;
 
 
     private float _sinTime = 0.0f;
@@ -53,7 +38,6 @@ public partial class BezierCurve3D : Path3D
 
     public async void UpdateCurve()
     {
-
         Curve.ClearPoints();
         Curve.UpVectorEnabled = true;
         Curve.ResourceLocalToScene = true; 
