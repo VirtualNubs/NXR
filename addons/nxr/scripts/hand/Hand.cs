@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Godot;
+using Godot.NativeInterop;
 using NXRInteractable;
 
 namespace NXR;
@@ -29,6 +30,7 @@ public partial class Hand : RigidBody3D
 	protected AnimationTree _currentAnimTree;
 	protected string _lastBlendName;
 	protected string _poseSpaceName = "PoseSpace";
+	private Tween _resetTween; 
 	#endregion
 
 
@@ -70,7 +72,7 @@ public partial class Hand : RigidBody3D
 			!IsInstanceValid(Interactor.GrabbedInteractable
 			))
 		{
-			ResetHand();
+			//ResetHand();
 		}
 	}
 
@@ -80,6 +82,7 @@ public partial class Hand : RigidBody3D
 		AnimationNodeAnimation poseAnim = (AnimationNodeAnimation)GetPoseBlendSace().GetBlendPointNode(2);
 		AnimationNodeAnimation blendAnim = (AnimationNodeAnimation)GetPoseBlendSace().GetBlendPointNode(0);
 
+		_resetTween?.Stop(); 
 		_animTree.Set("parameters/PoseTree/PoseSpace/blend_position", Vector2.Zero);
 
 
@@ -202,7 +205,10 @@ public partial class Hand : RigidBody3D
 
 	private void ResetTween()
 	{
-		Tween tween = GetTree().CreateTween();
-		tween.TweenProperty(this, "transform", _initTransform, 0.2f);
+		_resetTween = GetTree().CreateTween();
+		_resetTween.SetProcessMode(Tween.TweenProcessMode.Physics); 
+		if (_resetTween != null) { 
+			_resetTween.TweenProperty(this, "transform", _initTransform, 0.2f);
+		}
 	}
 }

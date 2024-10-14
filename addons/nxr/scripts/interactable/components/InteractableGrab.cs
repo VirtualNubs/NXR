@@ -125,6 +125,7 @@ public partial class InteractableGrab : Node
 	
 			Vector3 prevVel = Vector3.Zero; 
 
+
 			lVelocity = (GetGrabXform().Origin - Interactable.GlobalPosition);
 			aVelocity = rotationChange.Inverse().GetEuler();
 
@@ -158,18 +159,18 @@ public partial class InteractableGrab : Node
 		{
 			Transform3D grabXform = GetGrabXform();
 
-			Interactable.GlobalTransform = Interactable.GlobalTransform.TranslatedLocal(Interactable.GetOffsetXform().Origin);
-			
 			if (_percise)  grabXform = Interactable.GetPrimaryRelativeXform(); 
 
 			if (_twoHanded && Interactable.IsTwoHanded())
 			{
-				Interactable.GlobalTransform = GetTwoHandXform(); 
+				Interactable.GlobalTransform = GetTwoHandXform().Orthonormalized();
 			}
 			else
 			{
 				Interactable.GlobalTransform = grabXform;
 			}
+
+			Interactable.GlobalTransform = Interactable.GlobalTransform.TranslatedLocal(Interactable.GetOffsetXform().Origin);
 		}
 
 		if (IsInstanceValid(Interactable.SecondaryInteractor) && !IsInstanceValid(Interactable.PrimaryInteractor))
@@ -230,6 +231,7 @@ public partial class InteractableGrab : Node
 		Vector3 newPos = interactor.GlobalPosition + posOffset;
 		Basis rotOffset = (Interactable.GlobalTransform.Basis.Inverse() * grabPoint.GlobalTransform.Basis).Orthonormalized();
 		
+		
 
 		xform.Origin = Interactable.GlobalTransform.Origin.Lerp(newPos, _positionEase);
 
@@ -269,7 +271,7 @@ public partial class InteractableGrab : Node
 		lookXform.Origin = GetGrabXform().Origin; 
 		lookXform.Basis = interactableXform.Basis.Slerp(Basis.LookingAt(
 			lookDir.Normalized(),
-			up.Normalized()).Orthonormalized(),
+			up.Normalized()).Orthonormalized() * Interactable.GetOffsetXform().Basis,
 			_secondaryRotationEase
 		);
 

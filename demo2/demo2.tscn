@@ -57,7 +57,7 @@ size = Vector3(0.200333, 0.0600739, 0.0509338)
 [sub_resource type="ViewportTexture" id="ViewportTexture_33f6v"]
 viewport_path = NodePath("SubViewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hukca"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3pg86"]
 cull_mode = 2
 albedo_texture = SubResource("ViewportTexture_33f6v")
 
@@ -194,4 +194,4 @@ Screen = NodePath("MeshInstance3D")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Geometry/CSGBox3D/Viewport2Din3D"]
 mesh = SubResource("QuadMesh_ssagb")
-surface_material_override/0 = SubResource("StandardMaterial3D_hukca")
+surface_material_override/0 = SubResource("StandardMaterial3D_3pg86")
